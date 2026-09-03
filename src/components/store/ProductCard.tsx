@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Product } from "@/lib/types";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { TrendBadge } from "@/components/ui/badge";
-import { aiImageUrl } from "@/lib/ai/image";
+import { ph, formatUSD, PLACEHOLDER_MODE } from "@/lib/utils";
 
 export function ProductCard({ product }: { product: Product }) {
   return (
@@ -19,9 +19,9 @@ export function ProductCard({ product }: { product: Product }) {
         <div className="absolute left-3 top-3">
           <TrendBadge trend={product.trend} />
         </div>
-        {product.compareAt && (
+        {!PLACEHOLDER_MODE && product.compareAt && (
           <div className="absolute right-3 top-3 rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-white">
-            SAVE ${product.compareAt - product.price}
+            SAVE {formatUSD(product.compareAt - product.price)}
           </div>
         )}
         {/* 配色点 */}
@@ -38,13 +38,13 @@ export function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="mt-3 flex items-start justify-between gap-2">
         <div>
-          <h3 className="font-bold leading-tight">{product.name}</h3>
+          <h3 className="font-bold leading-tight">{ph(product.name)}</h3>
           <p className="mt-0.5 text-sm text-ink/55">{product.tagline}</p>
         </div>
         <div className="text-right">
-          <div className="font-bold">${product.price}</div>
-          {product.compareAt && (
-            <div className="text-xs text-ink/40 line-through">${product.compareAt}</div>
+          <div className="font-bold">{formatUSD(product.price)}</div>
+          {!PLACEHOLDER_MODE && product.compareAt && (
+            <div className="text-xs text-ink/40 line-through">{formatUSD(product.compareAt)}</div>
           )}
         </div>
       </div>
@@ -63,15 +63,14 @@ export function MiniProductCard({
       href={`/products/${product.slug}`}
       className="mt-2 flex items-center gap-3 rounded-xl border border-ink/10 bg-white p-2 transition hover:border-accent"
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={aiImageUrl(product.imagePrompt, "square")}
+      <ProductImage
+        prompt={product.imagePrompt}
         alt={product.name}
-        className="h-14 w-14 rounded-lg object-cover"
+        className="h-14 w-14 shrink-0 rounded-lg"
       />
       <div className="min-w-0">
-        <div className="truncate text-sm font-bold">{product.name}</div>
-        <div className="text-xs text-ink/50">${product.price} · {product.rating}★</div>
+        <div className="truncate text-sm font-bold">{ph(product.name)}</div>
+        <div className="text-xs text-ink/50">{formatUSD(product.price)} · {product.rating}★</div>
       </div>
     </Link>
   );

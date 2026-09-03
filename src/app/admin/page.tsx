@@ -4,7 +4,7 @@ import { getOrders } from "@/lib/data/orders";
 import { CAMPAIGNS, FUNNEL } from "@/lib/data/campaigns";
 import { PRODUCTS } from "@/lib/data/catalog";
 import { Panel, Stat, Bar } from "@/components/admin/ui";
-import { formatUSD, formatNumber, pct } from "@/lib/utils";
+import { formatUSD, formatNumber, pct, ph } from "@/lib/utils";
 import type { OrderChannel } from "@/lib/types";
 
 const CHANNEL_META: Record<OrderChannel, { label: string; color: string }> = {
@@ -131,7 +131,7 @@ export default function AdminOverview() {
           {topProducts.map((p) => (
             <div key={p.id} className="flex items-center gap-4">
               <span className="w-44 shrink-0 truncate text-sm font-semibold text-slate-200">
-                {p.name}
+                {ph(p.name)}
               </span>
               <Bar
                 value={p.heatScore}

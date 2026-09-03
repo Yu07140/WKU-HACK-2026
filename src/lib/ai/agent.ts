@@ -1,5 +1,6 @@
 import { PRODUCTS } from "@/lib/data/catalog";
 import type { Product } from "@/lib/types";
+import { ph, formatUSD } from "@/lib/utils";
 
 /* ------------------------------------------------------------------
  * AI 导购 Agent —— 端侧轻量规则引擎 + 商品检索（RAG 雏形）
@@ -76,7 +77,7 @@ export function agentReply(userMessage: string): AgentReply {
   const hits = searchProducts(q);
   if (hits.length > 0) {
     const list = hits
-      .map((p) => `• ${p.name} — $${p.price}：${p.tagline}（${p.rating}★ / ${p.reviews} 条评价）`)
+      .map((p) => `• ${ph(p.name)} — ${formatUSD(p.price)}：${p.tagline}（${p.rating}★ / ${p.reviews} 条评价）`)
       .join("\n");
     return {
       text: `根据你的需求，我挑了 ${hits.length} 双最值得看的：\n${list}\n\n点击商品卡片可以看详情和真实买家秀。需要我按预算或尺码再筛一下吗？`,

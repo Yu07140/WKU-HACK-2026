@@ -5,6 +5,7 @@ import { BRAND, BRAND_STORY } from "@/lib/data/brand";
 import { ProductCard } from "@/components/store/ProductCard";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
+import { PLACEHOLDER_MODE } from "@/lib/utils";
 
 export default function HomePage() {
   const featured = [...PRODUCTS].sort((a, b) => b.heatScore - a.heatScore).slice(0, 4);
@@ -62,8 +63,8 @@ export default function HomePage() {
               className="aspect-[4/5] rounded-3xl shadow-2xl"
             />
             <div className="absolute -bottom-5 -left-5 hidden rounded-2xl bg-ink px-5 py-4 text-paper shadow-xl md:block">
-              <div className="text-2xl font-black text-accent">$89</div>
-              <div className="text-xs text-paper/60">vs. $210 brand markup</div>
+              <div className="text-2xl font-black text-accent">{PLACEHOLDER_MODE ? "$???" : "$89"}</div>
+              <div className="text-xs text-paper/60">{PLACEHOLDER_MODE ? "vs. $??? brand markup" : "vs. $210 brand markup"}</div>
             </div>
           </div>
         </div>

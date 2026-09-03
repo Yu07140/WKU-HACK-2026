@@ -5,7 +5,7 @@ import { Trash2, ArrowRight, ShoppingBag } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
-import { formatUSD } from "@/lib/utils";
+import { formatUSD, ph } from "@/lib/utils";
 
 export default function CartPage() {
   const { items, remove, updateQty, subtotal, count } = useCart();
@@ -47,7 +47,7 @@ export default function CartPage() {
                 <div className="flex justify-between">
                   <div>
                     <Link href={`/products/${it.slug}`} className="font-bold hover:underline">
-                      {it.productName}
+                      {ph(it.productName)}
                     </Link>
                     <div className="mt-0.5 text-sm text-ink/55">
                       {it.color} · US {it.size}

@@ -7,6 +7,7 @@ import { IMAGE_STYLES, aiImageUrl, type ImageSize } from "@/lib/ai/image";
 import { Button } from "@/components/ui/button";
 import { Label, Select, Textarea } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { ph, formatUSD } from "@/lib/utils";
 
 const SIZES: { id: ImageSize; label: string }[] = [
   { id: "square", label: "1:1 社媒帖" },
@@ -47,7 +48,7 @@ export function SceneGenerator() {
           <Select value={productId} onChange={(e) => setProductId(e.target.value)}>
             {PRODUCTS.map((p) => (
               <option key={p.id} value={p.id}>
-                {p.name} (${p.price})
+                {ph(p.name)} ({formatUSD(p.price)})
               </option>
             ))}
           </Select>

@@ -7,6 +7,7 @@ import { ANGLE_LABELS, type Angle, type Platform, type CopyResult } from "@/lib/
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label, Select } from "@/components/ui/input";
+import { ph } from "@/lib/utils";
 
 const PLATFORMS: Platform[] = ["Meta", "TikTok", "Google"];
 const ANGLES: Angle[] = ["comfort", "value", "trend", "performance"];
@@ -38,7 +39,7 @@ export function CopyGenerator() {
           <Select value={productId} onChange={(e) => setProductId(e.target.value)}>
             {PRODUCTS.map((p) => (
               <option key={p.id} value={p.id}>
-                {p.name}
+                {ph(p.name)}
               </option>
             ))}
           </Select>

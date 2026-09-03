@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { RefreshCw, ExternalLink } from "lucide-react";
 import { Panel } from "@/components/admin/ui";
 import { ORDER_STATUS_LABEL } from "@/lib/data/orders";
-import { formatUSD, formatDate, cn } from "@/lib/utils";
+import { formatUSD, formatDate, cn, ph } from "@/lib/utils";
 import type { Order, OrderChannel } from "@/lib/types";
 
 const CHANNEL_LABEL: Record<OrderChannel, string> = {
@@ -79,7 +79,7 @@ export default function OrdersPage() {
                     <div className="text-xs text-slate-500">{o.country}</div>
                   </td>
                   <td className="py-3 pr-4">
-                    <div className="text-slate-200">{o.productName}</div>
+                    <div className="text-slate-200">{ph(o.productName)}</div>
                     <div className="text-xs text-slate-500">
                       {o.color} · US {o.size} × {o.qty}
                     </div>

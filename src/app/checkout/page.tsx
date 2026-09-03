@@ -6,7 +6,7 @@ import { CheckCircle2, Loader2, Lock } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
-import { formatUSD } from "@/lib/utils";
+import { formatUSD, ph } from "@/lib/utils";
 
 export default function CheckoutPage() {
   const { items, subtotal, clear } = useCart();
@@ -144,7 +144,7 @@ export default function CheckoutPage() {
             {items.map((i) => (
               <div key={`${i.productId}-${i.size}`} className="flex justify-between text-sm">
                 <span className="text-ink/70">
-                  {i.productName} × {i.qty}
+                  {ph(i.productName)} × {i.qty}
                   <span className="block text-xs text-ink/45">
                     {i.color} · US {i.size}
                   </span>

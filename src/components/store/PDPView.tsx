@@ -8,8 +8,7 @@ import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
 import { TrendBadge } from "@/components/ui/badge";
 import { useCart } from "@/lib/store/cart";
-import { aiImageUrl } from "@/lib/ai/image";
-import { cn } from "@/lib/utils";
+import { cn, ph, formatUSD, PLACEHOLDER_MODE } from "@/lib/utils";
 
 export function PDPView({ product }: { product: Product }) {
   const { add } = useCart();
@@ -57,14 +56,11 @@ export function PDPView({ product }: { product: Product }) {
                 i === colorIdx ? "border-accent" : "border-transparent opacity-70 hover:opacity-100"
               )}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={aiImageUrl(
-                  `${c.imagePrompt}, product photo, cream background`,
-                  "square"
-                )}
+              <ProductImage
+                prompt={`${c.imagePrompt}, product photo, cream background`}
                 alt={c.name}
-                className="h-full w-full object-cover"
+                size="square"
+                className="h-full w-full"
               />
             </button>
           ))}
@@ -81,16 +77,18 @@ export function PDPView({ product }: { product: Product }) {
           </span>
         </div>
 
-        <h1 className="mt-3 text-4xl font-black">{product.name}</h1>
+        <h1 className="mt-3 text-4xl font-black">{ph(product.name)}</h1>
         <p className="mt-1 text-lg text-ink/55">{product.tagline}</p>
 
         <div className="mt-4 flex items-baseline gap-3">
-          <span className="text-3xl font-black">${product.price}</span>
-          {product.compareAt && (
-            <span className="text-lg text-ink/40 line-through">${product.compareAt}</span>
+          <span className="text-3xl font-black">{formatUSD(product.price)}</span>
+          {!PLACEHOLDER_MODE && product.compareAt && (
+            <span className="text-lg text-ink/40 line-through">{formatUSD(product.compareAt)}</span>
           )}
           <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-bold text-accent-dark">
-            工厂直供 · 省 ${product.compareAt ? product.compareAt - product.price : Math.round(product.price * 0.5)}
+            {PLACEHOLDER_MODE
+              ? "工厂直供 · 价格待定"
+              : `工厂直供 · 省 ${formatUSD(product.compareAt ? product.compareAt - product.price : Math.round(product.price * 0.5))}`}
           </span>
         </div>
 

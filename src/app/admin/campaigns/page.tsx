@@ -6,7 +6,7 @@ import { Megaphone, Pause, Play, Plus, Sparkles } from "lucide-react";
 import { CAMPAIGNS } from "@/lib/data/campaigns";
 import { PRODUCTS } from "@/lib/data/catalog";
 import { Panel } from "@/components/admin/ui";
-import { formatUSD, formatNumber, cn } from "@/lib/utils";
+import { formatUSD, formatNumber, cn, ph } from "@/lib/utils";
 import type { Campaign } from "@/lib/types";
 
 const STATUS_STYLE: Record<Campaign["status"], string> = {
@@ -105,7 +105,7 @@ export default function CampaignsPage() {
           >
             {PRODUCTS.map((p) => (
               <option key={p.id} value={p.id}>
-                绑定货盘：{p.name}
+                绑定货盘：{ph(p.name)}
               </option>
             ))}
           </select>

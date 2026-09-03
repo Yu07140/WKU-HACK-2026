@@ -2,7 +2,7 @@ import { FlaskConical, ThumbsUp, Eye, ThumbsDown } from "lucide-react";
 import { PRODUCTS } from "@/lib/data/catalog";
 import { CATEGORY_LABELS } from "@/lib/types";
 import { Panel, Bar } from "@/components/admin/ui";
-import { formatUSD, cn } from "@/lib/utils";
+import { formatUSD, cn, ph } from "@/lib/utils";
 
 /** AI 选款决策：热度 × 毛利 × 供应链柔性 */
 function decide(heat: number, marginPct: number, moq: number) {
@@ -60,7 +60,7 @@ export default function SelectionPage() {
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-white">{p.name}</span>
+                    <span className="font-bold text-white">{ph(p.name)}</span>
                     <span className="text-xs text-slate-500">{CATEGORY_LABELS[p.category]}</span>
                   </div>
                   <div className="mt-0.5 text-xs text-slate-500">

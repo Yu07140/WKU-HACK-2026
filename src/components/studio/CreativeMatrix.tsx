@@ -9,7 +9,7 @@ import { generateCopy, type Platform, type Angle } from "@/lib/ai/copy";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label, Select } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import { cn, ph } from "@/lib/utils";
 
 const PLATFORMS: { id: Platform; size: "square" | "portrait_16_9"; visual: string }[] = [
   { id: "Meta", size: "square", visual: "bold advertising campaign poster, vibrant orange and cream, premium sportswear ad style" },
@@ -44,7 +44,7 @@ export function CreativeMatrix() {
           <Select value={productId} onChange={(e) => setProductId(e.target.value)}>
             {PRODUCTS.map((p) => (
               <option key={p.id} value={p.id}>
-                {p.name}
+                {ph(p.name)}
               </option>
             ))}
           </Select>
