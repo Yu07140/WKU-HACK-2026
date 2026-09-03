@@ -29,59 +29,51 @@ npm run dev      # http://localhost:3000
 - **lucide-react** 图标；无重型依赖，安装快、Vercel 一键部署
 - AI 能力默认全部**离线可演示**（规则引擎 + 文生图 API），接 LLM 只需替换单个文件（见下）
 
-## 目录结构与四人分工
+## 项目结构
 
 ```
 src/
 ├── app/
-│   ├── page.tsx                【A】首页
-│   ├── products/               【A】商品列表 + 详情 PDP
-│   ├── cart/ checkout/         【A】购物车 + 结账（交易闭环入口）
-│   ├── studio/                 【B】AIGC 素材工坊页面
-│   ├── admin/                  【D】增长看板（总览/投放/订单/选款）
+│   ├── page.tsx                # 首页
+│   ├── products/               # 商品列表 + 详情 PDP
+│   ├── cart/ checkout/         # 购物车 + 结账（交易闭环入口）
+│   ├── studio/                 # AIGC 素材工坊页面
+│   ├── admin/                  # 增长看板（总览/投放/订单/选款）
 │   └── api/
-│       ├── agent/              【C】AI 导购流式接口
-│       ├── generate-copy/      【B】文案生成接口
-│       └── orders/ products/   【共用】数据接口
+│       ├── agent/              # AI 导购流式接口
+│       ├── generate-copy/      # 文案生成接口
+│       └── orders/ products/   # 数据接口（共用）
 ├── components/
-│   ├── store/                  【A】前台组件（Header/ProductCard/PDP...）
-│   ├── studio/                 【B】工坊组件（场景图/文案/创意矩阵）
-│   ├── agent/                  【C】AgentWidget 聊天挂件
-│   ├── admin/                  【D】看板组件（Panel/Stat/Bar）
-│   └── ui/                     【共用】Button/Card/Badge/Input/ProductImage
+│   ├── store/                  # 前台组件（Header/ProductCard/PDP...）
+│   ├── studio/                 # 工坊组件（场景图/文案/创意矩阵）
+│   ├── agent/                  # AgentWidget 聊天挂件
+│   ├── admin/                  # 看板组件（Panel/Stat/Bar）
+│   └── ui/                     # 共用基础组件（Button/Card/Badge/Input/ProductImage）
 └── lib/
-    ├── types.ts                【共用】全局数据模型 ⚠️ 改字段先群里同步
-    ├── utils.ts                【共用】格式化工具
-    ├── data/                   【共用】catalog 货盘 / orders / campaigns / brand
+    ├── types.ts                # 全局数据模型 ⚠️ 改字段先群里同步
+    ├── utils.ts                # 格式化工具（共用）
+    ├── data/                   # catalog 货盘 / orders / campaigns / brand（共用）
     ├── ai/
-    │   ├── image.ts            【B】文生图统一封装（换模型只改这里）
-    │   ├── copy.ts             【B】文案生成（规则引擎 → LLM 替换点）
-    │   └── agent.ts            【C】导购 Agent（意图识别 + 商品检索 → LLM 替换点）
-    └── store/cart.tsx          【A】购物车状态（localStorage）
+    │   ├── image.ts            # 文生图统一封装（换模型只改这里）
+    │   ├── copy.ts             # 文案生成（规则引擎 → LLM 替换点）
+    │   └── agent.ts            # 导购 Agent（意图识别 + 商品检索 → LLM 替换点）
+    └── store/cart.tsx          # 购物车状态（localStorage）
 ```
 
-### 分工建议
+### 协作约定
 
-| 成员 | 模块 | 主战场 | 冲刺目标 |
-| --- | --- | --- | --- |
-| **A · 前端/建站** | DTC 独立站 | `app/(store)` + `components/store/` | 品牌视觉打磨、PDP 细节、评价区、多币种/多语言、结账接 Stripe test mode |
-| **B · AIGC 素材** | 素材工坊 | `app/studio/` + `components/studio/` + `lib/ai/image.ts` `copy.ts` | 接真实 LLM/多模态模型、品牌 kit 生成、视频脚本、素材批量导出、模特换装图 |
-| **C · AI Agent** | 智能导购 | `components/agent/` + `lib/ai/agent.ts` + `app/api/agent/` | 接 LLM function-calling、订单查询工具、弃购挽回邮件 Agent、多语言、语音输入 |
-| **D · 增长/数据** | 投放看板 | `app/admin/` + `components/admin/` + `lib/data/` | 实时图表、A/B 测试流程、Meta/Google Ads API 对接、ROI 归因、路演数据大屏 |
+1. `components/ui/`、`lib/types.ts`、`lib/data/` 是公共区，**修改前在群里同步**。
+2. 各模块优先在自己的目录里新建文件；跨模块能力调用 API（`/api/*`），避免直接 import 对方组件。
+3. AI 功能一律保持「**无 Key 也能 demo**」：LLM 调用失败时回退到规则引擎。
 
-**协作规则**
-1. `components/ui/`、`lib/types.ts`、`lib/data/` 是公共区，修改前在群里说一声。
-2. 各模块只在自己的目录里新建文件；需要跨模块能力时调 API（`/api/*`），不要直接 import 对方组件。
-3. AI 功能一律保持「无 Key 也能 demo」：LLM 调用失败要回退到规则引擎。
+## 冲刺扩展点（按性价比排序 · 任选切入）
 
-## 推荐扩展点（按性价比排序）
-
-- [ ] **B**：`lib/ai/copy.ts` 的 `generateCopy()` 内部换成大模型调用（返回结构 `CopyResult` 不变，前端零改动）
-- [ ] **C**：`lib/ai/agent.ts` 的 `agentReply()` 换成 LLM + tools（`searchProducts` 等函数已就绪，可直接作为 function-calling 工具）
-- [ ] **D**：订单/活动持久化到 SQLite 或 Vercel KV（当前为内存数组，重启重置）
-- [ ] **A**：结账接 Stripe test mode；加商品评价区与买家秀 AIGC 图
-- [ ] **B+C**：Agent 推荐结果一键生成该商品的广告创意（B/C 模块联动，路演亮点）
-- [ ] **D**：路演模式数据大屏（实时订单滚动 + 世界地图）
+- [ ] `lib/ai/copy.ts` 的 `generateCopy()` 内部换成大模型调用（返回结构 `CopyResult` 不变，前端零改动）
+- [ ] `lib/ai/agent.ts` 的 `agentReply()` 换成 LLM + tools（`searchProducts` 等函数已就绪，可直接作为 function-calling 工具）
+- [ ] 订单/活动持久化到 SQLite 或 Vercel KV（当前为内存数组，重启重置）
+- [ ] 结账接 Stripe test mode；加商品评价区与买家秀 AIGC 图
+- [ ] Agent 推荐结果 → 一键生成该商品的广告创意（模块联动，路演强亮点）
+- [ ] 路演模式数据大屏（实时订单滚动 + 世界地图）
 
 ## 数据说明
 
