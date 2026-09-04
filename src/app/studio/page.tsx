@@ -45,13 +45,13 @@ export default function StudioPage() {
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
       <div className="flex items-center gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-accent text-white">
+        <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-ink text-paper">
           <Sparkles size={22} />
         </span>
         <div>
-          <h1 className="text-3xl font-black">AIGC Creative Studio</h1>
-          <p className="text-sm text-ink/55">
-            REAL PRODUCT → AI CREATIVE → AD COPY → CREATIVE MATRIX → VIDEO SCRIPT → HISTORY
+          <h1 className="text-3xl font-black">Creative Studio</h1>
+          <p className="text-sm font-semibold tracking-wider text-ink/50">
+            REAL PRODUCT. FASTER CREATIVE.
           </p>
         </div>
       </div>

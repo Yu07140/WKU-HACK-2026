@@ -12,7 +12,7 @@ export function SiteFooter() {
           </div>
           <p className="mt-3 max-w-xs text-sm text-paper/60">{BRAND.slogan}</p>
           <p className="mt-4 text-xs text-paper/40">
-            Built from a Wenzhou footwear supply chain. Designed for a global DTC test.
+            A footwear brand built for the way your day moves.
           </p>
         </div>
         <FooterCol
@@ -40,17 +40,16 @@ export function SiteFooter() {
           links={[
             ["Our Story", "/about"],
             ["Proof Mode", "/proof"],
-            ["AI Studio", "/studio"],
+            ["Studio", "/studio"],
             ["Contact", "/faq"],
           ]}
         />
       </div>
       <div className="border-t border-paper/10 py-5 text-center text-xs text-paper/40">
-        © 2026 {BRAND.name}. WKU HACK 2026 · AI-Powered D2C Footwear Sprint Demo
+        © 2026 {BRAND.name}. STAND UP. STAND OUT.
         <span className="mt-1 block text-paper/50">
-          Hackathon prototype — product data, reviews, ratings, orders and dashboard metrics are
-          simulated demo data. Pricing for supplier SKUs (11295-J / 14534-H / 53125-J) is a demo
-          placeholder, not a verified retail price.
+          Demo store — pricing, shipping, returns and review data are not verified operational
+          commitments until live commercial launch.
         </span>
       </div>
     </footer>

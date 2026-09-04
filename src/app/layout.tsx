@@ -7,9 +7,9 @@ import { AgentWidget } from "@/components/agent/AgentWidget";
 import { BRAND } from "@/lib/data/brand";
 
 export const metadata: Metadata = {
-  title: `${BRAND.name} — Factory-Direct Footwear, AI-Powered DTC Brand`,
+  title: `${BRAND.name} — Stand Up. Stand Out.`,
   description:
-    "STRYDE: one real factory SKU (14534-H) turned into a market-ready DTC product with AI in a 24-hour sprint. Microfiber, rubber outsole, EU 38–46.",
+    "STRYDE — clean, modern footwear built for the way your day moves. The 14534-H black ankle boot in EU 38–46, microfiber upper, rubber outsole.",
 };
 
 export default function RootLayout({

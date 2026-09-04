@@ -32,7 +32,7 @@ function ProductsBrowser() {
     <div className="mx-auto max-w-7xl px-6 py-12">
       <h1 className="text-4xl font-black">Shop All</h1>
       <p className="mt-2 text-ink/55">
-        {PRODUCTS.length} styles · factory direct · demo pricing
+        {PRODUCTS.length} styles · the 14534-H is our flagship
       </p>
 
       <div className="mt-8 flex flex-wrap gap-2">

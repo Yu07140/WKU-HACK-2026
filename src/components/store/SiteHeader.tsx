@@ -7,8 +7,8 @@ import { BRAND } from "@/lib/data/brand";
 
 const NAV = [
   { href: "/products", label: "Shop All" },
-  { href: "/stock", label: "Warehouse Stock", icon: Warehouse },
-  { href: "/studio", label: "AI Studio", icon: Sparkles },
+  { href: "/stock", label: "Stock", icon: Warehouse },
+  { href: "/studio", label: "Studio", icon: Sparkles },
 ];
 
 export function SiteHeader() {

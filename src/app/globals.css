@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  /* DTC 品牌色：暖纸底 + 墨黑 + 朱红点缀 */
+  /* DTC 品牌色：暖纸底 + 墨黑 + 石灰点缀（无霓虹/橙色调） */
   --color-paper: #faf8f4;
   --color-cream: #f3efe7;
   --color-ink: #16130f;
-  --color-accent: #ff4d24;
-  --color-accent-dark: #d63a16;
+  --color-accent: #4a4640;
+  --color-accent-dark: #2b2926;
   --color-sage: #3f5d4b;
 
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,

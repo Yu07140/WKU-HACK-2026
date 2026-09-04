@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Ruler } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { BRAND } from "@/lib/data/brand";
 import { Button } from "@/components/ui/button";
 
@@ -15,20 +15,19 @@ export const metadata = {
  * so they are shown as TBC rather than invented.
  */
 const EU_SIZES = [38, 39, 40, 41, 42, 43, 44, 45, 46];
-const TBC = "TBC";
+const PENDING = "Pending supplier confirmation";
 
 export default function SizeGuidePage() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-16">
       <div className="mb-10">
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-3 py-1.5 text-xs font-bold tracking-wider text-ink/70">
-          <Ruler size={13} className="text-accent" />
-          SIZE GUIDE
+        <div className="mb-4 text-xs font-bold tracking-[0.3em] text-ink/40">
+          14534-H
         </div>
-        <h1 className="text-4xl font-black tracking-tight md:text-5xl">Find your size</h1>
+        <h1 className="text-4xl font-black tracking-tight md:text-5xl">FIND YOUR SIZE</h1>
         <p className="mt-4 max-w-xl text-ink/60">
-          14534-H is supplied in EU sizes 38–46. Use the measurement guide and confirm
-          your size before ordering.
+          The 14534-H is supplied in EU sizes 38–46. Use the measurement guide below and
+          confirm your size before ordering.
         </p>
       </div>
 
@@ -46,10 +45,10 @@ export default function SizeGuidePage() {
           <tbody>
             {EU_SIZES.map((eu) => (
               <tr key={eu} className="border-t border-ink/5">
-                <td className="px-5 py-3 font-black text-accent">{eu}</td>
-                <td className="px-5 py-3 text-ink/40">{TBC}</td>
-                <td className="px-5 py-3 text-ink/40">{TBC}</td>
-                <td className="px-5 py-3 text-ink/40">{TBC}</td>
+                <td className="px-5 py-3 font-black text-ink">{eu}</td>
+                <td className="px-5 py-3 text-ink/40">{PENDING}</td>
+                <td className="px-5 py-3 text-ink/40">{PENDING}</td>
+                <td className="px-5 py-3 text-ink/40">{PENDING}</td>
               </tr>
             ))}
           </tbody>
@@ -57,8 +56,8 @@ export default function SizeGuidePage() {
       </div>
 
       <p className="mt-3 text-xs text-ink/45">
-        EU 38–46 is supplier-verified. Cross-market conversion values (US / UK / CM)
-        must be confirmed before live sales.
+        EU 38–46 is supplier-verified. Cross-market conversion values (US / UK / CM) will be
+        confirmed before live commercial launch.
       </p>
 
       {/* ---------- 脚长测量说明 ---------- */}

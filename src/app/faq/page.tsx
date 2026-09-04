@@ -125,7 +125,7 @@ export default function FAQPage() {
           Can't find what you need? Ping the chat bubble in the bottom right.
         </p>
         <p className="mx-auto mt-3 max-w-xl text-xs text-ink/40">
-          This is a hackathon demo store. Shipping, return, and payment terms are not
+          This is a demo store. Shipping, return, and payment terms are not
           verified operational commitments.
         </p>
       </div>

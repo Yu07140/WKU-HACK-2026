@@ -6,14 +6,14 @@ import type { BrandKit } from "@/lib/types";
  */
 export const BRAND: BrandKit = {
   name: "STRYDE",
-  slogan: "Step Beyond. — 每一步，都跨向更远的地方",
+  slogan: "STAND UP. STAND OUT.",
   audience: "北美 22-35 岁城市通勤者与轻运动人群，注重设计感与性价比",
   voice: ["自信但不张扬", "轻松幽默", "直白讲利益点", "鼓励探索"],
   palette: [
-    { name: "Vermilion 朱红", hex: "#ff4d24" },
-    { name: "Paper 暖纸白", hex: "#faf8f4" },
     { name: "Ink 墨黑", hex: "#16130f" },
-    { name: "Sage 鼠尾草绿", hex: "#3f5d4b" },
+    { name: "Paper 暖纸白", hex: "#faf8f4" },
+    { name: "Stone 石灰", hex: "#8a857e" },
+    { name: "Taupe 暖灰褐", hex: "#b8b0a3" },
   ],
 };
 

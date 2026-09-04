@@ -58,25 +58,19 @@ export function searchProducts(query: string): Product[] {
 
 export function getSizingAdvice(): string {
   return (
-    "尺码建议：主推款 14534-H 为欧码 EU 38–46。" +
-    "其他 Lanhe 货盘款式为美码 US，详情页有标注。" +
-    "脚宽或介于两码之间，建议选大半码。后拉链款穿脱方便。" +
-    "具体请看 /size-guide 的 EU/US/UK/CM 对照表和脚长测量方法。" +
-    "（我们不保证具体脚型适配，尺码偏好因人而异。）"
+    "The 14534-H comes in EU sizes 38–46. If you're between two sizes or have a wider foot, I'd go half a size up — the rear zipper makes them easy to get on and off. The full size guide is under /size-guide if you want to measure first."
   );
 }
 
 export function getShippingInfo(): string {
   return (
-    "The international delivery estimate has not yet been confirmed for this supplier route.\n" +
-    "Final shipping cost and delivery estimate depend on the destination and logistics method."
+    "International shipping cost and delivery time depend on where you are. We'll show the final estimate at checkout once the destination is confirmed."
   );
 }
 
 export function getReturnInfo(): string {
   return (
-    "退换政策（Demo）：这是演示店铺，正式退换政策会在真实销售前确定。" +
-    "目前不承诺具体退换时效或运费承担方式。"
+    "Our return policy is being finalized before live sales. I can't promise specific return windows or shipping terms yet, but I'd check the FAQ for the latest wording."
   );
 }
 
@@ -99,12 +93,20 @@ export function agentReply(userMessage: string, ctx?: AgentReplyContext): AgentR
     };
   }
 
-  // 真皮相关：诚实回答（精确措辞）
+  // 真皮相关：诚实回答（自然语气）
   if (/leather|真皮|皮的|是不是皮|genuine leather|real leather/.test(q)) {
     return {
       text:
-        "No. The official supplier specification lists a microfiber upper.\n\n" +
-        HERO_FACTS,
+        "It's microfiber rather than genuine leather. The official supplier spec lists a microfiber upper and lining.",
+      products: [getProductById("boot-14534-h")].filter(Boolean) as Product[],
+    };
+  }
+
+  // 穿搭建议
+  if (/wear|style|搭配|穿什么|outfit|what to|styling/.test(q)) {
+    return {
+      text:
+        "For a sharper look, try straight black or charcoal trousers. For weekends, dark denim works well too.",
       products: [getProductById("boot-14534-h")].filter(Boolean) as Product[],
     };
   }
@@ -113,8 +115,7 @@ export function agentReply(userMessage: string, ctx?: AgentReplyContext): AgentR
   if (/us size|us 码|美码|us conversion|us 换算/.test(q)) {
     return {
       text:
-        "The official supplier material currently confirms EU sizes 38–46. " +
-        "I would confirm the US conversion before ordering.",
+        "The supplier currently confirms EU sizes 38–46. I'd confirm the US conversion before ordering.",
       products: [getProductById("boot-14534-h")].filter(Boolean) as Product[],
     };
   }
@@ -128,20 +129,20 @@ export function agentReply(userMessage: string, ctx?: AgentReplyContext): AgentR
   if (/return|refund|exchange|退|换|refund/.test(q)) {
     return { text: getReturnInfo() };
   }
-  if (/14534|主推|hero|primary|主推广/.test(q)) {
+  if (/14534|主推|hero|primary|main|旗舰|the boot/.test(q)) {
     return {
-      text: HERO_FACTS + " 工厂价 RMB 98/双，国内券后控价 RMB 148/双（参考）。",
+      text:
+        "The 14534-H is a clean black ankle boot — rear zipper, microfiber upper and lining, rubber outsole. Sizes EU 38–46. It's our flagship style.",
       products: [getProductById("boot-14534-h")].filter(Boolean) as Product[],
     };
   }
   if (/material|材质|面料|upper|lining|outsole|什么料/.test(q)) {
-    return { text: HERO_FACTS };
+    return { text: "Upper and lining are microfiber, outsole is rubber." };
   }
   if (/deal|discount|sale|便宜|优惠|code|coupon/.test(q)) {
     return {
       text:
-        "新客福利 🎁 首单立减 15%，结账时输入码 STRYDE15（Demo 优惠码）。" +
-        "推荐先看主推款 14534-H。",
+        "New customers get 15% off with code STRYDE15 at checkout. I'd start with the 14534-H — it's our most versatile pair.",
       products: [getProductById("boot-14534-h")].filter(Boolean) as Product[],
     };
   }
@@ -149,21 +150,16 @@ export function agentReply(userMessage: string, ctx?: AgentReplyContext): AgentR
   const hits = searchProducts(q);
   if (hits.length > 0) {
     const list = hits
-      .map((p) => `• ${ph(p.name)} — ${formatUSD(p.price)}：${p.tagline}`)
+      .map((p) => `• ${ph(p.name)} — ${formatUSD(p.price)}: ${p.tagline}`)
       .join("\n");
     return {
-      text: `根据你的需求，我挑了 ${hits.length} 双最值得看的：\n${list}\n\n点击商品卡片可以看详情。需要我按预算或尺码再筛一下吗？`,
+      text: `Here are a few pairs worth a look:\n${list}\n\nWant me to narrow it down by size or budget?`,
       products: hits,
     };
   }
 
   return {
     text:
-      "我是 STRYDE 的 AI 导购，可以帮你：\n" +
-      "• 推荐主推款 14534-H（通勤、商务休闲、约会）\n" +
-      "• 解答尺码、物流、退换问题\n" +
-      "• 说明材质（14534-H 是 microfiber，不是真皮）\n" +
-      "• 报上新客优惠码\n\n" +
-      '试试问我："14534-H 是什么材质？" 或 "通勤穿哪双？"',
+      "I can help with sizing, styling, materials, shipping and returns. The 14534-H is a good place to start if you're browsing. What are you looking for?",
   };
 }

@@ -52,12 +52,13 @@ export default function ProofPage() {
         <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-bold tracking-wider text-accent-dark">
           <BarChart3 size={13} /> JUDGE / EVIDENCE MODE
         </div>
-        <h1 className="text-5xl font-black tracking-tight md:text-6xl">
-          Proof Mode
+        <h1 className="text-4xl font-black tracking-tight md:text-6xl">
+          FROM FACTORY SKU
+          <br />
+          TO MARKET SIGNAL.
         </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-ink/55">
-          Every claim on STRYDE is traceable to a real factory SKU or explicitly labeled as
-          simulated. This page is built for judges to verify the story quickly.
+        <p className="mx-auto mt-4 max-w-2xl text-lg text-ink/60">
+          AI compresses the path to market. It does not replace the truth of the product.
         </p>
       </div>
 

@@ -1,112 +1,88 @@
 import Link from "next/link";
-import { ArrowRight, Factory, Layers, Zap, BarChart3, ShoppingCart } from "lucide-react";
+import { ArrowRight, ShoppingBag } from "lucide-react";
 import { PRODUCTS, getProductById } from "@/lib/data/catalog";
 import { ProductCard } from "@/components/store/ProductCard";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
-import { PLACEHOLDER_MODE } from "@/lib/utils";
 
-const FACT_STRIP = [
-  { big: "14534-H", small: "FACTORY SKU" },
-  { big: "Microfiber", small: "MATERIAL" },
-  { big: "EU 38–46", small: "SIZE RANGE" },
-  { big: "Rubber", small: "OUTSOLE" },
-  { big: "24H", small: "AI-TO-MARKET SPRINT" },
+const PLANS = [
+  {
+    no: "01",
+    title: "WORKDAY",
+    desc: "A clean black silhouette that fits easily into a sharper everyday wardrobe.",
+  },
+  {
+    no: "02",
+    title: "AFTER HOURS",
+    desc: "Simple enough for dinner, dates and city nights without changing the whole look.",
+  },
+  {
+    no: "03",
+    title: "WEEKEND",
+    desc: "Easy styling for short trips, walks and casual plans.",
+  },
 ];
 
 const ROUTINES = [
   {
     no: "01",
     title: "COMMUTE",
-    desc: "A clean black silhouette that carries you from morning train to evening desk without asking for attention.",
     img: "/products/14534-h/hero.jpg",
   },
   {
     no: "02",
-    title: "BUSINESS CASUAL",
-    desc: "Quiet shape. Sharp detail. Rear zipper and a restrained profile that reads as intentional, not loud.",
+    title: "AFTER HOURS",
     img: "/products/14534-h/black.jpg",
   },
   {
     no: "03",
     title: "WEEKEND",
-    desc: "One pair for short city trips and light outdoor — the same boot, no second suitcase required.",
     img: "/products/14534-h/lifestyle-01.jpg",
   },
 ];
 
-const WORKFLOW = [
-  { no: "01", label: "FACTORY PRODUCT", sub: "14534-H" },
-  { no: "02", label: "AI POSITIONING", sub: "commute / business casual / weekend" },
-  { no: "03", label: "AI CREATIVE", sub: "image + copy + video script" },
-  { no: "04", label: "DTC STOREFRONT", sub: "product + size + checkout" },
-  { no: "05", label: "MARKET TEST", sub: "campaign + visitor behavior" },
-  { no: "06", label: "ORDER", sub: "sandbox / real order distinguished" },
-];
-
-const BUILD_STRIP = [
-  "FACTORY SKU",
-  "BRAND POSITION",
-  "AI CREATIVE",
-  "STORE",
-  "AGENT",
-  "CHECKOUT",
-  "MARKET SIGNAL",
-];
-
 export default function HomePage() {
   const hero = getProductById("boot-14534-h") ?? PRODUCTS[0];
-  // 14534-H 排第一，其余按热度降序
-  const featured = [
-    hero,
-    ...[...PRODUCTS]
-      .filter((p) => p.id !== hero.id)
-      .sort((a, b) => b.heatScore - a.heatScore)
-      .slice(0, 3),
-  ];
+  // 14534-H is the only hero SKU; other factory styles are secondary concepts
+  const others = [...PRODUCTS]
+    .filter((p) => p.id !== hero.id)
+    .sort((a, b) => b.heatScore - a.heatScore)
+    .slice(0, 3);
 
   return (
     <div>
-      {/* ---------- HERO — 14534-H 主转化品 ---------- */}
+      {/* ---------- HERO — 14534-H, product & brand first ---------- */}
       <section className="relative overflow-hidden">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 py-14 md:grid-cols-2 md:py-20">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-12 md:grid-cols-2 md:py-24">
           <div className="animate-fade-up">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-3 py-1.5 text-xs font-bold tracking-wider text-ink/70">
-              <Factory size={13} className="text-accent" />
-              FACTORY SKU · 14534-H
+            <div className="mb-6 text-xs font-bold tracking-[0.3em] text-ink/45">
+              STRYDE
             </div>
-            <h1 className="text-5xl font-black leading-[1.05] tracking-tight md:text-7xl">
-              THE QUIET
+            <h1 className="text-5xl font-black leading-[1.02] tracking-tight md:text-7xl">
+              STAND UP.
               <br />
-              <span className="text-accent">WORKHORSE.</span>
+              <span className="text-ink/80">STAND OUT.</span>
             </h1>
-            <p className="mt-6 max-w-md text-lg text-ink/65">
-              A black minimalist boot built from a real footwear supply chain —
-              turned into a market-ready DTC product with AI.
+            <p className="mt-7 max-w-md text-lg leading-relaxed text-ink/65">
+              A clean black boot built for the way your day actually moves —
+              from work hours to everything after.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-9 flex flex-wrap items-center gap-4">
               <Link href={`/products/${hero.slug}`}>
                 <Button size="lg">
-                  SHOP 14534-H <ArrowRight size={18} />
+                  SHOP THE BOOT <ArrowRight size={18} />
                 </Button>
               </Link>
-              <Link
-                href="/studio"
-                className="flex items-center gap-2 text-sm font-bold underline decoration-accent decoration-2 underline-offset-4"
-              >
-                SEE THE 24H AI WORKFLOW →
+              <Link href="/about" className="text-sm font-bold text-ink/70 underline underline-offset-4 decoration-ink/30">
+                EXPLORE STRYDE
               </Link>
             </div>
-            <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-ink/60">
-              <div className="flex items-center gap-2">
-                <Factory size={17} className="text-accent" /> Factory SKU 14534-H
-              </div>
-              <div className="flex items-center gap-2">
-                <Layers size={17} className="text-accent" /> Microfiber · Rubber
-              </div>
-              <div className="rounded-full bg-cream px-3 py-1 text-[11px] font-semibold text-ink/50">
-                Sizes EU 38–46
-              </div>
+            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-medium tracking-wider text-ink/45">
+              <span>EU 38–46</span>
+              <span className="h-1 w-1 rounded-full bg-ink/30" />
+              <span>Microfiber upper</span>
+              <span className="h-1 w-1 rounded-full bg-ink/30" />
+              <span>Rubber outsole</span>
             </div>
           </div>
 
@@ -114,192 +90,130 @@ export default function HomePage() {
             <ProductImage
               src={hero.heroImage ?? hero.image}
               prompt={hero.imagePrompt}
-              alt={`${hero.name} — black minimalist ankle boot`}
+              alt={`STRYDE 14534-H — black minimalist ankle boot`}
               size="portrait_4_3"
               className="aspect-[4/5] rounded-3xl shadow-2xl"
             />
-            <div className="absolute -bottom-5 -left-5 hidden rounded-2xl bg-ink px-5 py-4 text-paper shadow-xl md:block">
-              <div className="text-2xl font-black text-accent">
-                {PLACEHOLDER_MODE ? "$???" : `$${hero.price}`}
-              </div>
-              <div className="text-xs text-paper/60">
-                SKU 14534-H · factory cost RMB 98/pair
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* ---------- 事实条（仅已验证数据） ---------- */}
-      <section className="border-y border-ink/10 bg-white">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-6 py-8 md:grid-cols-5">
-          {FACT_STRIP.map(({ big, small }) => (
-            <div key={big}>
-              <div className="text-3xl font-black text-accent">{big}</div>
-              <div className="mt-1 text-[11px] font-bold tracking-wider text-ink/50">{small}</div>
+      {/* ---------- ONE PAIR. MORE PLANS. ---------- */}
+      <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+        <div className="mb-12">
+          <div className="mb-3 text-xs font-bold tracking-[0.3em] text-ink/40">
+            THE DAILY ROUTE
+          </div>
+          <h2 className="text-4xl font-black leading-tight md:text-5xl">
+            ONE PAIR.
+            <br />
+            MORE PLANS.
+          </h2>
+        </div>
+        <div className="grid gap-8 md:grid-cols-3">
+          {PLANS.map((p) => (
+            <div key={p.no} className="border-t border-ink/15 pt-6">
+              <div className="text-xs font-black tracking-[0.25em] text-ink/40">{p.no}</div>
+              <h3 className="mt-3 text-2xl font-black tracking-wide">{p.title}</h3>
+              <p className="mt-3 text-ink/60 leading-relaxed">{p.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ---------- ONE BOOT. THREE ROUTINES. ---------- */}
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <div className="mb-12 text-center">
-          <div className="mb-3 text-xs font-bold tracking-[0.25em] text-accent">
-            ONE REAL SKU. THREE CONTEXTS.
-          </div>
-          <h2 className="text-4xl font-black leading-tight md:text-5xl">
-            ONE BOOT.
-            <br />
-            THREE ROUTINES.
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-ink/55">
-            One real factory SKU, repositioned for three everyday contexts.
-          </p>
-        </div>
-        <div className="grid gap-6 md:grid-cols-3">
-          {ROUTINES.map((r) => (
-            <div
-              key={r.no}
-              className="group overflow-hidden rounded-3xl border border-ink/10 bg-white"
-            >
-              <div className="relative aspect-[4/5] overflow-hidden">
-                <ProductImage
-                  src={r.img}
-                  prompt="black minimalist ankle boot, clean studio photography"
-                  alt={r.title}
-                  size="portrait_4_3"
-                  className="h-full w-full transition duration-500 group-hover:scale-105"
-                />
-                <div className="absolute left-4 top-4 rounded-full bg-ink/80 px-3 py-1 text-xs font-black text-paper">
-                  {r.no}
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-black tracking-wide">{r.title}</h3>
-                <p className="mt-2 text-sm text-ink/60 leading-relaxed">{r.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ---------- FROM FACTORY SKU TO MARKET SIGNAL. ---------- */}
-      <section className="bg-ink text-paper">
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          <div className="mb-12 text-center">
-            <div className="mb-3 text-xs font-bold tracking-[0.25em] text-accent">
-              THE 24H AI WORKFLOW
+      <section className="bg-cream">
+        <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+          <div className="mb-12">
+            <div className="mb-3 text-xs font-bold tracking-[0.3em] text-ink/40">
+              EDITORIAL
             </div>
             <h2 className="text-4xl font-black leading-tight md:text-5xl">
-              FROM FACTORY SKU
+              ONE BOOT.
               <br />
-              TO MARKET SIGNAL.
+              THREE ROUTINES.
             </h2>
-            <p className="mx-auto mt-5 max-w-2xl text-paper/60">
-              "AI does not replace the product.
-              It compresses the path between factory data and market testing."
-            </p>
           </div>
-
-          <div className="flex flex-col gap-4 md:flex-row md:items-stretch">
-            {WORKFLOW.map((w, i) => (
-              <div key={w.no} className="flex flex-1 items-stretch gap-4">
-                <div className="flex-1 rounded-2xl border border-paper/10 bg-paper/5 p-5">
-                  <div className="text-3xl font-black text-accent">{w.no}</div>
-                  <div className="mt-2 text-sm font-bold">{w.label}</div>
-                  <div className="mt-1 text-xs text-paper/50">{w.sub}</div>
-                </div>
-                {i < WORKFLOW.length - 1 && (
-                  <div className="hidden items-center text-paper/30 md:flex">
-                    <ArrowRight size={20} />
+          <div className="grid gap-6 md:grid-cols-3">
+            {ROUTINES.map((r) => (
+              <div key={r.no} className="group overflow-hidden rounded-3xl bg-white">
+                <div className="relative aspect-[4/5] overflow-hidden">
+                  <ProductImage
+                    src={r.img}
+                    prompt="black minimalist ankle boot, clean editorial photography"
+                    alt={r.title}
+                    size="portrait_4_3"
+                    className="h-full w-full transition duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute left-4 top-4 rounded-full bg-ink/80 px-3 py-1 text-xs font-black tracking-wider text-paper">
+                    {r.no} · {r.title}
                   </div>
-                )}
+                </div>
               </div>
             ))}
           </div>
+          <p className="mt-6 text-center text-xs text-ink/40">
+            AI Campaign Concept — the real 14534-H remains the product reference.
+          </p>
         </div>
       </section>
 
-      {/* ---------- THE 24H BUILD evidence strip ---------- */}
-      <section className="border-y border-ink/10 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-10">
-          <div className="mb-5 text-center text-xs font-bold tracking-[0.25em] text-ink/50">
-            THE 24H BUILD
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            {BUILD_STRIP.map((step, i) => (
-              <div key={step} className="flex items-center gap-3">
-                <span className="rounded-full border border-ink/15 bg-cream px-4 py-2 text-sm font-bold text-ink/70">
-                  {step}
-                </span>
-                {i < BUILD_STRIP.length - 1 && (
-                  <ArrowRight size={16} className="text-ink/30" />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ---------- 主推广 + 其他款式 ---------- */}
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        <div className="mb-8 flex items-end justify-between">
+      {/* ---------- 14534-H hero + other concepts ---------- */}
+      <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+        <div className="mb-10 flex items-end justify-between">
           <div>
-            <h2 className="text-3xl font-black">Primary: 14534-H + Other Factory Styles</h2>
-            <p className="mt-1 text-ink/55">
-              14534-H is our primary product. Other factory styles below are secondary
-              options in the collection.
+            <div className="mb-3 text-xs font-bold tracking-[0.3em] text-ink/40">
+              THE COLLECTION
+            </div>
+            <h2 className="text-3xl font-black md:text-4xl">Featured: 14534-H</h2>
+            <p className="mt-2 max-w-xl text-ink/55">
+              The 14534-H is our flagship. Additional styles below are creative concepts
+              from the same supply chain.
             </p>
           </div>
           <Link href="/products" className="hidden items-center gap-1 text-sm font-bold sm:flex">
             View all <ArrowRight size={15} />
           </Link>
         </div>
-        <div className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
-          {featured.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
+
+        <div className="mb-10">
+          <div className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
+            <ProductCard key={hero.id} product={hero} />
+            {others.map((p) => (
+              <div key={p.id} className="relative">
+                <ProductCard product={p} />
+                <span className="absolute left-0 top-2 z-10 rounded-r bg-ink/70 px-2 py-0.5 text-[10px] font-bold tracking-wider text-paper">
+                  OTHER CONCEPT
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ---------- CTA ---------- */}
       <section className="mx-auto max-w-5xl px-6 pb-20">
         <div className="rounded-3xl bg-ink p-10 text-center text-paper md:p-14">
-          <Zap size={28} className="mx-auto text-accent" />
-          <h2 className="mt-4 text-3xl font-black md:text-4xl">
-            See how a factory SKU becomes a market test
+          <h2 className="text-3xl font-black leading-tight md:text-4xl">
+            STAND UP. STAND OUT.
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-paper/60">
-            Real product. AI-accelerated workflow. Transparent proof at every step.
+          <p className="mx-auto mt-4 max-w-xl text-paper/60">
+            The 14534-H — a clean black boot for the way your day moves.
           </p>
-          <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <Link href="/proof">
-              <Button size="lg" variant="primary">
-                <BarChart3 size={18} /> Proof Mode
-              </Button>
-            </Link>
-            <Link href="/studio">
-              <Button size="lg" variant="outline">
-                <Sparkles size={18} /> Open AI Studio
-              </Button>
-            </Link>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link href={`/products/${hero.slug}`}>
               <Button size="lg">
-                <ShoppingCart size={18} /> Shop 14534-H
+                <ShoppingBag size={18} /> SHOP THE BOOT
+              </Button>
+            </Link>
+            <Link href="/size-guide">
+              <Button size="lg" variant="outline">
+                FIND YOUR SIZE
               </Button>
             </Link>
           </div>
         </div>
       </section>
     </div>
-  );
-}
-
-function Sparkles({ size }: { size: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 3l1.9 5.8L20 10.5l-5.8 1.9L12 18l-1.9-5.6L4 10.5l6.1-1.7z" />
-    </svg>
   );
 }

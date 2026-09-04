@@ -17,13 +17,13 @@ interface Msg {
 
 const SUGGESTIONS = [
   "Show me your best-selling boots",
-  "推荐一双百搭黑色靴子",
-  "What's your size guide?",
+  "What size should I get?",
+  "Is it leather?",
   "Any discount for first order?",
 ];
 
 const WELCOME =
-  "Hey! 我是 STRYDE AI 导购 👟 可以帮你按风格挑靴子、解答尺码/物流/退换，还能报新人折扣。今天想找什么鞋？";
+  "Hey — need help choosing a size or styling the boot? I'm here if you want a hand.";
 
 export function AgentWidget() {
   const [open, setOpen] = useState(false);
@@ -87,7 +87,7 @@ export function AgentWidget() {
         });
       }
     } catch {
-      setMsgs((m) => [...m, { role: "ai", text: "导购服务开小差了，请稍后再试 🙏" }]);
+      setMsgs((m) => [...m, { role: "ai", text: "Sorry, the assistant is unavailable right now. Please try again shortly." }]);
     } finally {
       setTyping(false);
     }
@@ -112,10 +112,10 @@ export function AgentWidget() {
               <Sparkles size={17} />
             </span>
             <div>
-              <div className="text-sm font-black">STRYDE AI 导购</div>
+              <div className="text-sm font-black">STRYDE Assistant</div>
               <div className="flex items-center gap-1.5 text-xs text-paper/60">
                 <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
-                Online · 秒级响应
+                Online · replies instantly
               </div>
             </div>
           </div>
@@ -191,7 +191,7 @@ export function AgentWidget() {
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="问点什么... e.g. black boots"
+              placeholder="Ask about size, styling, materials…"
               className="h-10 flex-1 rounded-full bg-paper px-4 text-sm outline-none placeholder:text-ink/40"
             />
             <button

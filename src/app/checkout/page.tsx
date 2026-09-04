@@ -76,14 +76,9 @@ export default function CheckoutPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
-      <div className="mb-6 flex items-center gap-3 rounded-2xl border border-amber-400/30 bg-amber-500/10 px-4 py-3">
-        <Shield size={18} className="shrink-0 text-amber-600" />
-        <div>
-          <div className="text-sm font-bold text-amber-800">SANDBOX CHECKOUT</div>
-          <div className="text-xs text-amber-700/70">
-            This is a hackathon demo checkout. Orders placed here are TEST ORDERS, not real purchases.
-          </div>
-        </div>
+      <div className="mb-6 flex items-center gap-2 rounded-xl border border-ink/10 bg-white px-3 py-2 text-xs text-ink/50">
+        <Shield size={14} className="shrink-0" />
+        <span><span className="font-bold">SANDBOX CHECKOUT</span> — orders placed here are test orders, not real purchases.</span>
       </div>
       <h1 className="text-3xl font-black">Checkout</h1>
       <form onSubmit={submit} className="mt-8 grid gap-10 lg:grid-cols-[1fr_360px]">
