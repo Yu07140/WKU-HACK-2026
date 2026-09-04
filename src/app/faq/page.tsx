@@ -26,19 +26,19 @@ const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
     items: [
       {
         q: "How long does shipping take?",
-        a: "Most orders ship within 48 hours. US delivery takes 3–7 business days, UK/EU 5–10 days, Canada 4–8 days. You'll get a tracking link the moment your box leaves the warehouse.",
+        a: "Final shipping cost and delivery estimate depend on destination and logistics method. Shipping options and an estimated delivery window are shown at checkout. This is a demo store — actual carriers and timelines are not yet verified.",
       },
       {
-        q: "Do you ship worldwide?",
-        a: "Yes, we ship to 40+ countries. See the dropdown at checkout for exact rates to your country.",
+        q: "Do you ship internationally?",
+        a: "International shipping options are shown at checkout where available. Final shipping cost and delivery estimate depend on destination and logistics method.",
       },
       {
-        q: "Is shipping really free over $75?",
-        a: "Yep, for US orders only. Everyone else gets a subsidized flat rate that's usually 40–60% below what we actually pay the carrier.",
+        q: "Is there free shipping?",
+        a: "Free-shipping thresholds (if any) are displayed at checkout. Final shipping cost and delivery estimate depend on destination and logistics method.",
       },
       {
         q: "Can I track my order?",
-        a: "Absolutely. The second it ships we shoot you an email with a live tracking link. No radio silence.",
+        a: "When your order ships you'll receive a shipping confirmation with tracking information, where available.",
       },
     ],
   },
@@ -48,15 +48,15 @@ const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
     items: [
       {
         q: "What's your return policy?",
-        a: "30-day wear test. Try them on, walk around, show them off. If they don't work for any reason in the first 30 days, send them back for a full refund. We cover return shipping for US customers.",
+        a: "This is a hackathon demo store. Return and exchange policies for production would be finalized before real sales begin. For now, any return shown on the site is demo content and not a verified operational commitment.",
       },
       {
         q: "The shoes don't fit. Can I exchange them?",
-        a: "Sure. Start an exchange through the link in your order email and we'll send the new size out the next day — no waiting for the return to arrive first.",
+        a: "Exchange availability and process would be confirmed before real sales. Please refer to the Size Guide to find your size before ordering.",
       },
       {
         q: "What if something arrives damaged?",
-        a: "Email us a photo within 48 hours and we'll ship a replacement free, no questions. We're here to make it right.",
+        a: "Contact customer support with photos of the item and packaging. Resolution (replacement or refund) would be handled per the finalized return policy.",
       },
     ],
   },
@@ -65,16 +65,16 @@ const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
     icon: Ruler,
     items: [
       {
-        q: "Do your shoes run true to size?",
-        a: "Most pairs run true to standard US sizing. If you're between sizes or have wide feet, we recommend sizing up a half size. Check our Size Guide page for full US/EU/UK conversion tables.",
+        q: "What size should I get?",
+        a: "STRYDE footwear lists EU sizes (supplier spec). Use the Size Guide to convert EU to US / UK / CM and measure your foot length. We do not guarantee a specific fit — sizing preference is personal.",
       },
       {
-        q: "I have wide feet — what should I do?",
-        a: "Our Lifestyle and Canvas lines have a naturally roomy toe box and work great for wider feet. Size up half a size on the Running line if you wear thick socks.",
+        q: "Do your shoes run true to size?",
+        a: "We don't make fit guarantees. Please measure your foot and use the Size Guide conversion table to pick the closest EU size.",
       },
       {
         q: "Can I wash them?",
-        a: "Spot clean with a damp cloth and mild soap. Please don't machine-wash or soak them — the glue and structure aren't built for it.",
+        a: "Spot clean with a damp cloth and mild soap. We don't recommend machine-washing or soaking footwear.",
       },
     ],
   },
@@ -84,11 +84,7 @@ const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
     items: [
       {
         q: "Will I have to pay customs or import duties?",
-        a: "US customers: no duties on footwear under $800 (thanks, de minimis). Customers in the UK, EU, Canada and other countries may see VAT or small import fees at the door — it's their government, not us charging. We display an estimate at checkout.",
-      },
-      {
-        q: "Do you include a commercial invoice?",
-        a: "Every international box ships with a detailed commercial invoice reflecting the actual paid value. No surprise fake retail prices on the outside.",
+        a: "Import duties and taxes may depend on the destination country's rules. Any estimates shown at checkout are indicative — final charges are determined by customs authorities. This is a demo store and customs handling is not yet verified.",
       },
     ],
   },
@@ -98,15 +94,11 @@ const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
     items: [
       {
         q: "What payment methods do you accept?",
-        a: "Visa, Mastercard, Amex, Discover, PayPal, Apple Pay, and Google Pay. All payments are 256-bit SSL encrypted — we never see your card numbers.",
+        a: "Payment methods accepted at checkout are determined by the payment gateway. This is a demo store — the list of supported methods and security certifications have not been verified for production.",
       },
       {
         q: "Is it safe to enter my card info here?",
-        a: "Yes. We use industry-standard PCI-DSS Level 1 compliant processors. If you want even less friction, try Apple Pay or Google Pay at checkout.",
-      },
-      {
-        q: "Where is the discount code box?",
-        a: "Right below the subtotal in your cart and again on the checkout page. Pro tip: sign up with your email and STRYDE15 takes 15% off your first pair.",
+        a: "In production, card payments would be processed by a PCI-compliant payment processor. This is a demo prototype — do not enter real payment information.",
       },
     ],
   },
@@ -127,8 +119,11 @@ export default function FAQPage() {
           <span className="text-accent">We've got answers.</span>
         </h1>
         <p className="mx-auto mt-5 max-w-xl text-ink/55">
-          Can't find what you need? Ping the chat bubble in the bottom right — a real human or
-          our AI shopping assistant replies in under a minute.
+          Can't find what you need? Ping the chat bubble in the bottom right.
+        </p>
+        <p className="mx-auto mt-3 max-w-xl text-xs text-ink/40">
+          Note: shipping, return, and payment policies below are demo content for the hackathon
+          prototype — not verified operational commitments.
         </p>
       </div>
 

@@ -18,7 +18,7 @@ export const CAMPAIGNS: Campaign[] = [
     conversions: 48,
     creativePrompt:
       "gen z street style photo, bright orange high top fashion boots with jumbo laces and chunky cream sole, city street at golden hour, lifestyle ad",
-    creativeCopy: "The boot that sells itself. Factory-direct PU leather, side zip, $89 shipped. Free shipping & 30-day trial.",
+    creativeCopy: "The boot that sells itself. Factory-direct, side zip, $89 shipped. (Demo creative — not verified claims.)",
     startDate: "2026-08-26",
   },
   {
@@ -48,7 +48,7 @@ export const CAMPAIGNS: Campaign[] = [
     conversions: 31,
     creativePrompt:
       "holographic iridescent high top fashion boot on dark studio background, color shifting purple blue reflections, premium shopping ad",
-    creativeCopy: "Holographic boots that break the algorithm — $98, ship in 48h, factory direct.",
+    creativeCopy: "Holographic boots that break the algorithm — $98, factory direct. (Demo creative — not verified claims.)",
     startDate: "2026-08-27",
   },
   {
@@ -77,11 +77,11 @@ export const CAMPAIGNS: Campaign[] = [
   },
 ];
 
-/** 漏斗（近 14 天）—— 用于看板转化漏斗 */
+/** 漏斗（近 14 天）—— 用于看板转化漏斗，与订单表数量保持一致（17 单） */
 export const FUNNEL = {
-  visits: 48200,
-  productViews: 19800,
-  addToCart: 4210,
-  checkout: 1680,
-  orders: 1402,
+  visits: 1200,
+  productViews: 520,
+  addToCart: 130,
+  checkout: 41,
+  orders: 17,
 };

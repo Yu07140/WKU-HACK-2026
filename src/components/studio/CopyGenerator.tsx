@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Wand2, Loader2, Copy, Check } from "lucide-react";
-import { PRODUCTS } from "@/lib/data/catalog";
+import { PRODUCTS, getProductById } from "@/lib/data/catalog";
 import {
   ANGLE_LABELS,
   PLATFORM_LABELS,
@@ -18,7 +18,9 @@ const PLATFORMS: Platform[] = ["TikTok", "Instagram", "Meta", "Google"];
 const ANGLES: Angle[] = ["style", "versatility", "value", "detail"];
 
 export function CopyGenerator() {
-  const [productId, setProductId] = useState(PRODUCTS[0].id);
+  const [productId, setProductId] = useState(
+    getProductById("boot-14534-h")?.id ?? PRODUCTS[0].id
+  );
   const [platform, setPlatform] = useState<Platform>("TikTok");
   const [angle, setAngle] = useState<Angle>("style");
   const [loading, setLoading] = useState(false);

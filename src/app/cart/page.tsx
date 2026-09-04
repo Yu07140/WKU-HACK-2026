@@ -38,10 +38,9 @@ export default function CartPage() {
             >
               <Link href={`/products/${it.slug}`}>
                 <ProductImage
-                  src={it.image}
+                  src={it.image ?? it.realImage}
                   prompt={`${it.imagePrompt}, product photo, cream background`}
                   alt={it.productName}
-                  src={it.realImage}
                   className="h-28 w-28 rounded-xl"
                 />
               </Link>

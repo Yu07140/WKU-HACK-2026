@@ -18,13 +18,10 @@ export interface ProductColor {
   hex: string;
   /** 该配色对应的 AIGC 出图 prompt（素材工坊用） */
   imagePrompt: string;
-<<<<<<< Updated upstream
-  /** 真实货盘照片（public 目录下路径），无则走 AIGC 占位 */
+  /** 真实货盘/供应商照片（public 目录下路径），无则走 AIGC 占位 */
   image?: string;
-=======
-  /** 真实供应商照片（可选）。存在时前台优先展示实拍图 */
+  /** 真实供应商照片（可选，与 image 等价，兼容旧数据）。存在时前台优先展示实拍图 */
   realImage?: string;
->>>>>>> Stashed changes
 }
 
 export interface Product {
@@ -33,7 +30,6 @@ export interface Product {
   name: string;
   tagline: string;
   category: Category;
-<<<<<<< Updated upstream
   /** 工厂货盘型号（如 5910-5，来自组委会货盘 PDF） */
   model?: string;
   /** 工艺（如 Cold Bonding 冷粘） */
@@ -42,10 +38,8 @@ export interface Product {
   image?: string;
   /** 真实货盘图库（主图+正面图…） */
   images?: string[];
-=======
   /** 供应商原始 SKU（真实货盘商品必填，如 "11295-J"） */
   sku?: string;
->>>>>>> Stashed changes
   /** 零售价（USD，面向海外消费者） */
   price: number;
   compareAt?: number;
@@ -70,16 +64,7 @@ export interface Product {
   weight: string;
   description: string;
   features: string[];
-  /** 主图 AIGC prompt */
   imagePrompt: string;
-  /** 供应商货号（如 11295-J，独立供应商 SKU 专用） */
-  sku?: string;
-  /** 尺码体系，缺省为美码 US（Lanhe 货盘为 US5-12，供应商 SKU 为 EU 38-46） */
-  sizeSystem?: "US" | "EU";
-  /** 价格为演示定价（供应商未含报价），展示 Demo 标注 */
-  demoPricing?: boolean;
-  /** 素材工坊分风格出图种子 prompt（覆盖通用 imagePrompt） */
-  creativePresets?: Record<string, string>;
   /** 选款热度 0-100（AI 综合广告点击/加购/搜索趋势） */
   heatScore: number;
   trend: "hot" | "rising" | "new" | "steady";
@@ -93,19 +78,29 @@ export type OrderChannel = "direct" | "meta" | "tiktok" | "google";
 export type OrderStatus = "paid" | "fulfilled" | "shipped" | "delivered";
 
 export interface Order {
-  id: string;
+  id: string; // order_id
   date: string;
   customer: string;
   email: string;
-  country: string;
-  productId: string;
+  country: string; // ship_to_country
+  productId: string; // brand_sku (internal product id)
   productName: string;
-  color: string;
+  color: string; // color_or_print_id (color name)
   size: number;
   qty: number;
   amount: number;
   channel: OrderChannel;
   status: OrderStatus;
+  /** Seed/demo orders (hackathon test data) vs. orders placed via the demo checkout */
+  isTest?: boolean;
+  /* ---- 官方履约字段（官方 fulfillment export 所需，均可选） ---- */
+  factory_sku?: string; // 供应商 SKU，如 14534-H
+  size_eu?: number; // 欧码
+  size_us?: number; // 美码
+  gender?: "M" | "F" | "U";
+  shipping_method?: string;
+  promised_sla?: string;
+  customer_note?: string;
 }
 
 export interface Campaign {
@@ -145,13 +140,8 @@ export interface CartItem {
   price: number;
   qty: number;
   imagePrompt: string;
-<<<<<<< Updated upstream
-  /** 真实货盘照片（可选） */
+  /** 真实货盘照片（可选）。与 realImage 等价，兼容旧数据 */
   image?: string;
-  /** 尺码体系（与 Product.sizeSystem 对应，缺省 US） */
-  sizeSystem?: "US" | "EU";
-=======
   /** 真实商品图（可选），购物车/结账优先展示 */
   realImage?: string;
->>>>>>> Stashed changes
 }

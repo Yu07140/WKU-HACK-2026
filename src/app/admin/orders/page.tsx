@@ -37,6 +37,8 @@ export default function OrdersPage() {
   }, [load]);
 
   const revenue = orders.reduce((s, o) => s + o.amount, 0);
+  const testCount = orders.filter((o) => o.isTest).length;
+  const realCount = orders.length - testCount;
 
   return (
     <div className="space-y-6">
@@ -44,7 +46,11 @@ export default function OrdersPage() {
         <div>
           <h1 className="text-2xl font-black text-white">交易闭环 · Orders</h1>
           <p className="mt-1 text-sm text-slate-400">
-            独立站结账实时写入 · 共 {orders.length} 单 · GMV {formatUSD(revenue)}
+            独立站结账实时写入 · 共 {orders.length} 单
+            <span className="ml-2 rounded-full bg-amber-500/15 px-2 py-0.5 text-xs font-bold text-amber-300">
+              {testCount} TEST · {realCount} customer
+            </span>
+            · GMV {formatUSD(revenue)}
           </p>
         </div>
         <button
@@ -72,7 +78,14 @@ export default function OrdersPage() {
             <tbody>
               {orders.map((o) => (
                 <tr key={o.id} className="border-b border-white/5 last:border-0">
-                  <td className="py-3 pr-4 font-mono text-xs font-bold text-accent">{o.id}</td>
+                  <td className="py-3 pr-4 font-mono text-xs font-bold text-accent">
+                    {o.id}
+                    {o.isTest && (
+                      <span className="ml-1.5 rounded bg-amber-500/20 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-amber-300">
+                        test
+                      </span>
+                    )}
+                  </td>
                   <td className="py-3 pr-4 text-slate-400">{formatDate(o.date)}</td>
                   <td className="py-3 pr-4">
                     <div className="font-semibold text-white">{o.customer}</div>

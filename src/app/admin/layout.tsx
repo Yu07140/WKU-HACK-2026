@@ -6,6 +6,7 @@ import {
   FlaskConical,
   ArrowLeft,
   Sparkles,
+  AlertTriangle,
 } from "lucide-react";
 
 const NAV = [
@@ -18,6 +19,19 @@ const NAV = [
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-[#0b0e14] text-slate-200">
+      {/* ===== 模拟数据醒目横幅 ===== */}
+      <div className="border-b border-amber-400/30 bg-amber-500/15">
+        <div className="mx-auto flex max-w-[1400px] items-center gap-3 px-5 py-3">
+          <AlertTriangle size={20} className="shrink-0 text-amber-400" />
+          <p className="text-sm font-bold text-amber-200">
+            SIMULATED DEMO DATA
+          </p>
+          <p className="hidden text-xs text-amber-200/70 md:inline">
+            These figures demonstrate the dashboard workflow and are not real campaign results.
+          </p>
+        </div>
+      </div>
+
       <div className="mx-auto flex max-w-[1400px] gap-8 px-5 py-8">
         {/* 侧边栏 */}
         <aside className="hidden w-56 shrink-0 md:block">

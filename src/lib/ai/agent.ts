@@ -1,4 +1,4 @@
-import { PRODUCTS } from "@/lib/data/catalog";
+import { PRODUCTS, getProductById } from "@/lib/data/catalog";
 import type { Product } from "@/lib/types";
 import { ph, formatUSD } from "@/lib/utils";
 
@@ -14,11 +14,19 @@ export interface AgentReply {
   products?: Product[];
 }
 
+/** 14534-H 官方已验证事实 */
+const HERO_FACTS =
+  "主推款 SKU 14534-H：黑色极简踝靴，后拉链，鞋舌附近横向平行装饰线，浅棕色内里。" +
+  "鞋面 microfiber（超迁），内里 microfiber，大底 rubber（橡胶）。" +
+  "尺码 EU 38–46。适用场景：通勤、商务休闲、约会、短途城市出行、轻户外。" +
+  "面料不是真皮。";
+
 export function searchProducts(query: string): Product[] {
   const q = query.toLowerCase();
   const kw: Record<string, string[]> = {
     running: ["run", "running", "jog", "marathon", "跑鞋", "跑步", "碳板", "carbon"],
-    lifestyle: ["chunky", "dad", "retro", "leather", "court", "潮流", "休闲", "老爹", "复古"],
+    lifestyle: ["chunky", "dad", "retro", "court", "潮流", "休闲", "老爹", "复古"],
+    boots: ["boot", "ankle boot", "靴子", "踝靴", "通勤", "business", "casual"],
     canvas: ["canvas", "white shoe", "classic", "帆布", "小白鞋"],
     sandals: ["sandal", "summer", "beach", "凉鞋", "夏天", "沙滩"],
     slipon: ["slip", "laceless", "一脚蹬", "懒人"],
@@ -40,27 +48,51 @@ export function searchProducts(query: string): Product[] {
         (matched.includes("trail") && p.slug.includes("trail"))
     );
   }
-  return hits.sort((a, b) => b.heatScore - a.heatScore).slice(0, 3);
+  // 14534-H 始终优先
+  const hero = getProductById("boot-14534-h");
+  if (hero && !hits.some((h) => h.id === hero.id)) {
+    hits = [hero, ...hits];
+  }
+  return hits.slice(0, 3);
 }
 
 export function getSizingAdvice(): string {
-<<<<<<< Updated upstream
-  return "尺码建议：STRYDE 全部为标准美码（US size）。高帮靴建议按日常运动鞋尺码选；脚宽或想塞厚袜子、介于两码之间，选大半码更舒服。侧拉链款（No. 5970 / No. 8058）穿脱很方便。供应商 SKU（11295-J / 14534-H / 53125-J）为欧码 EU 38-46，详情页有标注。下单后 30 天内免费换码，运费我们承担 👟";
-=======
-  return "尺码建议：STRYDE 运动鞋/休闲鞋为标准美码（US size），靴款为欧码（EU 38-46 / 39-44，详情页有标注）。脚宽或介于两码之间，建议选大半码。下单后 30 天内免费换码，运费我们承担 👟";
->>>>>>> Stashed changes
+  return (
+    "尺码建议：主推款 14534-H 为欧码 EU 38–46。" +
+    "其他 Lanhe 货盘款式为美码 US，详情页有标注。" +
+    "脚宽或介于两码之间，建议选大半码。后拉链款穿脱方便。" +
+    "具体请看 /size-guide 的 EU/US/UK/CM 对照表和脚长测量方法。" +
+    "（我们不保证具体脚型适配，尺码偏好因人而异。）"
+  );
 }
 
 export function getShippingInfo(): string {
-  return "物流与售后：美国本土 48 小时内发货、3-5 个工作日送达，满 $75 免运费；加拿大/欧洲 7-10 天。支持 30 天无理由试穿，磨脚、不合脚直接退。";
+  return (
+    "物流说明（Demo）：这是黑客松演示店铺，真实物流方案尚未确定。" +
+    "Final shipping cost and delivery estimate depend on destination and logistics method. " +
+    "下单页面会显示可选配送方式和预估费用。"
+  );
 }
 
 export function getReturnInfo(): string {
-  return "退换政策：签收后 30 天内，鞋子保持原状态可无理由全额退款；尺码不合适免费换码一次。退款在收到退货后 3 个工作日内原路退回。";
+  return (
+    "退换政策（Demo）：这是演示店铺，正式退换政策会在真实销售前确定。" +
+    "目前不承诺具体退换时效或运费承担方式。"
+  );
 }
 
 export function agentReply(userMessage: string): AgentReply {
   const q = userMessage.toLowerCase();
+
+  // 真皮相关：诚实回答
+  if (/leather|真皮|皮的|是不是皮|genuine leather|real leather/.test(q)) {
+    return {
+      text:
+        HERO_FACTS +
+        " 所以 14534-H 不是真皮。如果你问的是其他款式，Lanhe 货盘款式标注为 PU leather（人造革），请以各商品详情页的材质说明为准。",
+      products: [getProductById("boot-14534-h")].filter(Boolean) as Product[],
+    };
+  }
 
   if (/size|尺码|码数|fit|large|small/.test(q)) {
     return { text: getSizingAdvice() };
@@ -71,26 +103,42 @@ export function agentReply(userMessage: string): AgentReply {
   if (/return|refund|exchange|退|换|refund/.test(q)) {
     return { text: getReturnInfo() };
   }
+  if (/14534|主推|hero|primary|主推广/.test(q)) {
+    return {
+      text: HERO_FACTS + " 工厂价 RMB 98/双，国内券后控价 RMB 148/双（参考）。",
+      products: [getProductById("boot-14534-h")].filter(Boolean) as Product[],
+    };
+  }
+  if (/material|材质|面料|upper|lining|outsole|什么料/.test(q)) {
+    return { text: HERO_FACTS };
+  }
   if (/deal|discount|sale|便宜|优惠|code|coupon/.test(q)) {
     return {
-      text: "新客福利 🎁 首单立减 15%，结账时输入码 STRYDE15。另外满 $75 美国境内免运费，现在入手十色齐发的 No. 5910-5 正合适！",
-      products: PRODUCTS.filter((p) => p.trend === "hot").slice(0, 2),
+      text:
+        "新客福利 🎁 首单立减 15%，结账时输入码 STRYDE15（Demo 优惠码）。" +
+        "推荐先看主推款 14534-H。",
+      products: [getProductById("boot-14534-h")].filter(Boolean) as Product[],
     };
   }
 
   const hits = searchProducts(q);
   if (hits.length > 0) {
     const list = hits
-      .map((p) => `• ${ph(p.name)} — ${formatUSD(p.price)}：${p.tagline}（${p.rating}★ / ${p.reviews} 条评价）`)
+      .map((p) => `• ${ph(p.name)} — ${formatUSD(p.price)}：${p.tagline}`)
       .join("\n");
     return {
-      text: `根据你的需求，我挑了 ${hits.length} 双最值得看的：\n${list}\n\n点击商品卡片可以看详情和真实买家秀。需要我按预算或尺码再筛一下吗？`,
+      text: `根据你的需求，我挑了 ${hits.length} 双最值得看的：\n${list}\n\n点击商品卡片可以看详情。需要我按预算或尺码再筛一下吗？`,
       products: hits,
     };
   }
 
   return {
     text:
-      "我是 STRYDE 的 AI 导购，可以帮你：\n• 按风格推荐靴子（亮色系 / 全黑百搭 / 金色派对 / 全息幻彩）\n• 解答尺码、物流、退换问题\n• 报上新客优惠码\n\n试试问我：\"boots with a side zipper\" 或 \"有什么百搭的黑色靴子？\"",
+      "我是 STRYDE 的 AI 导购，可以帮你：\n" +
+      "• 推荐主推款 14534-H（通勤、商务休闲、约会）\n" +
+      "• 解答尺码、物流、退换问题\n" +
+      "• 说明材质（14534-H 是 microfiber，不是真皮）\n" +
+      "• 报上新客优惠码\n\n" +
+      '试试问我："14534-H 是什么材质？" 或 "通勤穿哪双？"',
   };
 }

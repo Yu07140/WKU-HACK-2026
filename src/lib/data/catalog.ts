@@ -388,23 +388,21 @@ export const PRODUCTS: Product[] = [
     createdAt: "2026-07-12",
   },
   /* ----------------------------------------------------------------
-   * 真实供应商货盘（2026-09 接入，与我们之前接入的供应商 SKU 合并）
+   * 真实供应商货盘（2026-09 接入）
    * - 图片为供应商实拍（public/products/<sku>/），非 AIGC 生成
    * - 定价未经核实：price 仅为站内演示价（demoPricing = true），
    *   供应商源数据为「价格 98/108 · 券后控价 148/158（RMB）」，
    *   不将其解释为美元售价或出厂成本
-   * - 材质仅使用已验证字段；尺码体系为欧码 EU（与 Lanhe 货盘 US 不同）
+   * - 材质仅使用已验证字段；供应商字段「超迁」未获确认，不做翻译
+   * - product IDs 遵循 Phase 2 要求：boot-11295-j / boot-14534-h / boot-53125-j
    * ---------------------------------------------------------------- */
   {
-    id: "p11",
+    id: "boot-11295-j",
     slug: "atlas-boot",
     name: "STRYDE Atlas Boot",
     tagline: "Gloss after dark.",
     category: "boots",
-    model: "11295-J",
     sku: "11295-J",
-    sizeSystem: "EU",
-    demoPricing: true,
     price: 129,
     factoryCost: 46,
     moq: 300,
@@ -421,7 +419,8 @@ export const PRODUCTS: Product[] = [
         name: "Oxblood Patent",
         hex: "#4a2417",
         imagePrompt:
-          "a glossy dark oxblood patent leather lace-up ankle boot with tan chunky lug outsole",
+          "a glossy dark oxblood patent-finish lace-up ankle boot with tan chunky lug outsole",
+        realImage: "/products/11295-j/hero.jpg",
         image: "/products/11295-j/hero.jpg",
       },
       {
@@ -429,6 +428,7 @@ export const PRODUCTS: Product[] = [
         hex: "#6f3d22",
         imagePrompt:
           "a glossy brown patent lace-up ankle boot with tan chunky lug outsole",
+        realImage: "/products/11295-j/brown.jpg",
         image: "/products/11295-j/brown.jpg",
       },
       {
@@ -436,6 +436,7 @@ export const PRODUCTS: Product[] = [
         hex: "#15100d",
         imagePrompt:
           "a glossy black patent lace-up ankle boot with tan chunky lug outsole",
+        realImage: "/products/11295-j/patent.jpg",
         image: "/products/11295-j/patent.jpg",
       },
       {
@@ -443,204 +444,8 @@ export const PRODUCTS: Product[] = [
         hex: "#7c1e26",
         imagePrompt:
           "a glossy dark red patent lace-up ankle boot with tan chunky lug outsole",
-        image: "/products/11295-j/red.jpg",
-      },
-    ],
-    sizes: [38, 39, 40, 41, 42, 43, 44, 45, 46],
-    creativePresets: {
-      studio:
-        "a glossy lace-up ankle boot with a dark oxblood-to-black polished upper, tan chunky lug outsole, rounded toe, metal eyelets, clean white ecommerce studio, soft diffused light, realistic product proportions, premium fashion catalog photography, centered, no logos, no text",
-      street:
-        "a glossy chunky lace-up ankle boot with dark oxblood tones and tan lug sole, styled with oversized black trousers, urban concrete street at dusk, editorial streetwear campaign, low-angle fashion photography, cinematic but realistic, no logos, no text",
-      flatlay:
-        "glossy chunky lace-up ankle boot, black and oxblood palette, tan lug sole, folded dark denim, silver accessories, fashion magazine flatlay, soft directional light, premium DTC ecommerce creative, no logos, no text",
-      ad: "dark glossy chunky lace-up boot with tan lug outsole, dramatic black-to-burgundy gradient background, bold empty negative space for headline, fashion campaign lighting, premium DTC ad, no text rendered inside image",
-    },
-    material: "橡胶大底 · 网纱内里（供应商已验证字段）",
-    weight: "TBD",
-    description:
-      "A chunky lace-up ankle boot with a glossy polished upper, rounded toe, metal eyelets and a tan lug outsole. Supplier spec: rubber outsole, mesh lining. Sizes EU 38–46. Supplier SKU: 11295-J.",
-    features: [
-      "Glossy polished upper",
-      "Rubber lug outsole (supplier spec)",
-      "Mesh lining (supplier spec)",
-      "Lace-up closure with metal eyelets",
-    ],
-    imagePrompt:
-      "a glossy lace-up ankle boot with a dark oxblood-to-black polished upper, tan chunky lug outsole, rounded toe, metal eyelets",
-    heatScore: 78,
-    trend: "new",
-    stock: 500,
-    rating: 0,
-    reviews: 0,
-    createdAt: "2026-09-04",
-  },
-  {
-    id: "p12",
-    slug: "mono-boot",
-    name: "STRYDE Mono Boot",
-    tagline: "Quiet shape. Sharp detail.",
-    category: "boots",
-    model: "14534-H",
-    sku: "14534-H",
-    sizeSystem: "EU",
-    demoPricing: true,
-    price: 119,
-    factoryCost: 42,
-    moq: 300,
-    leadTimeDays: 30,
-    image: "/products/14534-h/hero.jpg",
-    images: [
-      "/products/14534-h/hero.jpg",
-      "/products/14534-h/black.jpg",
-      "/products/14534-h/detail-01.jpg",
-    ],
-    colors: [
-      {
-        name: "Black",
-        hex: "#191919",
-        imagePrompt:
-          "a minimal black ankle boot with subtle white contrast stitching, low black rubber outsole",
-        image: "/products/14534-h/black.jpg",
-      },
-    ],
-    sizes: [38, 39, 40, 41, 42, 43, 44, 45, 46],
-    creativePresets: {
-      studio:
-        "minimal black ankle boot, smooth black upper, subtle white contrast stitching around the front shaft, low black rubber outsole, clean warm-gray studio background, soft shadow, premium minimalist ecommerce photography, no logos, no text",
-      street:
-        "minimal black ankle boot with white contrast stitch detail, wide-leg denim, concrete gallery district, understated modern utility fashion, natural overcast light, candid streetwear campaign, no logos, no text",
-      ad: "clean black utility ankle boot with white stitch accent, monochrome graphite background, architectural shadows, quiet modern utility aesthetic, negative space for copy, no text rendered inside image",
-    },
-    material: "橡胶大底（供应商已验证字段）",
-    weight: "TBD",
-    description:
-      "A clean black ankle boot with a smooth upper, white contrast stitch detail and an inside zipper. Supplier spec: rubber outsole. Sizes EU 38–46. Supplier SKU: 14534-H.",
-    features: [
-      "Smooth black upper",
-      "White contrast stitch detail",
-      "Inside zipper, easy on/off",
-      "Rubber outsole (supplier spec)",
-    ],
-    imagePrompt:
-      "minimal black ankle boot, smooth black upper, subtle white contrast stitching around the front shaft, low black rubber outsole",
-    heatScore: 71,
-    trend: "new",
-    stock: 500,
-    rating: 0,
-    reviews: 0,
-    createdAt: "2026-09-04",
-  },
-  {
-    id: "p13",
-    slug: "forge-platform-boot",
-    name: "STRYDE Forge Platform Boot",
-    tagline: "Not built to blend in.",
-    category: "boots",
-    model: "53125-J",
-    sku: "53125-J",
-    sizeSystem: "EU",
-    demoPricing: true,
-    price: 139,
-    factoryCost: 49,
-    moq: 300,
-    leadTimeDays: 30,
-    image: "/products/53125-j/hero.jpg",
-    images: [
-      "/products/53125-j/hero.jpg",
-      "/products/53125-j/black.jpg",
-      "/products/53125-j/yellow.jpg",
-    ],
-    colors: [
-      {
-        name: "Black",
-        hex: "#131211",
-        imagePrompt:
-          "black glossy crocodile-embossed lace-up ankle boot, oversized sculptural platform sole with black and silver graphic detailing",
-        image: "/products/53125-j/black.jpg",
-      },
-      {
-        name: "Amber Brown",
-        hex: "#7a4a2b",
-        imagePrompt:
-          "brown crocodile-embossed lace-up platform ankle boot with black and silver graphic sole",
-        image: "/products/53125-j/yellow.jpg",
-      },
-    ],
-    sizes: [39, 40, 41, 42, 43, 44],
-    creativePresets: {
-      studio:
-        "black glossy crocodile-embossed lace-up ankle boot, oversized sculptural platform sole with black and silver graphic detailing, white seamless studio, hard side light, futuristic fashion ecommerce photography, centered, realistic proportions, no logos, no text",
-      street:
-        "black glossy platform ankle boot with sculptural black-and-silver sole, oversized black trousers, underground concrete parking structure, cyber streetwear, flash photography, early-2000s editorial mood, no logos, no text",
-      ad: "statement black platform boot with metallic silver sole accents, industrial chrome environment, dramatic spotlight, futuristic Y2K fashion campaign, strong negative space for headline, no text rendered inside image",
-    },
-    material: "发泡大底（供应商已验证字段）",
-    weight: "TBD",
-    description:
-      "A sculptural platform boot with a glossy crocodile-embossed upper and graphic black-and-silver sole detailing. Supplier spec: foamed outsole. Sizes EU 39–44. Supplier SKU: 53125-J.",
-    features: [
-      "Crocodile-embossed upper",
-      "Sculptural platform sole with graphic detailing",
-      "Foamed outsole (supplier spec)",
-      "Statement silhouette",
-    ],
-    imagePrompt:
-      "black glossy crocodile-embossed lace-up ankle boot, oversized sculptural platform sole with black and silver graphic detailing",
-    heatScore: 74,
-    trend: "new",
-    stock: 400,
-    rating: 0,
-    reviews: 0,
-    createdAt: "2026-09-04",
-  },
-  /* ----------------------------------------------------------------
-   * 真实供应商货盘（2026-09 接入）
-   * - 图片为供应商实拍（public/products/<sku>/），非 AIGC 生成
-   * - 定价未经核实：price 仅为站内演示价（demoPricing = true），
-   *   供应商源数据为「价格 98/108 · 券后控价 148/158（RMB）」，
-   *   不将其解释为美元售价或出厂成本
-   * - 材质仅使用已验证字段；供应商字段「超迁」未获确认，不做翻译
-   * ---------------------------------------------------------------- */
-  {
-    id: "boot-11295-j",
-    slug: "atlas-boot",
-    name: "STRYDE Atlas Boot",
-    tagline: "Gloss after dark.",
-    category: "lifestyle",
-    sku: "11295-J",
-    price: 129,
-    factoryCost: 46,
-    moq: 300,
-    leadTimeDays: 30,
-    colors: [
-      {
-        name: "Oxblood Patent",
-        hex: "#4a2417",
-        imagePrompt:
-          "a glossy dark oxblood patent leather lace-up ankle boot with tan chunky lug outsole",
-        realImage: "/products/11295-j/hero.jpg",
-      },
-      {
-        name: "Chestnut Brown",
-        hex: "#6f3d22",
-        imagePrompt:
-          "a glossy brown patent lace-up ankle boot with tan chunky lug outsole",
-        realImage: "/products/11295-j/brown.jpg",
-      },
-      {
-        name: "Black Patent",
-        hex: "#15100d",
-        imagePrompt:
-          "a glossy black patent lace-up ankle boot with tan chunky lug outsole",
-        realImage: "/products/11295-j/patent.jpg",
-      },
-      {
-        name: "Dark Red",
-        hex: "#7c1e26",
-        imagePrompt:
-          "a glossy dark red patent lace-up ankle boot with tan chunky lug outsole",
         realImage: "/products/11295-j/red.jpg",
+        image: "/products/11295-j/red.jpg",
       },
     ],
     sizes: [38, 39, 40, 41, 42, 43, 44, 45, 46],
@@ -680,19 +485,27 @@ export const PRODUCTS: Product[] = [
     slug: "mono-boot",
     name: "STRYDE Mono Boot",
     tagline: "Quiet shape. Sharp detail.",
-    category: "lifestyle",
+    category: "boots",
     sku: "14534-H",
     price: 119,
     factoryCost: 42,
     moq: 300,
     leadTimeDays: 30,
+    image: "/products/14534-h/hero.jpg",
+    images: [
+      "/products/14534-h/hero.jpg",
+      "/products/14534-h/black.jpg",
+      "/products/14534-h/detail-01.jpg",
+      "/products/14534-h/lifestyle-01.jpg",
+    ],
     colors: [
       {
         name: "Black",
         hex: "#191919",
         imagePrompt:
-          "a minimal black ankle boot with subtle white contrast stitching, low black rubber outsole",
+          "black minimalist men's ankle boot, rear zipper, microfiber upper appearance, rubber outsole, subtle horizontal parallel detail near tongue, clean realistic commercial footwear photography, no logo, no text",
         realImage: "/products/14534-h/black.jpg",
+        image: "/products/14534-h/black.jpg",
       },
     ],
     sizes: [38, 39, 40, 41, 42, 43, 44, 45, 46],
@@ -701,23 +514,27 @@ export const PRODUCTS: Product[] = [
     demoPricing: true,
     creativePresets: {
       studio:
-        "minimal black ankle boot, smooth black upper, subtle white contrast stitching around the front shaft, low black rubber outsole, clean warm-gray studio background, soft shadow, premium minimalist ecommerce photography, no logos, no text",
+        "black minimalist men's ankle boot, rear zipper, microfiber upper appearance, rubber outsole, subtle horizontal parallel detail near tongue, clean realistic commercial footwear photography, no logo, no text",
       street:
-        "minimal black ankle boot with white contrast stitch detail, wide-leg denim, concrete gallery district, understated modern utility fashion, natural overcast light, candid streetwear campaign, no logos, no text",
-      ad: "clean black utility ankle boot with white stitch accent, monochrome graphite background, architectural shadows, quiet modern utility aesthetic, negative space for copy, no text rendered inside image",
+        "black minimalist men's ankle boot, rear zipper, microfiber upper appearance, rubber outsole, subtle horizontal parallel detail near tongue, worn with tailored trousers and crisp shirt, city sidewalk at golden hour, modern business casual fashion, natural soft light, editorial campaign photography, no logos, no text",
+      flatlay:
+        "black minimalist men's ankle boot, rear zipper, microfiber upper, rubber outsole, subtle horizontal parallel detail near tongue, folded dark trousers, woven belt, minimalist watch, fashion magazine flatlay, soft directional light, premium DTC ecommerce creative, no logos, no text",
+      ad: "black minimalist men's ankle boot, rear zipper, microfiber upper, rubber outsole, subtle horizontal parallel detail near tongue, monochrome graphite background, architectural shadows, quiet modern business-casual aesthetic, negative space for copy, no text rendered inside image",
     },
-    material: "橡胶大底（供应商已验证字段）",
+    material: "Upper: microfiber · Lining: microfiber · Outsole: rubber（供应商已验证字段）",
     weight: "TBD",
     description:
-      "A clean black ankle boot with a smooth upper, white contrast stitch detail and an inside zipper. Supplier spec: rubber outsole. Sizes EU 38–46. Supplier SKU: 14534-H.",
+      "A clean black minimalist ankle boot with a microfiber upper, microfiber lining, rear zipper, horizontal decorative lines around the tongue area, light brown interior, and a rubber outsole. Supplier spec: upper microfiber, lining microfiber, outsole rubber. Sizes EU 38–46. Positioned for commuting, business casual, dates, short city trips and light outdoor. Supplier SKU: 14534-H.",
     features: [
-      "Smooth black upper",
-      "White contrast stitch detail",
-      "Inside zipper, easy on/off",
+      "Microfiber upper (supplier spec)",
+      "Microfiber lining, light brown interior (supplier spec)",
+      "Rear zipper for easy on/off",
+      "Horizontal decorative lines around the tongue area",
       "Rubber outsole (supplier spec)",
+      "For commuting, business casual, dates, city trips and light outdoor",
     ],
     imagePrompt:
-      "minimal black ankle boot, smooth black upper, subtle white contrast stitching around the front shaft, low black rubber outsole",
+      "black minimalist men's ankle boot, rear zipper, microfiber upper appearance, rubber outsole, subtle horizontal parallel detail near tongue, clean realistic commercial footwear photography, no logo, no text",
     heatScore: 71,
     trend: "new",
     stock: 500,
@@ -730,12 +547,18 @@ export const PRODUCTS: Product[] = [
     slug: "forge-platform-boot",
     name: "STRYDE Forge Platform Boot",
     tagline: "Not built to blend in.",
-    category: "lifestyle",
+    category: "boots",
     sku: "53125-J",
     price: 139,
     factoryCost: 49,
     moq: 300,
     leadTimeDays: 30,
+    image: "/products/53125-j/hero.jpg",
+    images: [
+      "/products/53125-j/hero.jpg",
+      "/products/53125-j/black.jpg",
+      "/products/53125-j/yellow.jpg",
+    ],
     colors: [
       {
         name: "Black",
@@ -743,6 +566,7 @@ export const PRODUCTS: Product[] = [
         imagePrompt:
           "black glossy crocodile-embossed lace-up ankle boot, oversized sculptural platform sole with black and silver graphic detailing",
         realImage: "/products/53125-j/black.jpg",
+        image: "/products/53125-j/black.jpg",
       },
       {
         name: "Amber Brown",
@@ -750,6 +574,7 @@ export const PRODUCTS: Product[] = [
         imagePrompt:
           "brown crocodile-embossed lace-up platform ankle boot with black and silver graphic sole",
         realImage: "/products/53125-j/yellow.jpg",
+        image: "/products/53125-j/yellow.jpg",
       },
     ],
     sizes: [39, 40, 41, 42, 43, 44],

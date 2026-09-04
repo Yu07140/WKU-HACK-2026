@@ -39,3 +39,30 @@ export function formatDate(iso: string) {
 export function pct(n: number) {
   return `${(n * 100).toFixed(1)}%`;
 }
+
+/**
+ * 从 material 字符串解析 Upper / Lining / Outsole。
+ * 供应商 SKU 格式："Upper: microfiber · Lining: microfiber · Outsole: rubber（供应商已验证字段）"
+ * Lanhe 货盘格式："PU Leather" / "PU Leather（金属贴膜）" —— 整体作为 upper 返回
+ */
+export function parseMaterial(
+  material: string,
+  part: "upper" | "lining" | "outsole"
+): string {
+  const lower = material.toLowerCase();
+  const map: Record<string, string> = { upper: "", lining: "", outsole: "" };
+  const pairs = material.split(/·|;|；/).map((s) => s.trim());
+  for (const p of pairs) {
+    const m = p.match(/^(upper|lining|outsole)[::]\s*(.+)/i);
+    if (m) {
+      const key = m[1].toLowerCase();
+      map[key] = m[2].replace(/（.*?）|\(.*?\)/g, "").trim();
+    }
+  }
+  if (map.upper || map.lining || map.outsole) {
+    return map[part] || "—";
+  }
+  // Lanhe 格式：整串作为 upper
+  if (part === "upper") return material.replace(/（.*?）|\(.*?\)/g, "").trim();
+  return "—";
+}
