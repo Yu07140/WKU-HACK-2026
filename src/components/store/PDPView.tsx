@@ -21,11 +21,16 @@ export function PDPView({ product }: { product: Product }) {
   const color = product.colors[colorIdx];
   const realImage = color.realImage ?? product.heroImage;
   const imagePrompt = `${color.imagePrompt}, professional e-commerce product photography, soft cream studio background, soft lighting, centered`;
+<<<<<<< HEAD
   // Upstream 分支保留：color.image 作为主图；model+color 查库存行
   const colorImage = color.image ?? product.image;
   const stockRow = findStockRow(product.model, color.name);
   // Stashed 分支保留：sizeLabel 独立变量
   const sizeLabel = product.sizeSystem ?? "US";
+=======
+  const colorImage = color.image ?? product.image;
+  const stockRow = findStockRow(product.model, color.name);
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
 
   function handleAdd() {
     if (!size) return;
@@ -39,9 +44,13 @@ export function PDPView({ product }: { product: Product }) {
       price: product.price,
       qty,
       imagePrompt: color.imagePrompt,
+<<<<<<< HEAD
       // 两边并集保留：image（Upstream）+ realImage（Stashed）
       image: colorImage,
       realImage: realImage,
+=======
+      image: colorImage,
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
@@ -69,7 +78,11 @@ export function PDPView({ product }: { product: Product }) {
               )}
             >
               <ProductImage
+<<<<<<< HEAD
                 src={c.image ?? (c.realImage ?? product.heroImage)}
+=======
+                src={c.image ?? c.realImage ?? product.heroImage}
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
                 prompt={`${c.imagePrompt}, product photo, cream background`}
                 alt={c.name}
                 size="square"
@@ -84,7 +97,10 @@ export function PDPView({ product }: { product: Product }) {
       <div>
         <div className="flex items-center gap-3 flex-wrap">
           <TrendBadge trend={product.trend} />
+<<<<<<< HEAD
           {/* Upstream: 无条件显示评分 + SKU；Stashed: 评分>0才显示 + SKU 另样式。两边并集：保留 SKU + 评分（总是显示） */}
+=======
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
           {product.sku && (
             <span className="rounded-full bg-cream px-2.5 py-0.5 text-xs font-bold text-ink/60">
               SKU {product.sku}
@@ -103,7 +119,11 @@ export function PDPView({ product }: { product: Product }) {
           <span className="text-3xl font-black">{formatUSD(product.price)}</span>
           {product.demoPricing && (
             <span className="rounded-full bg-ink/80 px-2.5 py-0.5 text-xs font-bold text-white">
+<<<<<<< HEAD
               Demo pricing · TBC
+=======
+              Demo pricing
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
             </span>
           )}
           {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
@@ -144,7 +164,11 @@ export function PDPView({ product }: { product: Product }) {
         {/* 尺码 */}
         <div className="mt-6">
           <div className="mb-2 flex justify-between text-sm font-bold">
+<<<<<<< HEAD
             <span>Size: {sizeLabel} {size ?? "—"}</span>
+=======
+            <span>Size: {product.sizeSystem ?? "US"} {size ?? "—"}</span>
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
             <span className="font-normal text-ink/50">不确定尺码？问右下角 AI 导购</span>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -228,7 +252,10 @@ export function PDPView({ product }: { product: Product }) {
         <div className="mt-8 rounded-2xl bg-cream p-5 text-sm">
           <div className="mb-2 font-bold">货盘参数 · Lanhe Factory Specs</div>
           <div className="grid grid-cols-2 gap-y-2 text-ink/65">
+<<<<<<< HEAD
             {/* Upstream：型号/工艺；两边都保留的 SKU 供应商 */}
+=======
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
             <span>型号 Model：{product.model ?? "—"}</span>
             {product.sku && <span>供应商 SKU：{product.sku}</span>}
             <span>工艺：{product.construction ?? "—"}</span>
@@ -236,7 +263,7 @@ export function PDPView({ product }: { product: Product }) {
             <span>重量：{product.weight}</span>
             <span>起订量 MOQ：{product.moq} 双</span>
             <span>打样周期：{product.leadTimeDays} 天</span>
-            <span>尺码制式：{sizeLabel === "EU" ? "欧码 EU" : "美码 US"}</span>
+            <span>尺码制式：{product.sizeSystem === "EU" ? "欧码 EU" : "美码 US"}</span>
           </div>
 
           {stockRow && (

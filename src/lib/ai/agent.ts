@@ -118,6 +118,7 @@ export function searchProducts(query: string): Product[] {
   return hits.sort((a, b) => b.heatScore - a.heatScore).slice(0, 3);
 }
 
+<<<<<<< HEAD
 function pickByMaxPrice(maxPrice: number): Product[] {
   return [...PRODUCTS]
     .filter((p) => p.price <= maxPrice)
@@ -241,6 +242,10 @@ function describeProductEn(p: Product): string {
   if (p.stock != null && p.stock < 500) parts.push("low stock");
 
   return parts.filter(Boolean).slice(0, 3).join(" · ");
+=======
+export function getSizingAdvice(): string {
+  return "尺码建议：STRYDE 全部为标准美码（US size）。高帮靴建议按日常运动鞋尺码选；脚宽或想塞厚袜子、介于两码之间，选大半码更舒服。侧拉链款（No. 5970 / No. 8058）穿脱很方便。供应商 SKU（11295-J / 14534-H / 53125-J）为欧码 EU 38-46，详情页有标注。下单后 30 天内免费换码，运费我们承担 👟";
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
 }
 
 function productList(products: Product[], lang: Lang): string {

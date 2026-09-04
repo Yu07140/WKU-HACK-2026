@@ -12,7 +12,11 @@ export function ProductCard({ product }: { product: Product }) {
     >
       <div className="relative overflow-hidden rounded-2xl bg-cream">
         <ProductImage
+<<<<<<< HEAD
           src={product.heroImage ?? product.colors.find((c) => c.realImage)?.realImage ?? product.image}
+=======
+          src={product.image ?? product.heroImage ?? product.colors.find((c) => c.realImage)?.realImage}
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
           prompt={product.imagePrompt + ", professional e-commerce product photography, soft cream studio background, soft lighting"}
           alt={product.name}
           className="aspect-square transition duration-500 group-hover:scale-[1.03]"

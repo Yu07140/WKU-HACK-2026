@@ -11,8 +11,11 @@ import type { Product } from "@/lib/types";
  * - CopyResult 扩展可选字段 hook / primaryCopy / ctaVariants（向后兼容）
  * - 真实供应商 SKU（11295-J / 14534-H / 53125-J）使用专属文案模板
  * - 通用模板措辞与 Lanhe 货盘（高帮靴）对齐
+<<<<<<< HEAD
  * - 话术合规：不使用医疗舒适、防水、环保、真皮、实验室测试、
  *   48 小时发货等未经组委会/供应商验证的声明（模板内已规避）
+=======
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
  * ------------------------------------------------------------------ */
 
 export interface CopyResult {
@@ -77,6 +80,7 @@ const HEADLINES: Record<Platform, Record<Angle, (p: Product) => string>> = {
   Google: {
     comfort: (p) => `${p.name} — All-Day Comfort High-Top Boots`,
     value: (p) => `Buy ${p.name} Direct From Factory — $${p.price}`,
+<<<<<<< HEAD
     // 两边并集：同时覆盖"靴"与"复古板鞋/跑鞋"的 Google 文案（取覆盖面更广的版本）
     trend: (p) =>
       p.category === "running"
@@ -87,6 +91,11 @@ const HEADLINES: Record<Platform, Record<Angle, (p: Product) => string>> = {
         ? `${p.name} — Performance Running Shoes, $${p.price}`
         : `${p.name} — PU Leather Boots, Factory Direct, $${p.price}`,
     style: (p) => `${p.name} — Street Style Boots & Sneakers`,
+=======
+    trend: (p) => `${p.name} | Trending Street Boots 2026`,
+    performance: (p) => `${p.name} — PU Leather Boots, Factory Direct, $${p.price}`,
+    style: (p) => `${p.name} — Street Style Boots`,
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
     versatility: (p) => `${p.name} — Versatile Everyday Footwear`,
     detail: (p) => `${p.name} — Craft & Detail Overview`,
   },
@@ -95,8 +104,12 @@ const HEADLINES: Record<Platform, Record<Angle, (p: Product) => string>> = {
     value: (p) => `Factory direct. $${p.price}. No middlemen.`,
     trend: (p) => `The pair everyone saves to their moodboard: ${p.name}.`,
     performance: (p) => `Engineered like $200 shoes. Priced at $${p.price}.`,
+<<<<<<< HEAD
     // 两边并集：Make the [boot/shoe] the outfit — 根据是否是靴类统一兼容，这里用更通用的"pair"
     style: (p) => `Make the pair the outfit. ${p.name}.`,
+=======
+    style: (p) => `Make the boot the outfit. ${p.name}.`,
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
     versatility: (p) => `One pair, endless styling. ${p.name}.`,
     detail: (p) => `Zoom in. ${p.name} is all in the details.`,
   },
@@ -110,14 +123,21 @@ const BODY: Record<Angle, (p: Product) => string> = {
   trend: (p) =>
     `The silhouette everyone's pairing with baggy jeans this season. ${p.features[2] ?? p.features[0]}. Limited first drop — restock sells out in 9 days.`,
   performance: (p) =>
+<<<<<<< HEAD
     // 两边并集：保留 cold-bonded 构造（Upstream）+ 保留 Built with ... 句式
     `${p.features[0]}. ${p.features[1] ?? ""}. Built with ${p.weight} on your feet.`,
+=======
+    `${p.features[0]}. ${p.features[1] ?? ""}. ${p.weight} on your feet, cold-bonded construction.`,
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
   style: (p) =>
     `${p.tagline.replace(/\.$/, "")} — ${p.features[0]?.toLowerCase() ?? "a statement silhouette"} that turns a simple outfit into the whole look.`,
   versatility: (p) =>
     `Dress it up, dress it down. ${p.name} works with tailoring, denim and everything between — one pair, multiple moods.`,
   detail: (p) =>
+<<<<<<< HEAD
     // 两边并集：保留 model（Upstream）+ SKU 兜底（p.sku ?? p.model ?? p.id.toUpperCase）
+=======
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
     `${p.features.map((f) => f.replace(/ \(supplier spec\)/, "")).join(" · ")}. Supplier SKU: ${p.sku ?? p.model ?? p.id.toUpperCase()}.`,
 };
 
@@ -137,16 +157,25 @@ const CTA_VARIANTS: Record<Platform, string[]> = {
 };
 
 const TAGS: Record<Platform, string[]> = {
+<<<<<<< HEAD
   // 两边并集：boots + footwear 都保留（覆盖更全品类标签）
   Meta: ["#STRYDE", "#DTC", "#boots", "#footwear", "#streetwear"],
   TikTok: ["#STRYDE", "#boots", "#shoes", "#sneakerhead", "#shoecollection", "#fyp", "#factorydirect"],
+=======
+  Meta: ["#STRYDE", "#DTC", "#boots", "#streetwear"],
+  TikTok: ["#STRYDE", "#boots", "#shoecollection", "#fyp", "#factorydirect"],
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
   Google: ["#STRYDE"],
   Instagram: ["#STRYDE", "#ootd", "#footweardaily", "#styleinspo"],
 };
 
 /* ------------------------------------------------------------------
  * 真实供应商 SKU 专属文案（源自组委会确认的 COPY EXAMPLES）
+<<<<<<< HEAD
  * 键为供应商货号（Product.sku）；同时兼容带前缀 slug，匹配成功即采用
+=======
+ * 键为供应商货号（Product.sku）
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
  * ------------------------------------------------------------------ */
 
 interface BootCopyBase {
@@ -160,6 +189,7 @@ interface BootCopyBase {
   versatilityCta?: string;
 }
 
+<<<<<<< HEAD
 function getBootCopy(sku: string | undefined, id: string): BootCopyBase | undefined {
   const BOOT_COPY: Record<string, BootCopyBase> = {
     // 同时接受 "11295-J"（纯 SKU）与 "boot-11295-j"（带前缀 slug）
@@ -202,6 +232,38 @@ function getBootCopy(sku: string | undefined, id: string): BootCopyBase | undefi
   }
   return undefined;
 }
+=======
+const BOOT_COPY: Record<string, BootCopyBase> = {
+  "11295-J": {
+    hook: "Gloss after dark.",
+    primary:
+      "A chunky lace-up silhouette built to turn a simple outfit into the whole look.",
+    headline: "Make the boot the outfit.",
+    cta: "Explore the drop",
+    hashtags: ["#STRYDE", "#BootStyle", "#Streetwear", "#AltFashion", "#OOTD"],
+    versatilityPrimary:
+      "From polished dark tones to sharper statement finishes, 11295-J gives the same chunky shape a completely different attitude.",
+    versatilityHeadline: "Pick your mood.",
+    versatilityCta: "See the colors",
+  },
+  "14534-H": {
+    hook: "Quiet shape. Sharp detail.",
+    primary:
+      "A clean black ankle boot finished with a contrast stitch detail for a look that stays simple without disappearing.",
+    headline: "Utility, refined.",
+    cta: "View the boot",
+    hashtags: ["#STRYDE", "#MinimalStyle", "#BlackBoots", "#MensStyle", "#EverydayUniform"],
+  },
+  "53125-J": {
+    hook: "Not built to blend in.",
+    primary:
+      "A sculptural platform silhouette, glossy black finish, and graphic sole details made for the outfit that needs a focal point.",
+    headline: "Step into the future.",
+    cta: "See the statement boot",
+    hashtags: ["#STRYDE", "#PlatformBoots", "#Y2KStyle", "#CyberFashion", "#StatementShoes"],
+  },
+};
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
 
 /** 平台化调整话题标签：Google 精简、TikTok 加 fyp、Instagram 去 fyp */
 function tagsForPlatform(base: string[], platform: Platform): string[] {
@@ -216,8 +278,12 @@ export function generateCopy(
   platform: Platform,
   angle: Angle
 ): CopyResult {
+<<<<<<< HEAD
   // 两边并集：同时优先按 product.sku 匹配；若 sku 为空，回退 product.id 子串匹配
   const boot = getBootCopy(product.sku, product.id);
+=======
+  const boot = product.sku ? BOOT_COPY[product.sku] : undefined;
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
 
   if (boot) {
     // ---- 真实供应商 SKU：使用确认过的专属文案 ----
@@ -245,12 +311,19 @@ export function generateCopy(
     };
   }
 
+<<<<<<< HEAD
   // ---- 通用模板（Lanhe 货盘 + 原有 8 个演示货盘 + 新角度兜底） ----
+=======
+  // ---- 通用模板（Lanhe 货盘 + 新角度兜底） ----
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
   return {
     headline: HEADLINES[platform][angle](product),
     body: BODY[angle](product),
     cta: CTAS[platform],
+<<<<<<< HEAD
     // 两边并集：保留统一 Record 索引的 TAGS[platform]，更简洁
+=======
+>>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
     hashtags: TAGS[platform],
     hook: HEADLINES[platform][angle](product),
     primaryCopy: BODY[angle](product),
