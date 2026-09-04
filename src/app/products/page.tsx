@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { PRODUCTS } from "@/lib/data/catalog";
 import { CATEGORY_LABELS, type Category } from "@/lib/types";
@@ -13,6 +13,7 @@ const ACTIVE_TABS = ["all", ...Array.from(new Set(PRODUCTS.map((p) => p.category
 
 function ProductsBrowser() {
   const params = useSearchParams();
+  const router = useRouter();
   const [cat, setCat] = useState<string>(params.get("cat") ?? "all");
 
   const list = useMemo(
@@ -21,6 +22,11 @@ function ProductsBrowser() {
   );
 
   const tabs = ACTIVE_TABS;
+
+  function selectCat(t: string) {
+    setCat(t);
+    router.replace(t === "all" ? "/products" : `/products?cat=${t}`, { scroll: false });
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
@@ -33,7 +39,7 @@ function ProductsBrowser() {
         {tabs.map((t) => (
           <button
             key={t}
-            onClick={() => setCat(t)}
+            onClick={() => selectCat(t)}
             className={cn(
               "rounded-full border px-4 py-2 text-sm font-semibold transition",
               cat === t
@@ -41,7 +47,7 @@ function ProductsBrowser() {
                 : "border-ink/20 bg-white text-ink/70 hover:border-ink/50"
             )}
           >
-            {t === "all" ? "All 全部" : CATEGORY_LABELS[t as Category]}
+            {t === "all" ? "All" : CATEGORY_LABELS[t as Category]}
           </button>
         ))}
       </div>

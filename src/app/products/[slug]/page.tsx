@@ -1,8 +1,11 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import { getProduct, PRODUCTS } from "@/lib/data/catalog";
 import { PDPView } from "@/components/store/PDPView";
 import { ProductCard } from "@/components/store/ProductCard";
 import { ReviewsSection } from "@/components/store/ReviewsSection";
+import { ph } from "@/lib/utils";
 
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ slug: p.slug }));
@@ -23,6 +26,15 @@ export default async function ProductPage({
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
+      {/* 面包屑 */}
+      <nav className="mb-6 flex items-center gap-1.5 text-sm text-ink/50">
+        <Link href="/" className="hover:text-accent hover:underline">Home</Link>
+        <ChevronRight size={14} />
+        <Link href="/products" className="hover:text-accent hover:underline">Shop All</Link>
+        <ChevronRight size={14} />
+        <span className="truncate text-ink/80">{ph(product.name)}</span>
+      </nav>
+
       <PDPView product={product} />
 
       <ReviewsSection product={product} />

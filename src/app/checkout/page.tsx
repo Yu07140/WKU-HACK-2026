@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, Loader2, Lock } from "lucide-react";
+import { CheckCircle2, Loader2, Lock, Shield, RotateCcw, Truck } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { formatUSD, ph } from "@/lib/utils";
 
 export default function CheckoutPage() {
-  const { items, subtotal, clear } = useCart();
+  const { items, subtotal, discount, promoCode, clear } = useCart();
   const [loading, setLoading] = useState(false);
   const [orderId, setOrderId] = useState<string | null>(null);
   const [form, setForm] = useState({
@@ -20,8 +20,9 @@ export default function CheckoutPage() {
     card: "4242 4242 4242 4242",
   });
 
+  // $75 免运费 —— 按优惠前 subtotal 判断（保持原有业务规则不变）
   const shipping = subtotal >= 75 ? 0 : 7.9;
-  const total = subtotal + shipping;
+  const total = Math.max(0, subtotal - discount + shipping);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -58,15 +59,12 @@ export default function CheckoutPage() {
         <CheckCircle2 size={64} className="text-sage" />
         <h1 className="mt-5 text-3xl font-black">Order placed! 🎉</h1>
         <p className="mt-3 text-ink/60">
-          订单号 <span className="font-bold text-ink">{orderId}</span> 已进入履约流程，
-          AI 客服将通过邮件同步物流。去增长看板可以看到这笔交易实时计入漏斗。
+          Order number <span className="font-bold text-ink">{orderId}</span> is on its way.
+          Thanks for shopping with STRYDE.
         </p>
         <div className="mt-8 flex gap-3">
           <Link href="/products">
-            <Button variant="outline">继续逛</Button>
-          </Link>
-          <Link href="/admin/orders">
-            <Button>查看交易看板 <Lock size={15} /></Button>
+            <Button variant="outline">Keep shopping</Button>
           </Link>
         </div>
       </div>
@@ -77,6 +75,7 @@ export default function CheckoutPage() {
     <div className="mx-auto max-w-5xl px-6 py-12">
       <h1 className="text-3xl font-black">Checkout</h1>
       <form onSubmit={submit} className="mt-8 grid gap-10 lg:grid-cols-[1fr_360px]">
+        {/* 左：表单 */}
         <div className="space-y-8 rounded-2xl border border-ink/10 bg-white p-6">
           <section>
             <h2 className="mb-4 text-sm font-bold uppercase tracking-wider text-ink/50">
@@ -133,11 +132,12 @@ export default function CheckoutPage() {
               onChange={(e) => setForm({ ...form, card: e.target.value })}
             />
             <p className="mt-2 text-xs text-ink/45">
-              Demo 环境不会真实扣款，任意卡号均可提交。
+              Demo mode — no real charge. Any card number works.
             </p>
           </section>
         </div>
 
+        {/* 右：订单摘要 */}
         <div className="h-fit rounded-2xl border border-ink/10 bg-white p-6">
           <h2 className="text-lg font-black">Your order</h2>
           <div className="mt-4 space-y-3">
@@ -158,6 +158,12 @@ export default function CheckoutPage() {
               <span>Subtotal</span>
               <span>{formatUSD(subtotal)}</span>
             </div>
+            {discount > 0 && promoCode && (
+              <div className="flex justify-between text-accent font-bold">
+                <span>Discount ({promoCode})</span>
+                <span>-{formatUSD(discount)}</span>
+              </div>
+            )}
             <div className="flex justify-between text-ink/65">
               <span>Shipping</span>
               <span>{shipping === 0 ? "FREE" : formatUSD(shipping)}</span>
@@ -167,10 +173,40 @@ export default function CheckoutPage() {
               <span>{formatUSD(total)}</span>
             </div>
           </div>
-          <Button size="lg" className="mt-6 w-full" disabled={loading || items.length === 0}>
+          <Button size="lg" className="mt-6 w-full" disabled={loading}>
             {loading ? <Loader2 className="animate-spin" size={18} /> : <Lock size={16} />}
-            {loading ? "Processing..." : `Pay ${formatUSD(total)}`}
+            {loading ? "Processing..." : `Securely pay ${formatUSD(total)}`}
           </Button>
+
+          {/* 信任元素 */}
+          <div className="mt-5 space-y-3">
+            {/* 支付方式 */}
+            <div className="flex items-center justify-center gap-2">
+              {["VISA", "MC", "AMEX", "PayPal"].map((p) => (
+                <span
+                  key={p}
+                  className="rounded-md border border-ink/15 bg-white px-2.5 py-1 text-[10px] font-black tracking-wider text-ink/60"
+                >
+                  {p}
+                </span>
+              ))}
+            </div>
+            {/* 信任 badge */}
+            <div className="grid grid-cols-3 gap-2 text-center text-[11px] text-ink/55">
+              <div className="flex flex-col items-center gap-1">
+                <Shield size={16} className="text-sage" />
+                <span>Secure checkout</span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <RotateCcw size={16} className="text-sage" />
+                <span>30-day returns</span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <Truck size={16} className="text-sage" />
+                <span>Free ship over $75</span>
+              </div>
+            </div>
+          </div>
         </div>
       </form>
     </div>

@@ -125,7 +125,12 @@ export function PDPView({ product }: { product: Product }) {
         <div className="mt-6">
           <div className="mb-2 flex justify-between text-sm font-bold">
             <span>Size: US {size ?? "—"}</span>
-            <span className="font-normal text-ink/50">不确定尺码？问右下角 AI 导购</span>
+            <Link
+              href="/size-guide"
+              className="font-normal text-ink/50 hover:text-accent hover:underline"
+            >
+              Not sure? See size guide →
+            </Link>
           </div>
           <div className="flex flex-wrap gap-2">
             {product.sizes.map((s) => (
@@ -162,8 +167,10 @@ export function PDPView({ product }: { product: Product }) {
               +
             </button>
           </div>
-          <Button size="lg" className="flex-1" onClick={handleAdd} disabled={!size}>
-            {added ? (
+          <Button size="lg" className="flex-1" onClick={handleAdd} disabled={!size || product.stock === 0}>
+            {product.stock === 0 ? (
+              <>Sold Out</>
+            ) : added ? (
               <>
                 <Check size={18} /> Added to bag
               </>
@@ -196,7 +203,7 @@ export function PDPView({ product }: { product: Product }) {
           </div>
         </div>
 
-        {/* 卖点 & 供应链参数 */}
+        {/* 卖点列表 */}
         <ul className="mt-8 space-y-2.5">
           {product.features.map((f) => (
             <li key={f} className="flex items-start gap-2.5 text-sm text-ink/75">
@@ -205,54 +212,26 @@ export function PDPView({ product }: { product: Product }) {
           ))}
         </ul>
 
-        <div className="mt-8 rounded-2xl bg-cream p-5 text-sm">
-          <div className="mb-2 font-bold">货盘参数 · Lanhe Factory Specs</div>
-          <div className="grid grid-cols-2 gap-y-2 text-ink/65">
-            <span>型号 Model：{product.model ?? "—"}</span>
-            <span>工艺：{product.construction ?? "—"}</span>
-            <span>材质：{product.material}</span>
-            <span>重量：{product.weight}</span>
-            <span>起订量 MOQ：{product.moq} 双</span>
-            <span>打样周期：{product.leadTimeDays} 天</span>
-          </div>
-
-          {stockRow && (
-            <div className="mt-4 border-t border-ink/10 pt-4">
-              <div className="mb-2 flex items-center justify-between gap-2">
-                <div className="flex items-center gap-1.5 font-bold">
-                  <Warehouse size={15} className="text-accent" />
-                  {WAREHOUSE.nameZh}现货 · {stockRow.total} 双
+        {/* 材质与重量（消费者可理解的产品信息） */}
+        {(product.material || product.weight) && (
+          <div className="mt-8 rounded-2xl bg-cream p-5 text-sm">
+            <div className="mb-3 font-bold">Product Details</div>
+            <div className="space-y-1.5 text-ink/65">
+              {product.material && (
+                <div className="flex justify-between">
+                  <span className="font-semibold text-ink/80">Material</span>
+                  <span>{product.material}</span>
                 </div>
-                <Link
-                  href="/stock"
-                  className="text-xs font-semibold text-accent hover:underline"
-                >
-                  完整库存表 →
-                </Link>
-              </div>
-              <div className="grid grid-cols-6 gap-1.5 sm:grid-cols-11">
-                {stockRow.sizes.map((qty, i) => (
-                  <div
-                    key={i}
-                    className={cn(
-                      "rounded-lg px-1 py-1.5 text-center",
-                      qty > 0 ? "bg-white" : "bg-white/40 text-ink/30"
-                    )}
-                    title={`EU ${EU_SIZES[i]}：${qty} 双`}
-                  >
-                    <div className="text-[10px] font-semibold text-ink/50">
-                      {EU_SIZES[i]}
-                    </div>
-                    <div className="text-xs font-bold">{qty > 0 ? qty : "—"}</div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-1.5 text-[11px] text-ink/45">
-                EU 35-45 分码数量（双），售完即止 · 48h 直发
-              </div>
+              )}
+              {product.weight && (
+                <div className="flex justify-between">
+                  <span className="font-semibold text-ink/80">Weight</span>
+                  <span>{product.weight}</span>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

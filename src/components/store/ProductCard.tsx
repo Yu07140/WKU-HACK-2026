@@ -8,7 +8,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group block animate-fade-up"
+      className={`group block animate-fade-up ${product.stock === 0 ? "opacity-70" : ""}`}
     >
       <div className="relative overflow-hidden rounded-2xl bg-cream">
         <ProductImage
