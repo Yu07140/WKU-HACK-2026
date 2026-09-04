@@ -9,6 +9,7 @@ import {
   Clapperboard,
   History,
   Palette,
+  Lock,
 } from "lucide-react";
 import { SceneGenerator } from "@/components/studio/SceneGenerator";
 import { CopyGenerator } from "@/components/studio/CopyGenerator";
@@ -16,6 +17,8 @@ import { CreativeMatrix } from "@/components/studio/CreativeMatrix";
 import { VideoScriptGenerator } from "@/components/studio/VideoScriptGenerator";
 import { BrandKitCard } from "@/components/studio/BrandKitCard";
 import { CreativeHistory } from "@/components/studio/CreativeHistory";
+import { getProductById } from "@/lib/data/catalog";
+import { ProductImage } from "@/components/ui/ProductImage";
 import { cn } from "@/lib/utils";
 
 const TABS = [
@@ -68,6 +71,9 @@ export default function StudioPage() {
         ))}
       </div>
 
+      {/* ---------- REFERENCE LOCK ---------- */}
+      <ReferenceLock />
+
       <div className="mt-8">
         {tab === "scene" && (
           <SceneGenerator
@@ -81,6 +87,55 @@ export default function StudioPage() {
         {tab === "brand" && <BrandKitCard />}
         {tab === "history" && <CreativeHistory onReusePrompt={reusePrompt} />}
       </div>
+    </div>
+  );
+}
+
+/** REFERENCE LOCK: 工厂实拍 vs AI 创意，产品参考锁定 */
+function ReferenceLock() {
+  const hero = getProductById("boot-14534-h");
+  return (
+    <div className="mt-8 rounded-3xl border border-ink/10 bg-white p-6">
+      <div className="mb-4 flex items-center gap-2">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-green-500/15 px-3 py-1 text-xs font-bold text-green-700">
+          <Lock size={12} /> REFERENCE LOCK: ON
+        </span>
+        <span className="text-xs text-ink/50">SKU 14534-H — product reference locked to factory photography</span>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <div>
+          <div className="aspect-[4/3] overflow-hidden rounded-2xl border border-ink/10">
+            {hero && (
+              <ProductImage
+                src={hero.heroImage ?? hero.image}
+                prompt={hero.imagePrompt}
+                alt="Factory reference"
+                size="landscape_4_3"
+                className="h-full w-full"
+              />
+            )}
+          </div>
+          <div className="mt-2 text-center text-xs font-bold">FACTORY REFERENCE IMAGE</div>
+        </div>
+        <div>
+          <div className="aspect-[4/3] overflow-hidden rounded-2xl border border-accent/30 bg-cream">
+            {hero && (
+              <ProductImage
+                src={hero.heroImage ?? hero.image}
+                prompt={hero.creativePresets?.ad ?? hero.imagePrompt}
+                alt="AI creative"
+                size="landscape_4_3"
+                className="h-full w-full"
+              />
+            )}
+          </div>
+          <div className="mt-2 text-center text-xs font-bold text-accent-dark">AI-GENERATED CREATIVE</div>
+        </div>
+      </div>
+      <p className="mt-4 text-center text-sm text-ink/55">
+        The factory product remains the source of truth. AI generates the campaign direction —
+        not a fictional sellable SKU.
+      </p>
     </div>
   );
 }

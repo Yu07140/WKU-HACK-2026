@@ -57,9 +57,12 @@ export default function CheckoutPage() {
     return (
       <div className="mx-auto flex max-w-lg flex-col items-center px-6 py-28 text-center">
         <CheckCircle2 size={64} className="text-sage" />
+        <div className="mt-4 inline-flex rounded-full bg-amber-500/15 px-3 py-1 text-xs font-bold text-amber-700">
+          TEST ORDER · SANDBOX
+        </div>
         <h1 className="mt-5 text-3xl font-black">Order placed! 🎉</h1>
         <p className="mt-3 text-ink/60">
-          Order number <span className="font-bold text-ink">{orderId}</span> is on its way.
+          Order number <span className="font-bold text-ink">{orderId}</span> is a sandbox test order.
           Thanks for shopping with STRYDE.
         </p>
         <div className="mt-8 flex gap-3">
@@ -73,6 +76,15 @@ export default function CheckoutPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
+      <div className="mb-6 flex items-center gap-3 rounded-2xl border border-amber-400/30 bg-amber-500/10 px-4 py-3">
+        <Shield size={18} className="shrink-0 text-amber-600" />
+        <div>
+          <div className="text-sm font-bold text-amber-800">SANDBOX CHECKOUT</div>
+          <div className="text-xs text-amber-700/70">
+            This is a hackathon demo checkout. Orders placed here are TEST ORDERS, not real purchases.
+          </div>
+        </div>
+      </div>
       <h1 className="text-3xl font-black">Checkout</h1>
       <form onSubmit={submit} className="mt-8 grid gap-10 lg:grid-cols-[1fr_360px]">
         {/* 左：表单 */}
@@ -199,11 +211,11 @@ export default function CheckoutPage() {
               </div>
               <div className="flex flex-col items-center gap-1">
                 <RotateCcw size={16} className="text-sage" />
-                <span>30-day returns</span>
+                <span>Returns TBC</span>
               </div>
               <div className="flex flex-col items-center gap-1">
                 <Truck size={16} className="text-sage" />
-                <span>Free ship over $75</span>
+                <span>Demo shipping</span>
               </div>
             </div>
           </div>

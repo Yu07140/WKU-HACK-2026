@@ -5,10 +5,11 @@ import { Panel, Bar } from "@/components/admin/ui";
 import { formatUSD, cn, ph } from "@/lib/utils";
 
 /** AI 选款决策：热度 × 毛利 × 供应链柔性 */
-function decide(heat: number, marginPct: number, moq: number) {
+function decide(heat: number, marginPct: number, moq: number | null | undefined) {
+  const safeMoq = moq ?? 9999;
   if (heat >= 82 && marginPct >= 0.65)
     return { icon: ThumbsUp, label: "放量 Scale", cls: "bg-green-500/15 text-green-400", tip: "加大广告预算，备足安全库存" };
-  if (heat >= 68 || (marginPct >= 0.7 && moq <= 500))
+  if (heat >= 68 || (marginPct >= 0.7 && safeMoq <= 500))
     return { icon: Eye, label: "测试 Test", cls: "bg-amber-500/15 text-amber-400", tip: "小预算 A/B 测试素材，1-2 天看 CTR" };
   return { icon: ThumbsDown, label: "观望 Hold", cls: "bg-slate-500/15 text-slate-400", tip: "暂不投放，等季节/趋势信号" };
 }
@@ -64,7 +65,7 @@ export default function SelectionPage() {
                     <span className="text-xs text-slate-500">{CATEGORY_LABELS[p.category]}</span>
                   </div>
                   <div className="mt-0.5 text-xs text-slate-500">
-                    零售 {formatUSD(p.price)} · 出厂 {formatUSD(p.factoryCost)} · MOQ {p.moq} · 打样 {p.leadTimeDays} 天
+                    零售 {formatUSD(p.price)} · 出厂 {formatUSD(p.factoryCost)} · MOQ {p.moq != null ? p.moq : "TBC"} · 打样 {p.leadTimeDays != null ? `${p.leadTimeDays} 天` : "TBC"}
                   </div>
                 </div>
                 <span className={cn("flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold", decision.cls)}>

@@ -24,10 +24,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="mx-auto flex max-w-[1400px] items-center gap-3 px-5 py-3">
           <AlertTriangle size={20} className="shrink-0 text-amber-400" />
           <p className="text-sm font-bold text-amber-200">
-            SIMULATED DEMO DATA
+            SIMULATED DATASET
           </p>
           <p className="hidden text-xs text-amber-200/70 md:inline">
-            These figures demonstrate the dashboard workflow and are not real campaign results.
+            Dashboard workflow demonstration — not real campaign results.
           </p>
         </div>
       </div>

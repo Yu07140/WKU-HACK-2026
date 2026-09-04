@@ -45,10 +45,10 @@ export interface Product {
   compareAt?: number;
   /** 工厂出厂价（USD，供应链成本） */
   factoryCost: number;
-  /** 起订量 MOQ */
-  moq: number;
-  /** 打样/生产周期（天） */
-  leadTimeDays: number;
+  /** 起订量 MOQ — null 表示未经供应商确认（TBC） */
+  moq?: number | null;
+  /** 打样/生产周期（天） — null 表示未经确认（TBC） */
+  leadTimeDays?: number | null;
   colors: ProductColor[];
   /** 美码 US sizes */
   sizes: number[];

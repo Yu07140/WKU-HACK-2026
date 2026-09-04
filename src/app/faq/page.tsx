@@ -7,6 +7,7 @@ import {
   CreditCard,
   MessageCircle,
   ArrowRight,
+  Layers,
 } from "lucide-react";
 import { BRAND } from "@/lib/data/brand";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,7 @@ import { Button } from "@/components/ui/button";
 export const metadata = {
   title: `FAQ — ${BRAND.name} Help Center`,
   description:
-    "Shipping, returns, sizing, duties, and payment — everything you need before you click checkout.",
+    "Shipping, returns, sizing, material, duties, and payment — honest answers for the STRYDE 14534-H demo store.",
 };
 
 type QA = { q: string; a: string };
@@ -26,19 +27,15 @@ const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
     items: [
       {
         q: "How long does shipping take?",
-        a: "Final shipping cost and delivery estimate depend on destination and logistics method. Shipping options and an estimated delivery window are shown at checkout. This is a demo store — actual carriers and timelines are not yet verified.",
+        a: "International shipping cost and delivery estimate depend on the destination and logistics method. Final terms will be confirmed before live commercial launch.",
       },
       {
         q: "Do you ship internationally?",
-        a: "International shipping options are shown at checkout where available. Final shipping cost and delivery estimate depend on destination and logistics method.",
+        a: "International shipping options will be shown at checkout where available. Final shipping cost and delivery estimate depend on the destination and logistics method.",
       },
       {
         q: "Is there free shipping?",
-        a: "Free-shipping thresholds (if any) are displayed at checkout. Final shipping cost and delivery estimate depend on destination and logistics method.",
-      },
-      {
-        q: "Can I track my order?",
-        a: "When your order ships you'll receive a shipping confirmation with tracking information, where available.",
+        a: "Any free-shipping threshold (if offered) would be displayed at checkout. Final terms will be confirmed before live commercial launch.",
       },
     ],
   },
@@ -48,15 +45,11 @@ const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
     items: [
       {
         q: "What's your return policy?",
-        a: "This is a hackathon demo store. Return and exchange policies for production would be finalized before real sales begin. For now, any return shown on the site is demo content and not a verified operational commitment.",
+        a: "Return and exchange terms are part of the competition fulfillment plan and must be confirmed before live commercial launch.",
       },
       {
         q: "The shoes don't fit. Can I exchange them?",
-        a: "Exchange availability and process would be confirmed before real sales. Please refer to the Size Guide to find your size before ordering.",
-      },
-      {
-        q: "What if something arrives damaged?",
-        a: "Contact customer support with photos of the item and packaging. Resolution (replacement or refund) would be handled per the finalized return policy.",
+        a: "Exchange availability and process must be confirmed before live commercial launch. Please use the Size Guide to find your size before ordering.",
       },
     ],
   },
@@ -66,15 +59,25 @@ const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
     items: [
       {
         q: "What size should I get?",
-        a: "STRYDE footwear lists EU sizes (supplier spec). Use the Size Guide to convert EU to US / UK / CM and measure your foot length. We do not guarantee a specific fit — sizing preference is personal.",
-      },
-      {
-        q: "Do your shoes run true to size?",
-        a: "We don't make fit guarantees. Please measure your foot and use the Size Guide conversion table to pick the closest EU size.",
+        a: "14534-H is supplied in EU sizes 38–46. Use the measurement guide and confirm your size before ordering.",
       },
       {
         q: "Can I wash them?",
         a: "Spot clean with a damp cloth and mild soap. We don't recommend machine-washing or soaking footwear.",
+      },
+    ],
+  },
+  {
+    cat: "Material",
+    icon: Layers,
+    items: [
+      {
+        q: "What is 14534-H made of?",
+        a: "The official supplier specification lists a microfiber upper and microfiber lining with a rubber outsole. It is not genuine leather.",
+      },
+      {
+        q: "Is this genuine leather?",
+        a: "No. The official supplier specification lists a microfiber upper.",
       },
     ],
   },
@@ -84,21 +87,21 @@ const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
     items: [
       {
         q: "Will I have to pay customs or import duties?",
-        a: "Import duties and taxes may depend on the destination country's rules. Any estimates shown at checkout are indicative — final charges are determined by customs authorities. This is a demo store and customs handling is not yet verified.",
+        a: "Import duties and taxes may depend on the destination country's rules. Final charges are determined by customs authorities. Customs handling for live sales has not yet been verified.",
       },
     ],
   },
   {
-    cat: "Payment & Security",
+    cat: "Payment",
     icon: CreditCard,
     items: [
       {
         q: "What payment methods do you accept?",
-        a: "Payment methods accepted at checkout are determined by the payment gateway. This is a demo store — the list of supported methods and security certifications have not been verified for production.",
+        a: "Payment methods accepted at checkout are determined by the payment gateway. This is a demo store — supported methods have not been verified for production.",
       },
       {
         q: "Is it safe to enter my card info here?",
-        a: "In production, card payments would be processed by a PCI-compliant payment processor. This is a demo prototype — do not enter real payment information.",
+        a: "This is a demo prototype. Please do not enter real payment information. In production, payments would be processed by a secure payment provider.",
       },
     ],
   },
@@ -116,18 +119,18 @@ export default function FAQPage() {
         <h1 className="text-5xl font-black leading-[1.05] tracking-tight md:text-6xl">
           Questions?
           <br />
-          <span className="text-accent">We've got answers.</span>
+          <span className="text-accent">Honest answers.</span>
         </h1>
         <p className="mx-auto mt-5 max-w-xl text-ink/55">
           Can't find what you need? Ping the chat bubble in the bottom right.
         </p>
         <p className="mx-auto mt-3 max-w-xl text-xs text-ink/40">
-          Note: shipping, return, and payment policies below are demo content for the hackathon
-          prototype — not verified operational commitments.
+          This is a hackathon demo store. Shipping, return, and payment terms are not
+          verified operational commitments.
         </p>
       </div>
 
-      {/* ---------- 5 个分类 ---------- */}
+      {/* ---------- 分类 ---------- */}
       <div className="space-y-14">
         {FAQS.map(({ cat, icon: Icon, items }) => (
           <section key={cat} id={cat.toLowerCase().replace(/[^a-z]+/g, "-")}>
@@ -161,8 +164,7 @@ export default function FAQPage() {
       <section className="mt-20 rounded-3xl bg-ink p-10 text-center text-paper md:p-14">
         <h2 className="text-3xl font-black md:text-4xl">Still not sure?</h2>
         <p className="mx-auto mt-3 max-w-lg text-paper/60">
-          Chat with us directly or read the size guide before you buy. We'd rather get you into
-          the right pair on the first try.
+          Read the size guide or check the proof mode before you buy.
         </p>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <Link href="/size-guide">
@@ -170,9 +172,9 @@ export default function FAQPage() {
               Size Guide <ArrowRight size={18} />
             </Button>
           </Link>
-          <Link href="/products">
+          <Link href="/proof">
             <Button size="lg" variant="outline">
-              Browse shoes
+              Proof Mode
             </Button>
           </Link>
         </div>

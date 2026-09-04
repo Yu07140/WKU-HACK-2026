@@ -68,9 +68,8 @@ export function getSizingAdvice(): string {
 
 export function getShippingInfo(): string {
   return (
-    "物流说明（Demo）：这是黑客松演示店铺，真实物流方案尚未确定。" +
-    "Final shipping cost and delivery estimate depend on destination and logistics method. " +
-    "下单页面会显示可选配送方式和预估费用。"
+    "The international delivery estimate has not yet been confirmed for this supplier route.\n" +
+    "Final shipping cost and delivery estimate depend on the destination and logistics method."
   );
 }
 
@@ -100,12 +99,22 @@ export function agentReply(userMessage: string, ctx?: AgentReplyContext): AgentR
     };
   }
 
-  // 真皮相关：诚实回答
+  // 真皮相关：诚实回答（精确措辞）
   if (/leather|真皮|皮的|是不是皮|genuine leather|real leather/.test(q)) {
     return {
       text:
-        HERO_FACTS +
-        " 所以 14534-H 不是真皮。如果你问的是其他款式，Lanhe 货盘款式标注为 PU leather（人造革），请以各商品详情页的材质说明为准。",
+        "No. The official supplier specification lists a microfiber upper.\n\n" +
+        HERO_FACTS,
+      products: [getProductById("boot-14534-h")].filter(Boolean) as Product[],
+    };
+  }
+
+  // 美码换算：诚实回答
+  if (/us size|us 码|美码|us conversion|us 换算/.test(q)) {
+    return {
+      text:
+        "The official supplier material currently confirms EU sizes 38–46. " +
+        "I would confirm the US conversion before ordering.",
       products: [getProductById("boot-14534-h")].filter(Boolean) as Product[],
     };
   }

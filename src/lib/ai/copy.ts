@@ -96,9 +96,9 @@ const HEADLINES: Record<Platform, Record<Angle, (p: Product) => string>> = {
 
 const BODY: Record<Angle, (p: Product) => string> = {
   comfort: (p) =>
-    `${p.features[0]}. ${p.features[1] ?? ""}. Try them for 30 days — if they don't feel right, the return is on us. (Demo return policy)`,
+    `${p.features[0]}. ${p.features[1] ?? ""}. (Demo product — return terms TBC before live launch)`,
   value: (p) =>
-    `Made in the same factory that builds $200+ brands. We cut the middlemen, not the quality. ${p.material}. Factory direct: $${p.price}. (Demo pricing)`,
+    `${p.material}. Factory direct: $${p.price}. (Demo pricing — final retail TBC)`,
   trend: (p) =>
     `The silhouette everyone's pairing with baggy jeans this season. ${p.features[2] ?? p.features[0]}. Limited first drop.`,
   performance: (p) =>
@@ -112,7 +112,7 @@ const BODY: Record<Angle, (p: Product) => string> = {
 };
 
 const CTAS: Record<Platform, string> = {
-  Meta: "Shop Now — Free Shipping",
+  Meta: "Shop Now",
   TikTok: "Tap to grab yours →",
   Google: "See Price & Sizes",
   Instagram: "Shop the drop →",

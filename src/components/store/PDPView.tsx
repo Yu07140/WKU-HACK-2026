@@ -262,13 +262,36 @@ export function PDPView({ product }: { product: Product }) {
             <span><b>Outsole：</b>{parseMaterial(product.material, "outsole")}</span>
             <span><b>Sizes：</b>{sizeLabel === "EU" ? "EU 38–46" : "US"}</span>
             <span><b>Weight：</b>{product.weight}</span>
-            <span><b>MOQ：</b>{product.moq} pairs</span>
-            <span><b>Lead time：</b>{product.leadTimeDays} days</span>
+            <span><b>MOQ：</b>{product.moq != null ? `${product.moq} pairs` : "TBC — supplier confirmation required"}</span>
+            <span><b>Lead time：</b>{product.leadTimeDays != null ? `${product.leadTimeDays} days` : "TBC — organizer/supplier confirmation required"}</span>
           </div>
           <p className="mt-3 text-[11px] text-ink/45">
             Material fields marked "supplier spec" are verified by the supplier.
-            RMB {product.factoryCost}/pair is the factory cost, not the retail price.
           </p>
+
+          {/* 定价分层：工厂价 / 演示结账价 / 最终零售价 */}
+          <div className="mt-4 border-t border-ink/10 pt-4">
+            <div className="mb-2 font-bold">Pricing Breakdown</div>
+            <div className="space-y-1.5 text-sm text-ink/65">
+              <div className="flex justify-between">
+                <span>Factory Price：</span>
+                <span className="font-bold text-ink/80">RMB {product.factoryCost} / pair</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Demo Checkout Price：</span>
+                <span className="font-bold text-accent-dark">${product.price} — Sandbox Only</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Final Overseas Retail：</span>
+                <span className="font-bold text-ink/40">TBC</span>
+              </div>
+            </div>
+            <p className="mt-2 text-[11px] text-ink/40">
+              RMB {product.factoryCost} is the verified factory cost. ${product.price} is the
+              sandbox demo checkout price, not a verified launch retail price. Final retail
+              will be set after logistics / payment / return reserve calculation.
+            </p>
+          </div>
 
           {stockRow && (
             <div className="mt-4 border-t border-ink/10 pt-4">

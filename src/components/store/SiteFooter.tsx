@@ -12,7 +12,7 @@ export function SiteFooter() {
           </div>
           <p className="mt-3 max-w-xs text-sm text-paper/60">{BRAND.slogan}</p>
           <p className="mt-4 text-xs text-paper/40">
-            Factory-direct footwear · Designed in Wenzhou, worn worldwide.
+            Built from a Wenzhou footwear supply chain. Designed for a global DTC test.
           </p>
         </div>
         <FooterCol
@@ -38,9 +38,9 @@ export function SiteFooter() {
         <FooterCol
           title="Company"
           links={[
-            ["Our Factory Story", "/about"],
-            ["Sustainability", "/about"],
-            ["Wholesale", "#"],
+            ["Our Story", "/about"],
+            ["Proof Mode", "/proof"],
+            ["AI Studio", "/studio"],
             ["Contact", "/faq"],
           ]}
         />

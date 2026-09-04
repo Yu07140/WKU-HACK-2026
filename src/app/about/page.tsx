@@ -1,15 +1,32 @@
 import Link from "next/link";
-import { ArrowRight, Factory, Truck, RotateCcw, Heart, Award, Package } from "lucide-react";
-import { BRAND, BRAND_STORY } from "@/lib/data/brand";
+import { ArrowRight, Factory, Package, Award, Check, Sparkles } from "lucide-react";
+import { BRAND } from "@/lib/data/brand";
 import { getProductById } from "@/lib/data/catalog";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: `About Us — ${BRAND.name}`,
+  title: `About — ${BRAND.name}`,
   description:
-    "Factory-direct footwear accelerated by AI-powered DTC workflows. (Demo brand narrative — hackathon prototype.)",
+    "A real factory SKU. A 24-hour brand sprint. How STRYDE turns supplier data into a market-ready DTC product with AI.",
 };
+
+const WHAT_STAYS_REAL = [
+  "factory product",
+  "SKU (14534-H)",
+  "material (microfiber / rubber)",
+  "size range (EU 38–46)",
+  "supplier photography",
+];
+
+const WHAT_AI_ACCELERATES = [
+  "positioning",
+  "campaign concepts",
+  "ad copy",
+  "creative variants",
+  "shopping assistance",
+  "performance analysis",
+];
 
 export default function AboutPage() {
   const featured = getProductById("boot-14534-h");
@@ -22,23 +39,28 @@ export default function AboutPage() {
           <div>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-3 py-1.5 text-xs font-bold tracking-wider text-ink/70">
               <Factory size={13} className="text-accent" />
-              FACTORY-DIRECT · AI ACCELERATED (Demo)
+              A REAL FACTORY SKU. A 24-HOUR BRAND SPRINT.
             </div>
             <h1 className="text-5xl font-black leading-[1.05] tracking-tight md:text-6xl">
-              From a factory floor
+              We didn't invent the shoe.
               <br />
-              to your <span className="text-accent">front door.</span>
+              <span className="text-accent">We rebuilt the path to market.</span>
             </h1>
             <p className="mt-6 max-w-lg text-lg text-ink/65">
-              STRYDE is a hackathon demo of a factory-direct footwear brand powered by
-              AI-driven DTC workflows. Our featured product is factory SKU 14534-H,
-              a black minimalist ankle boot built for commuting, business casual and
-              short city trips.
+              STRYDE starts with a real factory product: SKU 14534-H. Instead of spending
+              weeks on positioning, creative production, store setup and market testing,
+              our team built an AI-assisted workflow that compresses those steps into a
+              24-hour sprint.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link href="/products/mono-boot">
                 <Button size="lg">
                   See SKU 14534-H <ArrowRight size={18} />
+                </Button>
+              </Link>
+              <Link href="/proof">
+                <Button size="lg" variant="outline">
+                  Open Proof Mode
                 </Button>
               </Link>
             </div>
@@ -55,17 +77,43 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ---------- 4 句品牌故事 ---------- */}
+      {/* ---------- WHAT STAYS REAL / WHAT AI ACCELERATES ---------- */}
       <section className="bg-ink text-paper">
-        <div className="mx-auto max-w-4xl px-6 py-24 text-center">
-          <div className="mb-4 text-xs font-bold tracking-[0.25em] text-accent">
-            OUR STORY
+        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 md:grid-cols-2">
+          <div>
+            <div className="mb-4 text-xs font-bold tracking-[0.25em] text-accent">
+              WHAT STAYS REAL
+            </div>
+            <ul className="space-y-3">
+              {WHAT_STAYS_REAL.map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <Check size={18} className="mt-0.5 shrink-0 text-accent" />
+                  <span className="text-lg">{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="space-y-6 text-2xl font-semibold leading-relaxed md:text-3xl">
-            <p>We spent 18 years making boots for other labels.</p>
-            <p className="text-paper/70">Same lasts, same leather, same hands.</p>
-            <p>They put a logo on the box and doubled the price.</p>
-            <p className="text-accent">We put ours on it instead.</p>
+          <div>
+            <div className="mb-4 flex items-center gap-2 text-xs font-bold tracking-[0.25em] text-accent">
+              <Sparkles size={14} /> WHAT AI ACCELERATES
+            </div>
+            <ul className="space-y-3">
+              {WHAT_AI_ACCELERATES.map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <Check size={18} className="mt-0.5 shrink-0 text-accent" />
+                  <span className="text-lg">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="border-t border-paper/10">
+          <div className="mx-auto max-w-4xl px-6 py-12 text-center">
+            <p className="text-2xl font-semibold md:text-3xl">
+              AI changes the speed.
+              <br />
+              <span className="text-accent">It does not change the truth of the product.</span>
+            </p>
           </div>
         </div>
       </section>
@@ -109,30 +157,6 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
-      </section>
-
-      {/* ---------- 承诺（均标注 Demo） ---------- */}
-      <section className="border-y border-ink/10 bg-white">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-6 py-14 md:grid-cols-4">
-          {[
-            [Truck, "Factory-direct shipping*", "Demo policy"],
-            [RotateCcw, "30-day return*", "Demo return policy"],
-            [Heart, "Rating (Demo)", "no verified reviews yet"],
-            [Factory, "Factory SKU 14534-H", "microfiber · rubber outsole"],
-          ].map(([Icon, big, small]) => (
-            <div key={big as string} className="flex items-start gap-3">
-              <Icon size={22} className="mt-0.5 text-accent shrink-0" />
-              <div>
-                <div className="text-sm font-bold">{big as string}</div>
-                <div className="text-xs text-ink/55 mt-0.5">{small as string}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <p className="mx-auto max-w-7xl px-6 pb-14 text-[11px] text-ink/40">
-          * 标注项为黑客松演示政策，非真实运营承诺。Shipping cost and delivery estimate
-          depend on destination and logistics method.
-        </p>
       </section>
 
       {/* ---------- CTA ---------- */}
