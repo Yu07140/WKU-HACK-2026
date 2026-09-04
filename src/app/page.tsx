@@ -21,7 +21,7 @@ export default function HomePage() {
               FACTORY DIRECT · NO MIDDLEMEN
             </div>
             <h1 className="text-5xl font-black leading-[1.05] tracking-tight md:text-7xl">
-              Walk past
+              walk past
               <br />
               the <span className="text-accent">markup.</span>
             </h1>
