@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { BRAND } from "@/lib/data/brand";
 
 export function SiteFooter() {
@@ -16,15 +17,32 @@ export function SiteFooter() {
         </div>
         <FooterCol
           title="Shop"
-          links={["Running", "Lifestyle", "Canvas", "Sandals", "New Arrivals"]}
+          links={[
+            ["Running", "/products?cat=running"],
+            ["Lifestyle", "/products?cat=lifestyle"],
+            ["Canvas", "/products?cat=canvas"],
+            ["Sandals", "/products?cat=sandals"],
+            ["New Arrivals", "/products"],
+          ]}
         />
         <FooterCol
           title="Support"
-          links={["Size Guide", "Shipping & Delivery", "Returns & Exchanges", "Track Order", "FAQ"]}
+          links={[
+            ["Size Guide", "/size-guide"],
+            ["Shipping & Delivery", "/faq#shipping-delivery"],
+            ["Returns & Exchanges", "/faq#returns-exchanges"],
+            ["Track Order", "#"],
+            ["FAQ", "/faq"],
+          ]}
         />
         <FooterCol
           title="Company"
-          links={["Our Factory Story", "Sustainability", "Wholesale", "Contact"]}
+          links={[
+            ["Our Factory Story", "/about"],
+            ["Sustainability", "/about"],
+            ["Wholesale", "#"],
+            ["Contact", "/faq"],
+          ]}
         />
       </div>
       <div className="border-t border-paper/10 py-5 text-center text-xs text-paper/40">
@@ -34,14 +52,25 @@ export function SiteFooter() {
   );
 }
 
-function FooterCol({ title, links }: { title: string; links: string[] }) {
+function FooterCol({
+  title,
+  links,
+}: {
+  title: string;
+  links: Array<[label: string, href: string]>;
+}) {
   return (
     <div>
       <h4 className="mb-4 text-sm font-bold tracking-wider">{title}</h4>
       <ul className="space-y-2.5 text-sm text-paper/60">
-        {links.map((l) => (
-          <li key={l} className="cursor-pointer transition hover:text-paper">
-            {l}
+        {links.map(([label, href]) => (
+          <li key={label + href}>
+            <Link
+              href={href}
+              className="transition hover:text-paper hover:underline underline-offset-4"
+            >
+              {label}
+            </Link>
           </li>
         ))}
       </ul>

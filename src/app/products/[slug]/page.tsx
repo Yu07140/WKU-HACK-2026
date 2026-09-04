@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getProduct, PRODUCTS } from "@/lib/data/catalog";
 import { PDPView } from "@/components/store/PDPView";
 import { ProductCard } from "@/components/store/ProductCard";
+import { ReviewsSection } from "@/components/store/ReviewsSection";
 
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ slug: p.slug }));
@@ -23,6 +24,8 @@ export default async function ProductPage({
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
       <PDPView product={product} />
+
+      <ReviewsSection product={product} />
 
       {related.length > 0 && (
         <section className="mt-20">
