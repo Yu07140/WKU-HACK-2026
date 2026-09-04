@@ -221,14 +221,6 @@ export function PDPView({ product }: { product: Product }) {
             )}
           </dl>
         </div>
-
-        {/* 评论：无真实评论则诚实说明 */}
-        <div className="mt-8 border-t border-ink/10 pt-6">
-          <div className="text-sm font-bold">Customer reviews</div>
-          <p className="mt-2 text-sm text-ink/50">
-            No verified customer reviews yet.
-          </p>
-        </div>
       </div>
     </div>
   );

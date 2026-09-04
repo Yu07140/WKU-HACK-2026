@@ -492,8 +492,8 @@ function sceneWaterproof(lang: Lang): AgentReply {
   return {
     text: L(
       lang,
-      `Quick honesty ☔ our boots aren't seam-sealed rain boots, but the glossy PU and patent-finish uppers shrug off light drizzle and wipe clean in seconds with a damp cloth. For heavy downpour days, the glossiest pairs are your safest bet:\n${picks.length ? productList(picks, lang) : ""}`,
-      `说实话哈 ☔ 咱们的靴子不是压胶雨靴，但亮面 PU / 漆皮质感的鞋面应付小雨、溅水完全没问题，湿布一擦就干净。大雨天出门的话，最推荐这几双亮面款：\n${picks.length ? productList(picks, lang) : ""}`
+      `Quick honesty — our boots aren't seam-sealed rain boots. Glossy PU and patent-finish uppers may handle light drizzle, but care guidance is pending supplier confirmation. For heavy downpour days, the glossiest pairs are your safest bet:\n${picks.length ? productList(picks, lang) : ""}`,
+      `说实话哈 — 咱们的靴子不是压胶雨靴。亮面 PU / 漆皮质感的鞋面可能应付小雨，但具体护理方式待供应商确认。大雨天出门的话，最推荐这几双亮面款：\n${picks.length ? productList(picks, lang) : ""}`
     ),
     products: picks.length ? picks : undefined,
   };
@@ -552,8 +552,8 @@ function sceneMaterial(lang: Lang): AgentReply {
   return {
     text: L(
       lang,
-      "Great question — totally fair to ask! 🌱 Our boots use microfiber (a premium synthetic) for the upper and lining — not genuine leather — with a durable rubber outsole. Microfiber is soft, breathable and a breeze to wipe clean. Here's our signature pair:",
-      "好问题，这个必须说清楚！🌱 咱们靴子的鞋面和内里都是 microfiber（超纤，一种高品质合成材质），不是真皮哦；大底是耐磨橡胶。超纤柔软透气，脏了湿布一擦就干净。给你看主推款："
+      "Great question — totally fair to ask! Our boots use microfiber for the upper and lining — not genuine leather — with a rubber outsole. Care guidance is pending supplier confirmation. Here's our signature pair:",
+      "好问题，这个必须说清楚！咱们靴子的鞋面和内里都是 microfiber（超纤），不是真皮；大底是橡胶。具体护理方式待供应商确认。给你看主推款："
     ),
     products: hero ? [hero] : undefined,
   };

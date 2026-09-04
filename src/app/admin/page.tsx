@@ -206,9 +206,23 @@ export default function AdminOverview() {
               SELECTED FOR TRANSACTION TEST
             </div>
             <p className="mt-3 text-xs leading-relaxed text-slate-400">
-              Selected for supply-chain readiness, complete product assets, clear official
-              pricing, and the shortest path to a verifiable transaction.
+              Selected for official supply-chain readiness, complete product assets, clear
+              verified factory pricing, and the shortest path to a verifiable transaction.
             </p>
+            <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
+              <div className="rounded-lg bg-white/5 p-2.5">
+                <div className="text-slate-500">Factory price</div>
+                <div className="mt-0.5 font-bold text-white">RMB 98</div>
+              </div>
+              <div className="rounded-lg bg-white/5 p-2.5">
+                <div className="text-slate-500">Size</div>
+                <div className="mt-0.5 font-bold text-white">EU 38–46</div>
+              </div>
+              <div className="rounded-lg bg-white/5 p-2.5">
+                <div className="text-slate-500">Material</div>
+                <div className="mt-0.5 font-bold text-white">Microfiber</div>
+              </div>
+            </div>
           </div>
         )}
 
