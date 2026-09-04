@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MessageCircle, X, Send, Sparkles } from "lucide-react";
 import { MiniProductCard } from "@/components/store/ProductCard";
 import type { Product } from "@/lib/types";
@@ -8,7 +9,10 @@ import type { Product } from "@/lib/types";
 interface Msg {
   role: "user" | "ai";
   text: string;
-  products?: Pick<Product, "slug" | "name" | "price" | "rating" | "imagePrompt">[];
+  /** 允许 id（SSE 新增）+ 其他展示字段 */
+  products?: (Pick<Product, "id" | "slug" | "name" | "price" | "rating" | "imagePrompt"> & {
+    image?: string;
+  })[];
 }
 
 const SUGGESTIONS = [
@@ -129,7 +133,21 @@ export function AgentWidget() {
                 >
                   <p className="whitespace-pre-line leading-relaxed">{m.text}</p>
                   {m.products?.map((p) => (
-                    <MiniProductCard key={p.slug} product={p} />
+                    <div key={p.slug} className="space-y-1.5">
+                      <MiniProductCard product={p} />
+                      {/* Agent 专属：推荐商品 → 跳素材工坊一键生成广告创意
+                          作为 MiniProductCard 的兄弟节点，避免嵌套 <Link>。
+                          不传 slug，传 studio 内部使用的 productId（= Product.id）。 */}
+                      {p.id && (
+                        <Link
+                          href={`/studio?productId=${encodeURIComponent(p.id)}`}
+                          className="group flex items-center justify-center gap-1.5 rounded-lg border border-dashed border-accent/40 bg-accent/5 px-2.5 py-1.5 text-[11px] font-bold text-accent-dark transition hover:border-accent hover:bg-accent hover:text-white"
+                        >
+                          <Sparkles size={12} className="transition group-hover:rotate-45" />
+                          Generate Ad Creative
+                        </Link>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>

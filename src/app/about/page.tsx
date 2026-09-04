@@ -62,10 +62,10 @@ export default function AboutPage() {
             OUR STORY
           </div>
           <div className="space-y-6 text-2xl font-semibold leading-relaxed md:text-3xl">
-            <p>{BRAND_STORY[0]}</p>
-            <p className="text-paper/70">{BRAND_STORY[1]}</p>
-            <p>{BRAND_STORY[2]}</p>
-            <p className="text-accent">{BRAND_STORY[3]}</p>
+            <p>We spent 18 years making boots for other labels.</p>
+            <p className="text-paper/70">Same lasts, same leather, same hands.</p>
+            <p>They put a logo on the box and doubled the price.</p>
+            <p className="text-accent">We put ours on it instead.</p>
           </div>
         </div>
       </section>
