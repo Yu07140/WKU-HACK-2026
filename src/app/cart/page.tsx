@@ -1,15 +1,46 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { Trash2, ArrowRight, ShoppingBag } from "lucide-react";
+import { Trash2, ArrowRight, ShoppingBag, Check, X } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
-import { formatUSD, ph } from "@/lib/utils";
+import { ph } from "@/lib/utils";
+import { displayNameString } from "@/lib/store/display";
+import { useCurrency } from "@/lib/store/currency";
 
 export default function CartPage() {
-  const { items, remove, updateQty, subtotal, count } = useCart();
+  const {
+    items,
+    remove,
+    updateQty,
+    subtotal,
+    count,
+    discount,
+    promoCode,
+    applyPromo,
+    removePromo,
+  } = useCart();
+  const { formatPrice } = useCurrency();
+  const [promoInput, setPromoInput] = useState("");
+  const [promoMsg, setPromoMsg] = useState<{ ok: boolean; text: string } | null>(null);
+
+  // $75 免运费 —— 按优惠前 subtotal 判断（保持原有业务规则不变）
   const shipping = subtotal >= 75 || subtotal === 0 ? 0 : 7.9;
+  const total = subtotal - discount + shipping;
+
+  function handleApply() {
+    const res = applyPromo(promoInput);
+    setPromoMsg({ ok: res.ok, text: res.msg ?? (res.ok ? "Applied" : "Invalid code") });
+    if (res.ok) setPromoInput("");
+    setTimeout(() => setPromoMsg(null), 3000);
+  }
+
+  function handleRemove() {
+    removePromo();
+    setPromoMsg(null);
+  }
 
   if (items.length === 0) {
     return (
@@ -38,7 +69,7 @@ export default function CartPage() {
             >
               <Link href={`/products/${it.slug}`}>
                 <ProductImage
-                  src={it.image ?? it.realImage}
+                  src={it.realImage ?? it.image}
                   prompt={`${it.imagePrompt}, product photo, cream background`}
                   alt={it.productName}
                   className="h-28 w-28 rounded-xl"
@@ -48,7 +79,7 @@ export default function CartPage() {
                 <div className="flex justify-between">
                   <div>
                     <Link href={`/products/${it.slug}`} className="font-bold hover:underline">
-                      {ph(it.productName)}
+                      {ph(displayNameString(it.productName))}
                     </Link>
                     <div className="mt-0.5 text-sm text-ink/55">
                       {it.color} · {it.sizeSystem ?? "US"} {it.size}
@@ -77,7 +108,7 @@ export default function CartPage() {
                       +
                     </button>
                   </div>
-                  <div className="font-black">{formatUSD(it.price * it.qty)}</div>
+                  <div className="font-black">{formatPrice(it.price * it.qty)}</div>
                 </div>
               </div>
             </div>
@@ -87,15 +118,84 @@ export default function CartPage() {
         {/* 汇总 */}
         <div className="h-fit rounded-2xl border border-ink/10 bg-white p-6">
           <h2 className="text-lg font-black">Summary</h2>
+
+          {/* 免运费进度提示 */}
+          {subtotal > 0 && subtotal < 75 && (
+            <div className="mt-4 rounded-xl bg-sage/10 px-3 py-2.5 text-xs text-sage">
+              Add <span className="font-bold">{formatPrice(75 - subtotal)}</span> more for free shipping!
+            </div>
+          )}
+          {subtotal >= 75 && items.length > 0 && (
+            <div className="mt-4 rounded-xl bg-sage/10 px-3 py-2.5 text-xs font-bold text-sage">
+              ✓ You've unlocked free shipping
+            </div>
+          )}
+
+          {/* Promo code */}
+          <div className="mt-4 border-b border-ink/10 pb-4">
+            <div className="mb-2 text-xs font-bold uppercase tracking-wider text-ink/50">
+              Promo code
+            </div>
+            {promoCode ? (
+              <div className="flex items-center justify-between rounded-xl bg-sage/10 px-3 py-2 text-sm">
+                <span className="flex items-center gap-1.5 font-bold text-sage">
+                  <Check size={15} /> {promoCode} applied
+                </span>
+                <button
+                  onClick={handleRemove}
+                  className="text-ink/40 hover:text-accent"
+                  aria-label="Remove promo code"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={promoInput}
+                  onChange={(e) => setPromoInput(e.target.value)}
+                  placeholder="Enter code"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleApply();
+                    }
+                  }}
+                  className="h-10 flex-1 rounded-xl border border-ink/20 bg-white px-3 text-sm outline-none focus:border-accent"
+                />
+                <Button size="sm" onClick={handleApply}>
+                  APPLY
+                </Button>
+              </div>
+            )}
+            {promoMsg && (
+              <p
+                className={`mt-2 text-xs ${
+                  promoMsg.ok ? "text-sage" : "text-accent"
+                }`}
+              >
+                {promoMsg.text}
+              </p>
+            )}
+          </div>
+
+          {/* 金额行 */}
           <div className="mt-4 space-y-2.5 text-sm">
-            <Row label="Subtotal" value={formatUSD(subtotal)} />
+            <Row label="Subtotal" value={formatPrice(subtotal)} />
+            {discount > 0 && (
+              <Row
+                label={`Discount (${promoCode})`}
+                value={`-${formatPrice(discount)}`}
+              />
+            )}
             <Row
               label="Shipping"
-              value={shipping === 0 ? "FREE" : formatUSD(shipping)}
+              value={shipping === 0 ? "FREE" : formatPrice(shipping)}
               accent={shipping === 0}
             />
             <div className="border-t border-ink/10 pt-2.5">
-              <Row label="Total" value={formatUSD(subtotal + shipping)} bold />
+              <Row label="Total" value={formatPrice(total)} bold />
             </div>
           </div>
           <Link href="/checkout">

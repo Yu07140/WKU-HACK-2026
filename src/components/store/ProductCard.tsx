@@ -1,10 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import type { Product } from "@/lib/types";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { TrendBadge } from "@/components/ui/badge";
 import { ph, formatUSD, PLACEHOLDER_MODE, cn } from "@/lib/utils";
+import { useCurrency } from "@/lib/store/currency";
+import { displayName, displayTagline } from "@/lib/store/display";
 
 export function ProductCard({ product, concept = false }: { product: Product; concept?: boolean }) {
+  const name = displayName(product);
+  const tagline = displayTagline(product);
+  const { formatPrice } = useCurrency();
   return (
     <Link
       href={concept ? "#" : `/products/${product.slug}`}
@@ -15,7 +22,7 @@ export function ProductCard({ product, concept = false }: { product: Product; co
         <ProductImage
           src={product.heroImage ?? product.image ?? product.colors.find((c) => c.realImage)?.realImage ?? product.colors.find((c) => c.image)?.image}
           prompt={product.imagePrompt + ", professional e-commerce product photography, soft cream studio background, soft lighting"}
-          alt={product.name}
+          alt={name}
           className="aspect-square transition duration-500 group-hover:scale-[1.03]"
         />
         {!concept && (
@@ -35,7 +42,7 @@ export function ProductCard({ product, concept = false }: { product: Product; co
           !PLACEHOLDER_MODE &&
           product.compareAt && (
             <div className="absolute right-3 top-3 rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-white">
-              SAVE {formatUSD(product.compareAt - product.price)}
+              SAVE {formatPrice(product.compareAt - product.price)}
             </div>
           )
         )}
@@ -55,17 +62,17 @@ export function ProductCard({ product, concept = false }: { product: Product; co
       </div>
       <div className="mt-3 flex items-start justify-between gap-2">
         <div>
-          <h3 className="font-bold leading-tight">{ph(product.name)}</h3>
-          {!concept && <p className="mt-0.5 text-sm text-ink/55">{product.tagline}</p>}
+          <h3 className="font-bold leading-tight">{ph(name)}</h3>
+          {!concept && <p className="mt-0.5 text-sm text-ink/55">{tagline}</p>}
         </div>
         {!concept && (
           <div className="text-right">
-            <div className="font-bold">{formatUSD(product.price)}</div>
+            <div className="font-bold">{formatPrice(product.price)}</div>
             {product.demoPricing && (
               <div className="text-[11px] text-ink/40">TBC</div>
             )}
             {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
-              <div className="text-xs text-ink/40 line-through">{formatUSD(product.compareAt)}</div>
+              <div className="text-xs text-ink/40 line-through">{formatPrice(product.compareAt)}</div>
             )}
           </div>
         )}
