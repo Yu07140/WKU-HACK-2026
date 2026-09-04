@@ -112,32 +112,34 @@ export default function ProofPage() {
                   <ProductImage
                     src={hero.heroImage ?? hero.image}
                     prompt={hero.imagePrompt}
-                    alt="Factory original"
+                    alt="Factory Original"
                     size="square"
                     className="h-full w-full"
                   />
                 )}
               </div>
               <div className="mt-2 text-center text-xs font-bold">FACTORY ORIGINAL</div>
+              <div className="mt-0.5 text-center text-[11px] text-ink/50">SKU 14534-H · Real supplier photography</div>
             </div>
             <div>
               <div className="aspect-square overflow-hidden rounded-2xl border border-accent/30 bg-cream">
                 {hero && (
                   <ProductImage
-                    src={hero.heroImage ?? hero.image}
+                    src="/creative/14534-h/commute-campaign.jpg"
                     prompt={hero.creativePresets?.ad ?? hero.imagePrompt}
-                    alt="AI creative"
+                    alt="AI-Assisted Campaign Creative"
                     size="square"
                     className="h-full w-full"
                   />
                 )}
               </div>
-              <div className="mt-2 text-center text-xs font-bold text-accent-dark">AI-GENERATED CREATIVE</div>
+              <div className="mt-2 text-center text-xs font-bold text-accent-dark">AI-ASSISTED CAMPAIGN CREATIVE</div>
+              <div className="mt-0.5 text-center text-[11px] text-ink/50">Concept Visual</div>
             </div>
           </div>
           <p className="mt-4 text-xs text-ink/55 leading-relaxed">
-            The product reference is factory photography. AI is used for campaign concept
-            generation and workflow acceleration — not to invent a sellable SKU.
+            The factory product remains the source of truth. AI accelerates background,
+            composition and campaign exploration — not the sellable product itself.
           </p>
         </div>
 

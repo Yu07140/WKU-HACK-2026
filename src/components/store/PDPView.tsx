@@ -353,6 +353,7 @@ export function PDPView({ product }: { product: Product }) {
             </dl>
           </div>
         </div>
+<<<<<<< HEAD
 
         {/* 服务承诺 — 4 项：免运费 + 30 天退货 + 真实交期 + 关税 */}
         <div className="mt-8 grid grid-cols-2 gap-3 rounded-2xl border border-ink/10 bg-white p-4 text-center text-xs font-semibold text-ink/70 sm:grid-cols-4">
@@ -372,6 +373,8 @@ export function PDPView({ product }: { product: Product }) {
             <ShoppingBag size={18} className="text-accent" /> DDU — duties may apply
           </div>
         </div>
+=======
+>>>>>>> e57e828e9b80e22241bcaaa0503d6ec4d2581390
       </div>
     </div>
   );

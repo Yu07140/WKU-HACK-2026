@@ -18,11 +18,8 @@ export function SiteFooter() {
         <FooterCol
           title="Shop"
           links={[
-            ["Running", "/products?cat=running"],
-            ["Lifestyle", "/products?cat=lifestyle"],
-            ["Canvas", "/products?cat=canvas"],
-            ["Sandals", "/products?cat=sandals"],
-            ["New Arrivals", "/products"],
+            ["The 14534-H Boot", "/products/mono-boot"],
+            ["Size Guide", "/size-guide"],
           ]}
         />
         <FooterCol

@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { MessageCircle, X, Send, Sparkles } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { MessageCircle, X, Send } from "lucide-react";
 import { MiniProductCard } from "@/components/store/ProductCard";
 import type { Product } from "@/lib/types";
+import { AGENT_PERSONA, type Lang } from "@/lib/ai/agent";
+import { aiImageUrl } from "@/lib/ai/image";
 
 interface Msg {
   role: "user" | "ai";
@@ -15,39 +17,101 @@ interface Msg {
   })[];
 }
 
-const SUGGESTIONS = [
-  "Show me your best-selling boots",
-  "What size should I get?",
-  "Is it leather?",
-  "Any discount for first order?",
-];
+/** AI 导购头像（文生图） */
+const AVATAR_URL = aiImageUrl(
+  "friendly young female AI shopping assistant avatar, warm smile, modern minimal style, soft studio lighting, circular portrait",
+  "square"
+);
 
-const WELCOME =
-  "Hey — need help choosing a size or styling the boot? I'm here if you want a hand.";
+/** 聊天记录 localStorage 持久化 key */
+const STORAGE_KEY = "stryde-agent-msgs";
 
 export function AgentWidget() {
+  // 首渲染固定英文，避免 SSR/客户端 hydration mismatch；挂载后再按浏览器语言切换
+  const [lang, setLang] = useState<Lang>("en");
   const [open, setOpen] = useState(false);
-  const [msgs, setMsgs] = useState<Msg[]>([{ role: "ai", text: WELCOME }]);
+  const [msgs, setMsgs] = useState<Msg[]>([{ role: "ai", text: AGENT_PERSONA.welcome }]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const bodyRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const interactedRef = useRef(false);
+  const proactiveSentRef = useRef(false);
+
+  /* 挂载后：按浏览器语言切换 + 恢复本地聊天记录（仅客户端执行，避免 hydration 不一致） */
+  useEffect(() => {
+    const browserLang: Lang =
+      typeof navigator !== "undefined" && /^zh/i.test(navigator.language) ? "zh" : "en";
+    setLang(browserLang);
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved) as Msg[];
+        if (Array.isArray(parsed) && parsed.length) {
+          setMsgs(parsed);
+          return;
+        }
+      }
+    } catch {
+      /* 持久化失败不影响功能 */
+    }
+    // 无历史记录时，把默认欢迎语替换成浏览器语言版本
+    setMsgs([
+      { role: "ai", text: browserLang === "zh" ? AGENT_PERSONA.welcomeZh : AGENT_PERSONA.welcome },
+    ]);
+  }, []);
+
+  /* 聊天记录持久化 */
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs));
+    } catch {
+      /* 存储满/隐私模式下静默失败 */
+    }
+  }, [msgs]);
 
   useEffect(() => {
     bodyRef.current?.scrollTo({ top: bodyRef.current.scrollHeight, behavior: "smooth" });
   }, [msgs, typing, open]);
 
+  /* 打开面板后 30 秒无交互 → 主动搭话（只触发一次） */
+  useEffect(() => {
+    if (!open) return;
+    if (interactedRef.current || proactiveSentRef.current) return;
+    timerRef.current = setTimeout(() => {
+      if (interactedRef.current || proactiveSentRef.current) return;
+      proactiveSentRef.current = true;
+      setMsgs((m) => [
+        ...m,
+        {
+          role: "ai",
+          text: lang === "zh" ? AGENT_PERSONA.proactiveZh : AGENT_PERSONA.proactive,
+        },
+      ]);
+    }, 30_000);
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [open, lang]);
+
   async function send(text: string) {
     const content = text.trim();
     if (!content || typing) return;
+    interactedRef.current = true;
+    if (timerRef.current) clearTimeout(timerRef.current);
     setInput("");
     setMsgs((m) => [...m, { role: "user", text: content }]);
     setTyping(true);
+
+    // 多轮上下文：取最近一条带商品卡的 AI 回复，把 slug 列表传给后端
+    const lastRecs = [...msgs].reverse().find((m) => m.role === "ai" && m.products?.length);
+    const lastRecommendedSlugs = lastRecs?.products?.map((p) => p.slug) ?? [];
 
     try {
       const res = await fetch("/api/agent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: content }),
+        body: JSON.stringify({ message: content, lastRecommendedSlugs }),
       });
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
@@ -87,11 +151,22 @@ export function AgentWidget() {
         });
       }
     } catch {
-      setMsgs((m) => [...m, { role: "ai", text: "Sorry, the assistant is unavailable right now. Please try again shortly." }]);
+      setMsgs((m) => [
+        ...m,
+        {
+          role: "ai",
+          text:
+            lang === "zh"
+              ? "抱歉，助手暂时开小差了，请稍后再试一下～"
+              : "Sorry, the assistant is unavailable right now. Please try again shortly.",
+        },
+      ]);
     } finally {
       setTyping(false);
     }
   }
+
+  const suggestions = lang === "zh" ? AGENT_PERSONA.suggestionsZh : AGENT_PERSONA.suggestions;
 
   return (
     <>
@@ -108,14 +183,17 @@ export function AgentWidget() {
         <div className="fixed bottom-24 right-6 z-50 flex h-[540px] w-[min(92vw,380px)] flex-col overflow-hidden rounded-3xl border border-ink/10 bg-white shadow-2xl animate-fade-up">
           {/* 头部 */}
           <div className="flex items-center gap-3 bg-ink px-5 py-4 text-paper">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-accent">
-              <Sparkles size={17} />
-            </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={AVATAR_URL}
+              alt={AGENT_PERSONA.name}
+              className="h-9 w-9 rounded-full border border-paper/20 object-cover"
+            />
             <div>
-              <div className="text-sm font-black">STRYDE Assistant</div>
+              <div className="text-sm font-black">{AGENT_PERSONA.headerTitle}</div>
               <div className="flex items-center gap-1.5 text-xs text-paper/60">
                 <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
-                Online · replies instantly
+                {lang === "zh" ? AGENT_PERSONA.headerStatusZh : AGENT_PERSONA.headerStatus}
               </div>
             </div>
           </div>
@@ -143,8 +221,7 @@ export function AgentWidget() {
                           href={`/studio?productId=${encodeURIComponent(p.id)}`}
                           className="group flex items-center justify-center gap-1.5 rounded-lg border border-dashed border-accent/40 bg-accent/5 px-2.5 py-1.5 text-[11px] font-bold text-accent-dark transition hover:border-accent hover:bg-accent hover:text-white"
                         >
-                          <Sparkles size={12} className="transition group-hover:rotate-45" />
-                          Generate Ad Creative
+                          ✨ Generate Ad Creative
                         </Link>
                       )}
                     </div>
@@ -168,7 +245,7 @@ export function AgentWidget() {
           {/* 建议问题 */}
           {msgs.length <= 1 && (
             <div className="flex flex-wrap gap-1.5 border-t border-ink/10 bg-white px-3 pt-3">
-              {SUGGESTIONS.map((s) => (
+              {suggestions.map((s) => (
                 <button
                   key={s}
                   onClick={() => send(s)}
@@ -191,7 +268,7 @@ export function AgentWidget() {
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about size, styling, materials…"
+              placeholder={lang === "zh" ? AGENT_PERSONA.inputPlaceholderZh : AGENT_PERSONA.inputPlaceholder}
               className="h-10 flex-1 rounded-full bg-paper px-4 text-sm outline-none placeholder:text-ink/40"
             />
             <button
