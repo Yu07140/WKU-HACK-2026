@@ -47,7 +47,7 @@ export const IMAGE_STYLES: { id: string; label: string; suffix: string }[] = [
   },
   {
     id: "ad",
-    label: "Ad 广告海报",
+    label: "Ad Poster 广告海报",
     suffix:
       "bold advertising campaign poster, high contrast studio lighting, floating product with dynamic energy waves, vibrant gradient background in orange and cream, premium sportswear ad style",
   },

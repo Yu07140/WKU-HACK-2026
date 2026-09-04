@@ -18,8 +18,13 @@ export interface ProductColor {
   hex: string;
   /** 该配色对应的 AIGC 出图 prompt（素材工坊用） */
   imagePrompt: string;
+<<<<<<< Updated upstream
   /** 真实货盘照片（public 目录下路径），无则走 AIGC 占位 */
   image?: string;
+=======
+  /** 真实供应商照片（可选）。存在时前台优先展示实拍图 */
+  realImage?: string;
+>>>>>>> Stashed changes
 }
 
 export interface Product {
@@ -28,6 +33,7 @@ export interface Product {
   name: string;
   tagline: string;
   category: Category;
+<<<<<<< Updated upstream
   /** 工厂货盘型号（如 5910-5，来自组委会货盘 PDF） */
   model?: string;
   /** 工艺（如 Cold Bonding 冷粘） */
@@ -36,6 +42,10 @@ export interface Product {
   image?: string;
   /** 真实货盘图库（主图+正面图…） */
   images?: string[];
+=======
+  /** 供应商原始 SKU（真实货盘商品必填，如 "11295-J"） */
+  sku?: string;
+>>>>>>> Stashed changes
   /** 零售价（USD，面向海外消费者） */
   price: number;
   compareAt?: number;
@@ -48,6 +58,14 @@ export interface Product {
   colors: ProductColor[];
   /** 美码 US sizes */
   sizes: number[];
+  /** 尺码制式，缺省为美码 US；真实供应商货盘可能为欧码 EU */
+  sizeSystem?: "US" | "EU";
+  /** 真实供应商主图（白底实拍，可选）。存在时前台优先展示实拍图 */
+  heroImage?: string;
+  /** 定价未经核实，仅为演示价（前台显著标注 Demo Pricing） */
+  demoPricing?: boolean;
+  /** 素材工坊专用：按风格 id 预置的产品级出图 prompt（可选） */
+  creativePresets?: Record<string, string>;
   material: string;
   weight: string;
   description: string;
@@ -122,11 +140,18 @@ export interface CartItem {
   slug: string;
   color: string;
   size: number;
+  /** 尺码制式（US/EU），缺省 US */
+  sizeSystem?: "US" | "EU";
   price: number;
   qty: number;
   imagePrompt: string;
+<<<<<<< Updated upstream
   /** 真实货盘照片（可选） */
   image?: string;
   /** 尺码体系（与 Product.sizeSystem 对应，缺省 US） */
   sizeSystem?: "US" | "EU";
+=======
+  /** 真实商品图（可选），购物车/结账优先展示 */
+  realImage?: string;
+>>>>>>> Stashed changes
 }

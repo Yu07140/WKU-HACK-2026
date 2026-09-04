@@ -10,7 +10,12 @@ import type { Product } from "@/lib/types";
  * - 新平台 Instagram；新角度 style / versatility / detail
  * - CopyResult 扩展可选字段 hook / primaryCopy / ctaVariants（向后兼容）
  * - 真实供应商 SKU（11295-J / 14534-H / 53125-J）使用专属文案模板
+<<<<<<< Updated upstream
  * - 通用模板措辞与 Lanhe 货盘（高帮靴）对齐
+=======
+ * - 话术合规：不使用医疗舒适、防水、环保、真皮、实验室测试、
+ *   48 小时发货等未经组委会/供应商验证的声明
+>>>>>>> Stashed changes
  * ------------------------------------------------------------------ */
 
 export interface CopyResult {
@@ -75,9 +80,15 @@ const HEADLINES: Record<Platform, Record<Angle, (p: Product) => string>> = {
   Google: {
     comfort: (p) => `${p.name} — All-Day Comfort High-Top Boots`,
     value: (p) => `Buy ${p.name} Direct From Factory — $${p.price}`,
+<<<<<<< Updated upstream
     trend: (p) => `${p.name} | Trending Street Boots 2026`,
     performance: (p) => `${p.name} — PU Leather Boots, Factory Direct, $${p.price}`,
     style: (p) => `${p.name} — Street Style Boots`,
+=======
+    trend: (p) => `${p.name} | Trending Retro Sneakers 2026`,
+    performance: (p) => `${p.name} — Performance Running Shoes, $${p.price}`,
+    style: (p) => `${p.name} — Street Style Boots & Sneakers`,
+>>>>>>> Stashed changes
     versatility: (p) => `${p.name} — Versatile Everyday Footwear`,
     detail: (p) => `${p.name} — Craft & Detail Overview`,
   },
@@ -86,7 +97,11 @@ const HEADLINES: Record<Platform, Record<Angle, (p: Product) => string>> = {
     value: (p) => `Factory direct. $${p.price}. No middlemen.`,
     trend: (p) => `The pair everyone saves to their moodboard: ${p.name}.`,
     performance: (p) => `Engineered like $200 shoes. Priced at $${p.price}.`,
+<<<<<<< Updated upstream
     style: (p) => `Make the boot the outfit. ${p.name}.`,
+=======
+    style: (p) => `Make the shoe the outfit. ${p.name}.`,
+>>>>>>> Stashed changes
     versatility: (p) => `One pair, endless styling. ${p.name}.`,
     detail: (p) => `Zoom in. ${p.name} is all in the details.`,
   },
@@ -100,13 +115,21 @@ const BODY: Record<Angle, (p: Product) => string> = {
   trend: (p) =>
     `The silhouette everyone's pairing with baggy jeans this season. ${p.features[2] ?? p.features[0]}. Limited first drop — restock sells out in 9 days.`,
   performance: (p) =>
+<<<<<<< Updated upstream
     `${p.features[0]}. ${p.features[1] ?? ""}. ${p.weight} on your feet, cold-bonded construction.`,
+=======
+    `${p.features[0]}. ${p.features[1] ?? ""}. Built with ${p.weight} on your feet.`,
+>>>>>>> Stashed changes
   style: (p) =>
     `${p.tagline.replace(/\.$/, "")} — ${p.features[0]?.toLowerCase() ?? "a statement silhouette"} that turns a simple outfit into the whole look.`,
   versatility: (p) =>
     `Dress it up, dress it down. ${p.name} works with tailoring, denim and everything between — one pair, multiple moods.`,
   detail: (p) =>
+<<<<<<< Updated upstream
     `${p.features.map((f) => f.replace(/ \(supplier spec\)/, "")).join(" · ")}. Supplier SKU: ${p.sku ?? p.model ?? p.id.toUpperCase()}.`,
+=======
+    `${p.features.map((f) => f.replace(/ \(supplier spec\)/, "")).join(" · ")}. Supplier SKU: ${p.sku ?? p.id.toUpperCase()}.`,
+>>>>>>> Stashed changes
 };
 
 const CTAS: Record<Platform, string> = {
@@ -125,15 +148,23 @@ const CTA_VARIANTS: Record<Platform, string[]> = {
 };
 
 const TAGS: Record<Platform, string[]> = {
+<<<<<<< Updated upstream
   Meta: ["#STRYDE", "#DTC", "#boots", "#streetwear"],
   TikTok: ["#STRYDE", "#boots", "#shoecollection", "#fyp", "#factorydirect"],
+=======
+  Meta: ["#STRYDE", "#DTC", "#footwear"],
+  TikTok: ["#STRYDE", "#shoes", "#sneakerhead", "#fyp", "#factorydirect"],
+>>>>>>> Stashed changes
   Google: ["#STRYDE"],
   Instagram: ["#STRYDE", "#ootd", "#footweardaily", "#styleinspo"],
 };
 
 /* ------------------------------------------------------------------
  * 真实供应商 SKU 专属文案（源自组委会确认的 COPY EXAMPLES）
+<<<<<<< Updated upstream
  * 键为供应商货号（Product.sku）
+=======
+>>>>>>> Stashed changes
  * ------------------------------------------------------------------ */
 
 interface BootCopyBase {
@@ -148,7 +179,11 @@ interface BootCopyBase {
 }
 
 const BOOT_COPY: Record<string, BootCopyBase> = {
+<<<<<<< Updated upstream
   "11295-J": {
+=======
+  "boot-11295-j": {
+>>>>>>> Stashed changes
     hook: "Gloss after dark.",
     primary:
       "A chunky lace-up silhouette built to turn a simple outfit into the whole look.",
@@ -160,7 +195,11 @@ const BOOT_COPY: Record<string, BootCopyBase> = {
     versatilityHeadline: "Pick your mood.",
     versatilityCta: "See the colors",
   },
+<<<<<<< Updated upstream
   "14534-H": {
+=======
+  "boot-14534-h": {
+>>>>>>> Stashed changes
     hook: "Quiet shape. Sharp detail.",
     primary:
       "A clean black ankle boot finished with a contrast stitch detail for a look that stays simple without disappearing.",
@@ -168,7 +207,11 @@ const BOOT_COPY: Record<string, BootCopyBase> = {
     cta: "View the boot",
     hashtags: ["#STRYDE", "#MinimalStyle", "#BlackBoots", "#MensStyle", "#EverydayUniform"],
   },
+<<<<<<< Updated upstream
   "53125-J": {
+=======
+  "boot-53125-j": {
+>>>>>>> Stashed changes
     hook: "Not built to blend in.",
     primary:
       "A sculptural platform silhouette, glossy black finish, and graphic sole details made for the outfit that needs a focal point.",
@@ -191,7 +234,11 @@ export function generateCopy(
   platform: Platform,
   angle: Angle
 ): CopyResult {
+<<<<<<< Updated upstream
   const boot = product.sku ? BOOT_COPY[product.sku] : undefined;
+=======
+  const boot = product.sku ? BOOT_COPY[product.id] : undefined;
+>>>>>>> Stashed changes
 
   if (boot) {
     // ---- 真实供应商 SKU：使用确认过的专属文案 ----
@@ -219,12 +266,27 @@ export function generateCopy(
     };
   }
 
+<<<<<<< Updated upstream
   // ---- 通用模板（Lanhe 货盘 + 新角度兜底） ----
+=======
+  // ---- 通用模板（原有 8 个演示货盘 + 新角度兜底） ----
+>>>>>>> Stashed changes
   return {
     headline: HEADLINES[platform][angle](product),
     body: BODY[angle](product),
     cta: CTAS[platform],
+<<<<<<< Updated upstream
     hashtags: TAGS[platform],
+=======
+    hashtags:
+      platform === "TikTok"
+        ? TAGS.TikTok
+        : platform === "Instagram"
+          ? TAGS.Instagram
+          : platform === "Google"
+            ? TAGS.Google
+            : TAGS.Meta,
+>>>>>>> Stashed changes
     hook: HEADLINES[platform][angle](product),
     primaryCopy: BODY[angle](product),
     ctaVariants: CTA_VARIANTS[platform],

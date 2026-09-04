@@ -68,7 +68,11 @@ export function CreativeMatrix() {
           productId: product.id,
           productName: product.name,
           sku: product.sku,
+<<<<<<< Updated upstream
           refImage: product.image ?? product.colors[0]?.image,
+=======
+          refImage: product.heroImage ?? product.colors.find((c) => c.realImage)?.realImage,
+>>>>>>> Stashed changes
           url,
           prompt: `${product.creativePresets?.studio ?? product.imagePrompt}, ${pf.visual}`,
           styleId: "studio",

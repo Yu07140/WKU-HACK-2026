@@ -15,6 +15,7 @@ export function ProductCard({ product }: { product: Product }) {
           src={product.image}
           prompt={product.imagePrompt + ", professional e-commerce product photography, soft cream studio background, soft lighting"}
           alt={product.name}
+          src={product.heroImage ?? product.colors.find((c) => c.realImage)?.realImage}
           className="aspect-square transition duration-500 group-hover:scale-[1.03]"
         />
         <div className="absolute left-3 top-3">

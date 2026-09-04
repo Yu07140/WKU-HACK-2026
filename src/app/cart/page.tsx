@@ -41,6 +41,7 @@ export default function CartPage() {
                   src={it.image}
                   prompt={`${it.imagePrompt}, product photo, cream background`}
                   alt={it.productName}
+                  src={it.realImage}
                   className="h-28 w-28 rounded-xl"
                 />
               </Link>
