@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { Product } from "@/lib/types";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { TrendBadge } from "@/components/ui/badge";
-import { ph, formatUSD, PLACEHOLDER_MODE, cn } from "@/lib/utils";
+import { ph, PLACEHOLDER_MODE, cn } from "@/lib/utils";
 import { useCurrency } from "@/lib/store/currency";
 import { displayName, displayTagline } from "@/lib/store/display";
 
@@ -87,6 +87,7 @@ export function MiniProductCard({
 }: {
   product: Pick<Product, "slug" | "name" | "price" | "imagePrompt"> & { image?: string };
 }) {
+  const { formatPrice } = useCurrency();
   return (
     <Link
       href={`/products/${product.slug}`}
@@ -100,7 +101,7 @@ export function MiniProductCard({
       />
       <div className="min-w-0">
         <div className="truncate text-sm font-bold">{ph(product.name)}</div>
-        <div className="text-xs text-ink/50">{formatUSD(product.price)}</div>
+        <div className="text-xs text-ink/50">{formatPrice(product.price)}</div>
       </div>
     </Link>
   );

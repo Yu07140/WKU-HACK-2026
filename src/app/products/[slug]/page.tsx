@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { getProduct, PRODUCTS } from "@/lib/data/catalog";
 import { PDPView } from "@/components/store/PDPView";
+import { ProductCard } from "@/components/store/ProductCard";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { ReviewsSection } from "@/components/store/ReviewsSection";
 import { ph } from "@/lib/utils";
@@ -43,6 +44,9 @@ export default async function ProductPage({
   if (!product) notFound();
 
   const name = displayName(product);
+  const related = PRODUCTS.filter(
+    (p) => p.category === product.category && p.id !== product.id
+  ).slice(0, 4);
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
@@ -55,8 +59,6 @@ export default async function ProductPage({
       </nav>
 
       <PDPView product={product} />
-
-      <ReviewsSection product={product} />
 
       {/* COMPLETE THE LOOK — styling inspiration using 14534-H only (14534-H PDP only) */}
       {product.sku === "14534-H" && (
@@ -90,6 +92,20 @@ export default async function ProductPage({
           </div>
         </section>
       )}
+
+      {/* RELATED — same-category styles */}
+      {related.length > 0 && (
+        <section className="mt-20">
+          <h2 className="mb-8 text-2xl font-black">You May Also Like</h2>
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+            {related.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      <ReviewsSection product={product} />
     </div>
   );
 }
