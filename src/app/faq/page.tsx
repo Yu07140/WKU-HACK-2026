@@ -62,8 +62,8 @@ const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
         a: "14534-H is supplied in EU sizes 38–46. Use the measurement guide and confirm your size before ordering.",
       },
       {
-        q: "Can I wash them?",
-        a: "Spot clean with a damp cloth and mild soap. We don't recommend machine-washing or soaking footwear.",
+        q: "How do I care for the boots?",
+        a: "Product-specific care guidance is pending supplier confirmation. Avoid publishing product-specific cleaning instructions until the supplier provides an approved care method.",
       },
     ],
   },
