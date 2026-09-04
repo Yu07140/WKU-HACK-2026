@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Check, Truck, RotateCcw, Star, Factory, ShoppingBag } from "lucide-react";
+import { Check, Truck, RotateCcw, Star, Factory, ShoppingBag, Warehouse } from "lucide-react";
 import type { Product } from "@/lib/types";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
 import { TrendBadge } from "@/components/ui/badge";
 import { useCart } from "@/lib/store/cart";
 import { cn, ph, formatUSD, PLACEHOLDER_MODE } from "@/lib/utils";
+import { EU_SIZES, WAREHOUSE, findStockRow } from "@/lib/data/stock";
 
 export function PDPView({ product }: { product: Product }) {
   const { add } = useCart();
@@ -19,6 +20,8 @@ export function PDPView({ product }: { product: Product }) {
 
   const color = product.colors[colorIdx];
   const imagePrompt = `${color.imagePrompt}, professional e-commerce product photography, soft cream studio background, soft lighting, centered`;
+  const colorImage = color.image ?? product.image;
+  const stockRow = findStockRow(product.model, color.name);
 
   function handleAdd() {
     if (!size) return;
@@ -31,6 +34,7 @@ export function PDPView({ product }: { product: Product }) {
       price: product.price,
       qty,
       imagePrompt: color.imagePrompt,
+      image: colorImage,
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
@@ -41,6 +45,7 @@ export function PDPView({ product }: { product: Product }) {
       {/* 画廊 */}
       <div>
         <ProductImage
+          src={colorImage}
           prompt={imagePrompt}
           alt={`${product.name} ${color.name}`}
           size="square_hd"
@@ -210,6 +215,43 @@ export function PDPView({ product }: { product: Product }) {
             <span>起订量 MOQ：{product.moq} 双</span>
             <span>打样周期：{product.leadTimeDays} 天</span>
           </div>
+
+          {stockRow && (
+            <div className="mt-4 border-t border-ink/10 pt-4">
+              <div className="mb-2 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5 font-bold">
+                  <Warehouse size={15} className="text-accent" />
+                  {WAREHOUSE.nameZh}现货 · {stockRow.total} 双
+                </div>
+                <Link
+                  href="/stock"
+                  className="text-xs font-semibold text-accent hover:underline"
+                >
+                  完整库存表 →
+                </Link>
+              </div>
+              <div className="grid grid-cols-6 gap-1.5 sm:grid-cols-11">
+                {stockRow.sizes.map((qty, i) => (
+                  <div
+                    key={i}
+                    className={cn(
+                      "rounded-lg px-1 py-1.5 text-center",
+                      qty > 0 ? "bg-white" : "bg-white/40 text-ink/30"
+                    )}
+                    title={`EU ${EU_SIZES[i]}：${qty} 双`}
+                  >
+                    <div className="text-[10px] font-semibold text-ink/50">
+                      {EU_SIZES[i]}
+                    </div>
+                    <div className="text-xs font-bold">{qty > 0 ? qty : "—"}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-1.5 text-[11px] text-ink/45">
+                EU 35-45 分码数量（双），售完即止 · 48h 直发
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

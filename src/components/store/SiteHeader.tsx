@@ -1,14 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingBag, Sparkles, LayoutDashboard } from "lucide-react";
+import { ShoppingBag, Sparkles, LayoutDashboard, Warehouse } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { BRAND } from "@/lib/data/brand";
 
 const NAV = [
   { href: "/products", label: "Shop All" },
-  { href: "/products?cat=running", label: "Running" },
-  { href: "/products?cat=lifestyle", label: "Lifestyle" },
+  { href: "/stock", label: "Warehouse Stock", icon: Warehouse },
   { href: "/studio", label: "AI Studio", icon: Sparkles },
 ];
 
