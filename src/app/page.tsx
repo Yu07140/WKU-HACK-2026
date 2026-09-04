@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Award, Factory, RotateCcw } from "lucide-react";
+import { ArrowRight, Award, Factory, RotateCcw, Star, Truck } from "lucide-react";
 import { PRODUCTS, getProduct } from "@/lib/data/catalog";
 import { BRAND } from "@/lib/data/brand";
 import { ProductCard } from "@/components/store/ProductCard";
@@ -30,13 +30,8 @@ export default function HomePage() {
               <span className="text-accent">Stand Out.</span>
             </h1>
             <p className="mt-6 max-w-md text-lg text-ink/65">
-<<<<<<< HEAD
               Bold silhouettes built by hands with 18 years of shoemaking experience —
               factory-direct, thoughtfully priced, and made to turn heads.
-=======
-              {BRAND.name} 把鞋厂产线直接开到你面前——同样的产线、同样的材料，
-              一半的价格。AI 设计、AI 素材、工厂直达。
->>>>>>> fa8ecd6c6d0d2a5b50c573f5b52f368f523f5a03
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-3">
               <Link href="/products">
@@ -51,8 +46,6 @@ export default function HomePage() {
                 OUR STORY
               </Link>
             </div>
-<<<<<<< HEAD
-=======
             <div className="mt-10 flex items-center gap-8 text-sm text-ink/60">
               <div className="flex items-center gap-2">
                 <Truck size={17} className="text-accent" /> Free shipping over $75
@@ -67,7 +60,6 @@ export default function HomePage() {
                 </span>
               </div>
             </div>
->>>>>>> fa8ecd6c6d0d2a5b50c573f5b52f368f523f5a03
           </div>
 
           <div className="relative">
@@ -181,14 +173,10 @@ export default function HomePage() {
                 thoughtful construction, and fewer layers between the factory and your closet.
               </p>
             </div>
-<<<<<<< HEAD
-            <Link href="/about">
-=======
             <p className="mt-4 text-xs text-paper/40">
               品牌故事为黑客松演示叙事（demo narrative）。
             </p>
-            <Link href="/admin">
->>>>>>> fa8ecd6c6d0d2a5b50c573f5b52f368f523f5a03
+            <Link href="/about">
               <Button variant="primary" size="lg" className="mt-8">
                 DISCOVER OUR STORY <ArrowRight size={16} />
               </Button>
