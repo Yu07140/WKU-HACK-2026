@@ -81,8 +81,24 @@ export function getReturnInfo(): string {
   );
 }
 
-export function agentReply(userMessage: string): AgentReply {
+export interface AgentReplyContext {
+  lastProducts?: Product[];
+}
+
+export function agentReply(userMessage: string, ctx?: AgentReplyContext): AgentReply {
   const q = userMessage.toLowerCase();
+  const lastProducts = ctx?.lastProducts ?? [];
+
+  // 多轮指代：用户问 "which one / 那双 / 哪个" 且有上一轮推荐，直接回传
+  if (/which one|that one|the one|那双|那个|哪个|this one/.test(q) && lastProducts.length) {
+    const list = lastProducts
+      .map((p) => `• ${ph(p.name)} — ${formatUSD(p.price)}：${p.tagline}`)
+      .join("\n");
+    return {
+      text: `你上一轮看的这 ${lastProducts.length} 双：\n${list}\n\n需要我详细介绍其中哪一双吗？`,
+      products: lastProducts,
+    };
+  }
 
   // 真皮相关：诚实回答
   if (/leather|真皮|皮的|是不是皮|genuine leather|real leather/.test(q)) {
