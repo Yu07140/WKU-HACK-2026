@@ -3,18 +3,11 @@ import { aiImageUrl, type ImageSize } from "@/lib/ai/image";
 import { cn, PLACEHOLDER_MODE } from "@/lib/utils";
 
 /**
-<<<<<<< Updated upstream
- * 统一商品图组件（优先级）
- * 1. src：真实货盘照片（public 目录路径）—— 当前 Lanhe 货盘已接入
- * 2. 占位模式（PLACEHOLDER_MODE=true 且无 src）：灰色块 + 感叹号
- * 3. prompt：AIGC 文生图（素材工坊/营销物料）
-=======
- * 统一商品图组件
- * - 传入 src（真实供应商实拍图）时直接渲染实拍图，优先级最高
- * - 占位模式（PLACEHOLDER_MODE=true）：灰色块 + 感叹号，不请求任何图片
- * - 接入真实货盘后改为 false：其余图片走 AIGC 文生图
- * 模块 A/B 换图床/换模型时只改 lib/ai/image.ts
->>>>>>> Stashed changes
+ * 统一商品图组件（两边版本并集，优先级从高到低）：
+ * 1. src：真实货盘/供应商实拍图（本地路径或图床 URL）→ 直接渲染
+ * 2. 占位模式（PLACEHOLDER_MODE 且没有 src）：灰色块 + 感叹号，不请求任何图片
+ * 3. 否则走 prompt → AIGC 文生图（素材工坊/营销物料）
+ * 换图床/换模型时只改 lib/ai/image.ts
  */
 export function ProductImage({
   src,
@@ -23,19 +16,17 @@ export function ProductImage({
   size = "square",
   className,
   imgClassName,
-  src,
 }: {
-  /** 真实图片地址（/catalog/... 本地图或图床 URL） */
+  /** 真实图片地址（/catalog/... 本地图或图床 URL）；存在时优先级最高 */
   src?: string;
+  /** AIGC 文生图 prompt（作为 fallback 用） */
   prompt?: string;
   alt: string;
   size?: ImageSize;
   className?: string;
   imgClassName?: string;
-  /** 真实商品图路径（可选）。存在时直接展示，不走路 AIGC */
-  src?: string;
 }) {
-<<<<<<< Updated upstream
+  // 1) 有真实图 → 直接渲染
   if (src) {
     return (
       <div className={cn("relative overflow-hidden bg-white", className)}>
@@ -50,10 +41,8 @@ export function ProductImage({
     );
   }
 
+  // 2) 无真实图 + 占位模式 → 占位
   if (PLACEHOLDER_MODE) {
-=======
-  if (!src && PLACEHOLDER_MODE) {
->>>>>>> Stashed changes
     return (
       <div
         className={cn(
@@ -67,15 +56,12 @@ export function ProductImage({
     );
   }
 
+  // 3) 非占位 → AIGC 文生图
   return (
     <div className={cn("relative overflow-hidden bg-cream", className)}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-<<<<<<< Updated upstream
         src={aiImageUrl(prompt ?? "", size)}
-=======
-        src={src ?? aiImageUrl(prompt, size)}
->>>>>>> Stashed changes
         alt={alt}
         loading="lazy"
         className={cn("h-full w-full object-cover", imgClassName)}

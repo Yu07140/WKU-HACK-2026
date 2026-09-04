@@ -31,12 +31,12 @@ export async function POST(req: Request) {
             JSON.stringify({
               type: "products",
               v: reply.products.map((p) => ({
+                id: p.id,
                 slug: p.slug,
                 name: p.name,
                 price: p.price,
                 rating: p.rating,
                 imagePrompt: p.imagePrompt,
-                image: p.image,
               })),
             }) + "\n"
           )

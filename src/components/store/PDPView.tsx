@@ -21,12 +21,11 @@ export function PDPView({ product }: { product: Product }) {
   const color = product.colors[colorIdx];
   const realImage = color.realImage ?? product.heroImage;
   const imagePrompt = `${color.imagePrompt}, professional e-commerce product photography, soft cream studio background, soft lighting, centered`;
-<<<<<<< Updated upstream
+  // Upstream 分支保留：color.image 作为主图；model+color 查库存行
   const colorImage = color.image ?? product.image;
   const stockRow = findStockRow(product.model, color.name);
-=======
+  // Stashed 分支保留：sizeLabel 独立变量
   const sizeLabel = product.sizeSystem ?? "US";
->>>>>>> Stashed changes
 
   function handleAdd() {
     if (!size) return;
@@ -40,12 +39,9 @@ export function PDPView({ product }: { product: Product }) {
       price: product.price,
       qty,
       imagePrompt: color.imagePrompt,
-<<<<<<< Updated upstream
+      // 两边并集保留：image（Upstream）+ realImage（Stashed）
       image: colorImage,
-      sizeSystem: product.sizeSystem,
-=======
       realImage: realImage,
->>>>>>> Stashed changes
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
@@ -56,11 +52,10 @@ export function PDPView({ product }: { product: Product }) {
       {/* 画廊 */}
       <div>
         <ProductImage
-          src={colorImage}
+          src={colorImage ?? realImage}
           prompt={imagePrompt}
           alt={`${product.name} ${color.name}`}
           size="square_hd"
-          src={realImage}
           className="aspect-square rounded-3xl"
         />
         <div className="mt-4 flex gap-3">
@@ -74,11 +69,10 @@ export function PDPView({ product }: { product: Product }) {
               )}
             >
               <ProductImage
-                src={c.image}
+                src={c.image ?? (c.realImage ?? product.heroImage)}
                 prompt={`${c.imagePrompt}, product photo, cream background`}
                 alt={c.name}
                 size="square"
-                src={c.realImage ?? product.heroImage}
                 className="h-full w-full"
               />
             </button>
@@ -88,9 +82,9 @@ export function PDPView({ product }: { product: Product }) {
 
       {/* 信息 */}
       <div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <TrendBadge trend={product.trend} />
-<<<<<<< Updated upstream
+          {/* Upstream: 无条件显示评分 + SKU；Stashed: 评分>0才显示 + SKU 另样式。两边并集：保留 SKU + 评分（总是显示） */}
           {product.sku && (
             <span className="rounded-full bg-cream px-2.5 py-0.5 text-xs font-bold text-ink/60">
               SKU {product.sku}
@@ -100,19 +94,6 @@ export function PDPView({ product }: { product: Product }) {
             <Star size={14} className="text-amber-500" fill="currentColor" />
             {product.rating} · {product.reviews} reviews
           </span>
-=======
-          {product.reviews > 0 && (
-            <span className="flex items-center gap-1 text-sm text-ink/60">
-              <Star size={14} className="text-amber-500" fill="currentColor" />
-              {product.rating} · {product.reviews} reviews
-            </span>
-          )}
-          {product.sku && (
-            <span className="rounded-full bg-cream px-2.5 py-0.5 text-xs font-semibold text-ink/55">
-              SKU {product.sku}
-            </span>
-          )}
->>>>>>> Stashed changes
         </div>
 
         <h1 className="mt-3 text-4xl font-black">{ph(product.name)}</h1>
@@ -122,11 +103,7 @@ export function PDPView({ product }: { product: Product }) {
           <span className="text-3xl font-black">{formatUSD(product.price)}</span>
           {product.demoPricing && (
             <span className="rounded-full bg-ink/80 px-2.5 py-0.5 text-xs font-bold text-white">
-<<<<<<< Updated upstream
-              Demo pricing
-=======
               Demo pricing · TBC
->>>>>>> Stashed changes
             </span>
           )}
           {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
@@ -167,11 +144,7 @@ export function PDPView({ product }: { product: Product }) {
         {/* 尺码 */}
         <div className="mt-6">
           <div className="mb-2 flex justify-between text-sm font-bold">
-<<<<<<< Updated upstream
-            <span>Size: {product.sizeSystem ?? "US"} {size ?? "—"}</span>
-=======
             <span>Size: {sizeLabel} {size ?? "—"}</span>
->>>>>>> Stashed changes
             <span className="font-normal text-ink/50">不确定尺码？问右下角 AI 导购</span>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -255,13 +228,10 @@ export function PDPView({ product }: { product: Product }) {
         <div className="mt-8 rounded-2xl bg-cream p-5 text-sm">
           <div className="mb-2 font-bold">货盘参数 · Lanhe Factory Specs</div>
           <div className="grid grid-cols-2 gap-y-2 text-ink/65">
-<<<<<<< Updated upstream
+            {/* Upstream：型号/工艺；两边都保留的 SKU 供应商 */}
             <span>型号 Model：{product.model ?? "—"}</span>
             {product.sku && <span>供应商 SKU：{product.sku}</span>}
             <span>工艺：{product.construction ?? "—"}</span>
-=======
-            {product.sku && <span>供应商 SKU：{product.sku}</span>}
->>>>>>> Stashed changes
             <span>材质：{product.material}</span>
             <span>重量：{product.weight}</span>
             <span>起订量 MOQ：{product.moq} 双</span>
