@@ -47,7 +47,7 @@ export default async function ProductPage({
       <nav className="mb-6 flex items-center gap-1.5 text-sm text-ink/50">
         <Link href="/" className="hover:text-accent hover:underline">Home</Link>
         <ChevronRight size={14} />
-        <Link href="/products" className="hover:text-accent hover:underline">Shop All</Link>
+        <Link href="/products" className="hover:text-accent hover:underline">Collection</Link>
         <ChevronRight size={14} />
         <span className="truncate text-ink/80">{ph(product.name)}</span>
       </nav>

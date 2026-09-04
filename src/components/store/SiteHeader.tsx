@@ -6,7 +6,7 @@ import { useCart } from "@/lib/store/cart";
 import { BRAND } from "@/lib/data/brand";
 
 const NAV = [
-  { href: "/products", label: "Shop All" },
+  { href: "/products", label: "Collection" },
   { href: "/stock", label: "Stock", icon: Warehouse },
   { href: "/studio", label: "Studio", icon: Sparkles },
 ];

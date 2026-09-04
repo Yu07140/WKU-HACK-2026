@@ -72,7 +72,7 @@ const ATLAS_SCRIPTS: ScriptBuilder[] = [
       {
         time: "11–15s",
         visual: "Product hero on white background with logo sting.",
-        text: "STRYDE / STEP BEYOND.",
+        text: "STRYDE / STAND UP. STAND OUT.",
         voiceover: "Shop the drop now.",
       },
     ],
@@ -104,7 +104,7 @@ const FORGE_SCRIPTS: ScriptBuilder[] = [
       {
         time: "11–15s",
         visual: "Full product hero in an industrial chrome concept environment.",
-        text: "STRYDE / STEP BEYOND.",
+        text: "STRYDE / STAND UP. STAND OUT.",
         voiceover: "See the drop.",
       },
     ],
@@ -132,7 +132,7 @@ const FORGE_SCRIPTS: ScriptBuilder[] = [
       {
         time: "11–15s",
         visual: "White studio hero with negative space for headline.",
-        text: "STRYDE / STEP BEYOND.",
+        text: "STRYDE / STAND UP. STAND OUT.",
         voiceover: "See the statement boot.",
       },
     ],
@@ -164,7 +164,7 @@ const GENERIC_SCRIPTS: ScriptBuilder[] = [
       {
         time: "11–15s",
         visual: "Product hero with brand sting.",
-        text: "STRYDE / STEP BEYOND.",
+        text: "STRYDE / STAND UP. STAND OUT.",
         voiceover: "Shop the drop.",
       },
     ],
@@ -192,7 +192,7 @@ const GENERIC_SCRIPTS: ScriptBuilder[] = [
       {
         time: "11–15s",
         visual: "Studio hero + price tag on screen.",
-        text: "STRYDE / STEP BEYOND.",
+        text: "STRYDE / STAND UP. STAND OUT.",
         voiceover: "Find your size today.",
       },
     ],
