@@ -41,11 +41,7 @@ export function SceneGenerator({
   const basePrompt = preset ?? product.imagePrompt;
   const prompt = `${basePrompt}, ${style.suffix}${extra ? ", " + extra : ""}`;
   const url = aiImageUrl(prompt, size) + (seed ? `&seed=${seed}` : "");
-<<<<<<< Updated upstream
   const refImage = product.image ?? product.colors[0]?.image;
-=======
-  const refImage = product.heroImage ?? product.colors.find((c) => c.realImage)?.realImage;
->>>>>>> Stashed changes
   const aspect = SIZES.find((s) => s.id === size)?.aspect ?? "1:1";
 
   // Creative History 的 Reuse Prompt：接收页面传入的历史 prompt
