@@ -45,14 +45,11 @@ export default function AdminOverview() {
     { label: "Orders 成交", value: FUNNEL.orders },
   ];
 
-  // 14534-H 始终排第一
+  // 14534-H 为商业测试主推；其余为创意概念对比
   const hero = getProductById("boot-14534-h");
-  const topProducts = [
-    ...(hero ? [hero] : []),
-    ...[...PRODUCTS]
-      .filter((p) => p.id !== hero?.id)
-      .sort((a, b) => b.heatScore - a.heatScore),
-  ].slice(0, 5);
+  const concepts = [...PRODUCTS]
+    .filter((p) => p.id !== hero?.id)
+    .sort((a, b) => b.heatScore - a.heatScore);
 
   const isActual = mode === "actual";
 
@@ -185,39 +182,66 @@ export default function AdminOverview() {
         </>
       )}
 
-      {/* 选款热度 — 始终展示（产品属性，非结果） */}
+      {/* 选款对比 — 14534-H 单独作为商业测试主推，其余为模拟创意概念 */}
       <Panel
-        title="AI 选款热度榜 · Top Products"
+        title="CREATIVE LAB · Simulated Concept Comparison"
         action={
           <Link href="/admin/selection" className="text-xs font-bold text-accent hover:underline">
             完整选款测试 →
           </Link>
         }
       >
+        {/* PRIMARY COMMERCIAL TEST */}
+        {hero && (
+          <div className="mb-6 rounded-2xl border border-accent/30 bg-accent/5 p-5">
+            <div className="mb-2 flex items-center gap-2">
+              <span className="rounded bg-accent/20 px-2 py-0.5 text-[10px] font-bold tracking-wider text-accent">
+                PRIMARY COMMERCIAL TEST
+              </span>
+            </div>
+            <div className="text-base font-bold text-white">
+              {ph(hero.name)} <span className="text-slate-400">· {hero.sku}</span>
+            </div>
+            <div className="mt-1 inline-flex rounded bg-ink px-2 py-0.5 text-[11px] font-bold text-paper">
+              SELECTED FOR TRANSACTION TEST
+            </div>
+            <p className="mt-3 text-xs leading-relaxed text-slate-400">
+              Selected for supply-chain readiness, complete product assets, clear official
+              pricing, and the shortest path to a verifiable transaction.
+            </p>
+          </div>
+        )}
+
+        {/* SECONDARY CREATIVE CONCEPTS — simulated scores */}
+        <div className="mb-3 text-[11px] font-bold tracking-wider text-slate-500">
+          SECONDARY CREATIVE CONCEPTS
+        </div>
         <div className="space-y-3">
-          {topProducts.map((p) => (
+          {concepts.map((p) => (
             <div key={p.id} className="flex items-center gap-4">
               <span className="w-44 shrink-0 truncate text-sm font-semibold text-slate-200">
                 {ph(p.name)}
-                {p.sku === "14534-H" && (
-                  <span className="ml-2 rounded bg-accent/20 px-1.5 py-0.5 text-[10px] font-bold text-accent">
-                    PRIMARY
-                  </span>
-                )}
+                <span className="ml-2 rounded bg-slate-700/60 px-1.5 py-0.5 text-[10px] font-bold text-slate-300">
+                  CONCEPT
+                </span>
               </span>
               <Bar
                 value={p.heatScore}
                 max={100}
-                color={p.heatScore >= 85 ? "bg-accent" : p.heatScore >= 70 ? "bg-amber-400" : "bg-slate-500"}
+                color="bg-slate-500"
                 className="flex-1"
               />
-              <span className="w-10 text-right text-sm font-black text-white">{p.heatScore}</span>
-              <span className="hidden w-24 text-right text-xs text-slate-400 sm:block">
-                毛利 {formatUSD(p.price - p.factoryCost)}/双
+              <span className="w-10 text-right text-sm font-black text-slate-300">{p.heatScore}</span>
+              <span className="hidden w-28 text-right text-[11px] text-slate-500 sm:block">
+                SIMULATED
               </span>
             </div>
           ))}
         </div>
+        <p className="mt-4 rounded-xl bg-white/5 p-3 text-xs leading-relaxed text-slate-500">
+          Concept scores are SIMULATED and do not determine the team's final selection.
+          14534-H is the primary SKU for commercial reasons stated above.
+        </p>
       </Panel>
     </div>
   );

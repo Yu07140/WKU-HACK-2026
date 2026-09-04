@@ -158,36 +158,28 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ---------- 14534-H hero + other concepts ---------- */}
+      {/* ---------- CREATIVE LAB — secondary concepts (NOT same supply chain as 14534-H) ---------- */}
       <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-        <div className="mb-10 flex items-end justify-between">
-          <div>
-            <div className="mb-3 text-xs font-bold tracking-[0.3em] text-ink/40">
-              THE COLLECTION
-            </div>
-            <h2 className="text-3xl font-black md:text-4xl">Featured: 14534-H</h2>
-            <p className="mt-2 max-w-xl text-ink/55">
-              The 14534-H is our flagship. Additional styles below are creative concepts
-              from the same supply chain.
-            </p>
+        <div className="mb-10">
+          <div className="mb-3 text-xs font-bold tracking-[0.3em] text-ink/40">
+            CREATIVE LAB
           </div>
-          <Link href="/products" className="hidden items-center gap-1 text-sm font-bold sm:flex">
-            View all <ArrowRight size={15} />
-          </Link>
+          <h2 className="text-3xl font-black md:text-4xl">Other Concepts</h2>
+          <p className="mt-2 max-w-xl text-ink/55">
+            Additional creative concepts explored during the sprint. These are separate
+            directions and are not part of the official 14534-H men's boot supply chain.
+          </p>
         </div>
 
-        <div className="mb-10">
-          <div className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
-            <ProductCard key={hero.id} product={hero} />
-            {others.map((p) => (
-              <div key={p.id} className="relative">
-                <ProductCard product={p} />
-                <span className="absolute left-0 top-2 z-10 rounded-r bg-ink/70 px-2 py-0.5 text-[10px] font-bold tracking-wider text-paper">
-                  OTHER CONCEPT
-                </span>
-              </div>
-            ))}
-          </div>
+        <div className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-3">
+          {others.map((p) => (
+            <div key={p.id} className="relative">
+              <ProductCard product={p} />
+              <span className="absolute left-0 top-2 z-10 rounded-r bg-ink/70 px-2 py-0.5 text-[10px] font-bold tracking-wider text-paper">
+                CONCEPT
+              </span>
+            </div>
+          ))}
         </div>
       </section>
 
