@@ -8,6 +8,12 @@ import { CATEGORY_LABELS, type Category } from "@/lib/types";
 import { ProductCard } from "@/components/store/ProductCard";
 import { cn } from "@/lib/utils";
 
+/** 公共区 CATEGORY_LABELS 含中文后缀（"Boots 靴子"），这里去掉中文部分 */
+const CN_REGEX = /[\u4e00-\u9fff]/;
+function cleanLabel(label: string): string {
+  return label.split(/\s/).filter((w) => !CN_REGEX.test(w)).join(" ").trim() || label;
+}
+
 /** 分类标签只展示货盘里实际存在的品类 */
 const ACTIVE_TABS = ["all", ...Array.from(new Set(PRODUCTS.map((p) => p.category)))] as const;
 
@@ -47,7 +53,7 @@ function ProductsBrowser() {
                 : "border-ink/20 bg-white text-ink/70 hover:border-ink/50"
             )}
           >
-            {t === "all" ? "All" : CATEGORY_LABELS[t as Category]}
+            {t === "all" ? "All" : cleanLabel(CATEGORY_LABELS[t as Category])}
           </button>
         ))}
       </div>

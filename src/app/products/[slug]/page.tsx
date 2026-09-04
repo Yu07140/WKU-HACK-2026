@@ -6,6 +6,7 @@ import { PDPView } from "@/components/store/PDPView";
 import { ProductCard } from "@/components/store/ProductCard";
 import { ReviewsSection } from "@/components/store/ReviewsSection";
 import { ph } from "@/lib/utils";
+import { displayName } from "@/lib/store/display";
 
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ slug: p.slug }));
@@ -24,20 +25,19 @@ export default async function ProductPage({
     (p) => p.category === product.category && p.id !== product.id
   ).slice(0, 4);
 
+  const name = displayName(product);
+
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
-      {/* 面包屑 */}
-      <nav className="mb-6 flex items-center gap-1.5 text-sm text-ink/50">
+      <nav className="mb-8 flex items-center gap-2 text-sm text-ink/50">
         <Link href="/" className="hover:text-accent hover:underline">Home</Link>
         <ChevronRight size={14} />
         <Link href="/products" className="hover:text-accent hover:underline">Shop All</Link>
         <ChevronRight size={14} />
-        <span className="truncate text-ink/80">{ph(product.name)}</span>
+        <span className="truncate text-ink/80">{ph(name)}</span>
       </nav>
 
       <PDPView product={product} />
-
-      <ReviewsSection product={product} />
 
       {related.length > 0 && (
         <section className="mt-20">
@@ -49,6 +49,8 @@ export default async function ProductPage({
           </div>
         </section>
       )}
+
+      <ReviewsSection product={product} />
     </div>
   );
 }

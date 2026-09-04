@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { CartProvider } from "@/lib/store/cart";
+import { CurrencyProvider } from "@/lib/store/currency";
 import { SiteHeader } from "@/components/store/SiteHeader";
 import { SiteFooter } from "@/components/store/SiteFooter";
 import { AgentWidget } from "@/components/agent/AgentWidget";
@@ -20,12 +21,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <CartProvider>
-          <SiteHeader />
-          <main className="min-h-screen">{children}</main>
-          <SiteFooter />
-          <AgentWidget />
-        </CartProvider>
+        <CurrencyProvider>
+          <CartProvider>
+            <SiteHeader />
+            <main className="min-h-screen">{children}</main>
+            <SiteFooter />
+            <AgentWidget />
+          </CartProvider>
+        </CurrencyProvider>
       </body>
     </html>
   );

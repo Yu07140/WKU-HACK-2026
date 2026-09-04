@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ShoppingBag, Sparkles, LayoutDashboard, Warehouse } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
+import { useCurrency, CURRENCIES, type CurrencyCode } from "@/lib/store/currency";
 import { BRAND } from "@/lib/data/brand";
 
 const NAV = [
@@ -13,6 +14,7 @@ const NAV = [
 
 export function SiteHeader() {
   const { count } = useCart();
+  const { currency, setCurrency } = useCurrency();
   return (
     <header className="sticky top-0 z-40 border-b border-ink/10 bg-paper/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
@@ -35,6 +37,19 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
+          {/* 币种切换 */}
+          <select
+            value={currency}
+            onChange={(e) => setCurrency(e.target.value as CurrencyCode)}
+            className="cursor-pointer rounded-md border border-ink/10 bg-white px-2 py-1 text-xs font-semibold text-ink/70 transition hover:border-ink/30 focus:outline-none focus:ring-1 focus:ring-accent"
+            aria-label="Select currency"
+          >
+            {CURRENCIES.map((c) => (
+              <option key={c.code} value={c.code}>
+                {c.symbol} {c.code}
+              </option>
+            ))}
+          </select>
           <Link
             href="/admin"
             title="增长看板（内部）"
