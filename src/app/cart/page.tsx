@@ -51,7 +51,7 @@ export default function CartPage() {
                       {ph(it.productName)}
                     </Link>
                     <div className="mt-0.5 text-sm text-ink/55">
-                      {it.color} · US {it.size}
+                      {it.color} · {it.sizeSystem ?? "US"} {it.size}
                     </div>
                   </div>
                   <button

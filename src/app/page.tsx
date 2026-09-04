@@ -21,13 +21,13 @@ export default function HomePage() {
               FACTORY DIRECT · NO MIDDLEMEN
             </div>
             <h1 className="text-5xl font-black leading-[1.05] tracking-tight md:text-7xl">
-              Walk past
+              walk past
               <br />
               the <span className="text-accent">markup.</span>
             </h1>
             <p className="mt-6 max-w-md text-lg text-ink/65">
-              {BRAND.name} 把代工 18 年的鞋厂直接开到你面前——同样的产线、同样的材料，
-              一半的价格。AI 设计、AI 素材、48 小时发货。
+              {BRAND.name} 把鞋厂产线直接开到你面前——同样的产线、同样的材料，
+              一半的价格。AI 设计、AI 素材、工厂直达。
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link href="/products">
@@ -49,8 +49,11 @@ export default function HomePage() {
               <div className="flex items-center gap-2">
                 <RotateCcw size={17} className="text-accent" /> 30-day wear test
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2" title="Demo data — simulated metrics">
                 <Star size={17} className="text-accent" fill="currentColor" /> 4.7/5 · 7.5k reviews
+                <span className="rounded-full bg-cream px-2 py-0.5 text-[11px] font-semibold text-ink/50">
+                  Demo
+                </span>
               </div>
             </div>
           </div>
@@ -126,6 +129,9 @@ export default function HomePage() {
                 <p key={line}>{line}</p>
               ))}
             </div>
+            <p className="mt-4 text-xs text-paper/40">
+              品牌故事为黑客松演示叙事（demo narrative）。
+            </p>
             <Link href="/admin">
               <Button variant="primary" size="lg" className="mt-8">
                 查看品牌增长实时看板 <ArrowRight size={18} />

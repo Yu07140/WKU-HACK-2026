@@ -29,6 +29,11 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-paper/10 py-5 text-center text-xs text-paper/40">
         © 2026 {BRAND.name}. WKU HACK 2026 · AI-Powered D2C Footwear Sprint Demo
+        <span className="mt-1 block text-paper/50">
+          Hackathon prototype — product data, reviews, ratings, orders and dashboard metrics are
+          simulated demo data. Pricing for supplier SKUs (11295-J / 14534-H / 53125-J) is a demo
+          placeholder, not a verified retail price.
+        </span>
       </div>
     </footer>
   );

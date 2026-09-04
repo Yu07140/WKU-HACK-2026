@@ -51,4 +51,16 @@ export const IMAGE_STYLES: { id: string; label: string; suffix: string }[] = [
     suffix:
       "bold advertising campaign poster, high contrast studio lighting, floating product with dynamic energy waves, vibrant gradient background in orange and cream, premium sportswear ad style",
   },
+  {
+    id: "ugc",
+    label: "UGC On-Foot 上脚实拍",
+    suffix:
+      "candid user-generated style photo taken on a phone, person wearing the shoes on foot, casual everyday setting, natural lighting, authentic social media look, slightly imperfect framing, realistic",
+  },
+  {
+    id: "unboxing",
+    label: "Unboxing 开箱平铺",
+    suffix:
+      "unboxing flat lay photo, shoes next to an open shoebox with tissue paper, top-down view on a clean table, soft natural window light, cozy DTC ecommerce unboxing aesthetic",
+  },
 ];

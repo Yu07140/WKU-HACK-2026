@@ -35,6 +35,7 @@ export function PDPView({ product }: { product: Product }) {
       qty,
       imagePrompt: color.imagePrompt,
       image: colorImage,
+      sizeSystem: product.sizeSystem,
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
@@ -77,6 +78,11 @@ export function PDPView({ product }: { product: Product }) {
       <div>
         <div className="flex items-center gap-3">
           <TrendBadge trend={product.trend} />
+          {product.sku && (
+            <span className="rounded-full bg-cream px-2.5 py-0.5 text-xs font-bold text-ink/60">
+              SKU {product.sku}
+            </span>
+          )}
           <span className="flex items-center gap-1 text-sm text-ink/60">
             <Star size={14} className="text-amber-500" fill="currentColor" />
             {product.rating} · {product.reviews} reviews
@@ -88,14 +94,21 @@ export function PDPView({ product }: { product: Product }) {
 
         <div className="mt-4 flex items-baseline gap-3">
           <span className="text-3xl font-black">{formatUSD(product.price)}</span>
-          {!PLACEHOLDER_MODE && product.compareAt && (
+          {product.demoPricing && (
+            <span className="rounded-full bg-ink/80 px-2.5 py-0.5 text-xs font-bold text-white">
+              Demo pricing
+            </span>
+          )}
+          {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
             <span className="text-lg text-ink/40 line-through">{formatUSD(product.compareAt)}</span>
           )}
-          <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-bold text-accent-dark">
-            {PLACEHOLDER_MODE
-              ? "工厂直供 · 价格待定"
-              : `工厂直供 · 省 ${formatUSD(product.compareAt ? product.compareAt - product.price : Math.round(product.price * 0.5))}`}
-          </span>
+          {!product.demoPricing && (
+            <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-bold text-accent-dark">
+              {PLACEHOLDER_MODE
+                ? "工厂直供 · 价格待定"
+                : `工厂直供 · 省 ${formatUSD(product.compareAt ? product.compareAt - product.price : Math.round(product.price * 0.5))}`}
+            </span>
+          )}
         </div>
 
         <p className="mt-5 leading-relaxed text-ink/70">{product.description}</p>
@@ -124,7 +137,7 @@ export function PDPView({ product }: { product: Product }) {
         {/* 尺码 */}
         <div className="mt-6">
           <div className="mb-2 flex justify-between text-sm font-bold">
-            <span>Size: US {size ?? "—"}</span>
+            <span>Size: {product.sizeSystem ?? "US"} {size ?? "—"}</span>
             <span className="font-normal text-ink/50">不确定尺码？问右下角 AI 导购</span>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -209,6 +222,7 @@ export function PDPView({ product }: { product: Product }) {
           <div className="mb-2 font-bold">货盘参数 · Lanhe Factory Specs</div>
           <div className="grid grid-cols-2 gap-y-2 text-ink/65">
             <span>型号 Model：{product.model ?? "—"}</span>
+            {product.sku && <span>供应商 SKU：{product.sku}</span>}
             <span>工艺：{product.construction ?? "—"}</span>
             <span>材质：{product.material}</span>
             <span>重量：{product.weight}</span>

@@ -54,6 +54,14 @@ export interface Product {
   features: string[];
   /** 主图 AIGC prompt */
   imagePrompt: string;
+  /** 供应商货号（如 11295-J，独立供应商 SKU 专用） */
+  sku?: string;
+  /** 尺码体系，缺省为美码 US（Lanhe 货盘为 US5-12，供应商 SKU 为 EU 38-46） */
+  sizeSystem?: "US" | "EU";
+  /** 价格为演示定价（供应商未含报价），展示 Demo 标注 */
+  demoPricing?: boolean;
+  /** 素材工坊分风格出图种子 prompt（覆盖通用 imagePrompt） */
+  creativePresets?: Record<string, string>;
   /** 选款热度 0-100（AI 综合广告点击/加购/搜索趋势） */
   heatScore: number;
   trend: "hot" | "rising" | "new" | "steady";
@@ -119,4 +127,6 @@ export interface CartItem {
   imagePrompt: string;
   /** 真实货盘照片（可选） */
   image?: string;
+  /** 尺码体系（与 Product.sizeSystem 对应，缺省 US） */
+  sizeSystem?: "US" | "EU";
 }
