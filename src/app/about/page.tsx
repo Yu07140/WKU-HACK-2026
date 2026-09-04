@@ -1,16 +1,19 @@
 import Link from "next/link";
-import { ArrowRight, Factory, Truck, RotateCcw, Heart, Award, Leaf } from "lucide-react";
+import { ArrowRight, Factory, Truck, RotateCcw, Heart, Award, Package } from "lucide-react";
 import { BRAND, BRAND_STORY } from "@/lib/data/brand";
+import { getProductById } from "@/lib/data/catalog";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
   title: `About Us — ${BRAND.name}`,
   description:
-    "18 years making shoes for the world's biggest brands. Now factory-direct to you. Same lasts, same materials, half the price.",
+    "Factory-direct footwear accelerated by AI-powered DTC workflows. (Demo brand narrative — hackathon prototype.)",
 };
 
 export default function AboutPage() {
+  const featured = getProductById("boot-14534-h");
+
   return (
     <div>
       {/* ---------- HERO ---------- */}
@@ -19,7 +22,7 @@ export default function AboutPage() {
           <div>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-3 py-1.5 text-xs font-bold tracking-wider text-ink/70">
               <Factory size={13} className="text-accent" />
-              EST. 2008 · WENZHOU CHINA
+              FACTORY-DIRECT · AI ACCELERATED (Demo)
             </div>
             <h1 className="text-5xl font-black leading-[1.05] tracking-tight md:text-6xl">
               From a factory floor
@@ -27,24 +30,28 @@ export default function AboutPage() {
               to your <span className="text-accent">front door.</span>
             </h1>
             <p className="mt-6 max-w-lg text-lg text-ink/65">
-              For 18 years we've made sneakers for brands you'd recognize on any street in New
-              York or London. Same lasts, same materials, same hands — but with their logo on
-              the box and their markup on the tag. Today we're cutting out the middle.
+              STRYDE is a hackathon demo of a factory-direct footwear brand powered by
+              AI-driven DTC workflows. Our featured product is factory SKU 14534-H,
+              a black minimalist ankle boot built for commuting, business casual and
+              short city trips.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Link href="/products">
+              <Link href="/products/mono-boot">
                 <Button size="lg">
-                  Shop the Collection <ArrowRight size={18} />
+                  See SKU 14534-H <ArrowRight size={18} />
                 </Button>
               </Link>
             </div>
           </div>
-          <ProductImage
-            prompt="wide aerial photo of a modern shoe factory production line in Wenzhou China, workers assembling sneakers on conveyors, warm natural light through skylights, photorealistic documentary style"
-            alt="STRYDE factory in Wenzhou"
-            size="landscape_4_3"
-            className="aspect-[4/3] rounded-3xl shadow-2xl"
-          />
+          {featured && (
+            <ProductImage
+              src={featured.heroImage ?? featured.image}
+              prompt={featured.imagePrompt}
+              alt={`${featured.name} — SKU 14534-H`}
+              size="landscape_4_3"
+              className="aspect-[4/3] rounded-3xl shadow-2xl"
+            />
+          )}
         </div>
       </section>
 
@@ -63,31 +70,31 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ---------- 三个 Why ---------- */}
+      {/* ---------- 14534-H 官方规格 ---------- */}
       <section className="mx-auto max-w-7xl px-6 py-20">
         <div className="mb-14 text-center">
-          <h2 className="text-4xl font-black">Why {BRAND.name} wins</h2>
+          <h2 className="text-4xl font-black">Featured product: SKU 14534-H</h2>
           <p className="mt-3 text-ink/55">
-            We built this brand so you never have to pay for someone else's billboard again.
+            Verified supplier facts. We only claim what the supplier has confirmed.
           </p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">
           {[
             {
-              icon: Factory,
-              title: "Factory-direct pricing",
-              desc: "No importers. No distributors. No retail rent. The same pair that retails for $200+ goes straight from our floor to you at half.",
+              icon: Package,
+              title: "Factory SKU 14534-H",
+              desc: "Black minimalist ankle boot. Rear zipper. Horizontal decorative lines around the tongue area. Light brown interior.",
             },
             {
               icon: Award,
-              title: "Same 18-year quality",
-              desc: "Same lasts, same leather, same stitching crews that make $200+ sneakers. We don't build a second-tier line for ourselves.",
+              title: "Verified materials",
+              desc: "Upper: microfiber. Lining: microfiber. Outsole: rubber. We do not call it leather.",
             },
             {
-              icon: Leaf,
-              title: "Less waste. More care.",
-              desc: "38% recycled materials in every upper. Zero deadstock seasons — AI tells us what to make before we make it.",
+              icon: Factory,
+              title: "Verified sizing & price",
+              desc: "Sizes EU 38–46. Factory price RMB 98/pair. Domestic after-coupon control price RMB 148/pair.",
             },
           ].map(({ icon: Icon, title, desc }) => (
             <div
@@ -104,14 +111,14 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ---------- 承诺 ---------- */}
+      {/* ---------- 承诺（均标注 Demo） ---------- */}
       <section className="border-y border-ink/10 bg-white">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-6 py-14 md:grid-cols-4">
           {[
-            [Truck, "Free shipping", "on orders over $75"],
-            [RotateCcw, "30-day wear test", "doesn't fit? send it back"],
-            [Heart, "Loved by 7.5k+", "4.7 / 5 average rating"],
-            [Factory, "Made by us", "not 3 middlemen later"],
+            [Truck, "Factory-direct shipping*", "Demo policy"],
+            [RotateCcw, "30-day return*", "Demo return policy"],
+            [Heart, "Rating (Demo)", "no verified reviews yet"],
+            [Factory, "Factory SKU 14534-H", "microfiber · rubber outsole"],
           ].map(([Icon, big, small]) => (
             <div key={big as string} className="flex items-start gap-3">
               <Icon size={22} className="mt-0.5 text-accent shrink-0" />
@@ -122,23 +129,26 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
+        <p className="mx-auto max-w-7xl px-6 pb-14 text-[11px] text-ink/40">
+          * 标注项为黑客松演示政策，非真实运营承诺。Shipping cost and delivery estimate
+          depend on destination and logistics method.
+        </p>
       </section>
 
       {/* ---------- CTA ---------- */}
       <section className="mx-auto max-w-3xl px-6 py-24 text-center">
         <h2 className="text-4xl font-black leading-tight md:text-5xl">
-          Enough labels.
+          Meet the boot
           <br />
-          <span className="text-accent">Time for the good stuff.</span>
+          <span className="text-accent">built for the daily route.</span>
         </h2>
         <p className="mt-5 text-ink/55 max-w-xl mx-auto">
-          Put our 18 years to the test. Free shipping, 30 days to decide, and a team in
-          Wenzhou that actually gives a damn.
+          SKU 14534-H — microfiber, rear zipper, rubber outsole. Sizes EU 38–46.
         </p>
         <div className="mt-8">
-          <Link href="/products">
+          <Link href="/products/mono-boot">
             <Button size="lg">
-              Shop all shoes <ArrowRight size={18} />
+              Shop 14534-H <ArrowRight size={18} />
             </Button>
           </Link>
         </div>

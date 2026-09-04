@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Wand2, Loader2, Copy, Check, Download, ExternalLink, RotateCcw } from "lucide-react";
-import { PRODUCTS } from "@/lib/data/catalog";
+import { PRODUCTS, getProductById } from "@/lib/data/catalog";
 import { IMAGE_STYLES, aiImageUrl, type ImageSize } from "@/lib/ai/image";
 import { Button } from "@/components/ui/button";
 import { Label, Select, Textarea } from "@/components/ui/input";
@@ -24,7 +24,9 @@ export function SceneGenerator({
   draftPrompt?: string;
   onDraftConsumed?: () => void;
 }) {
-  const [productId, setProductId] = useState(PRODUCTS[0].id);
+  const [productId, setProductId] = useState(
+    getProductById("boot-14534-h")?.id ?? PRODUCTS[0].id
+  );
   const [styleId, setStyleId] = useState(IMAGE_STYLES[0].id);
   const [size, setSize] = useState<ImageSize>("square");
   const [extra, setExtra] = useState("");
@@ -41,12 +43,12 @@ export function SceneGenerator({
   const basePrompt = preset ?? product.imagePrompt;
   const prompt = `${basePrompt}, ${style.suffix}${extra ? ", " + extra : ""}`;
   const url = aiImageUrl(prompt, size) + (seed ? `&seed=${seed}` : "");
-  // 两边分支并集：Upstream 优先 product.image / colors[0].image；Stashed 再取 heroImage / 首个有 realImage 配色
+  // 优先真实供应商实拍图（heroImage / image / colors[].realImage / colors[].image），无则 undefined（走 AIGC 占位）
+  const firstColor = product.colors.find((c) => c.realImage || c.image);
   const refImage =
-    product.image ??
-    product.colors[0]?.image ??
     product.heroImage ??
-    product.colors.find((c) => c.realImage)?.realImage;
+    product.image ??
+    (firstColor ? firstColor.realImage ?? firstColor.image : undefined);
   const aspect = SIZES.find((s) => s.id === size)?.aspect ?? "1:1";
 
   // Creative History 的 Reuse Prompt：接收页面传入的历史 prompt
@@ -151,9 +153,9 @@ export function SceneGenerator({
         <Card className="flex flex-col p-5">
           <div className="mb-3 flex items-center justify-between">
             <span className="rounded-full bg-cream px-3 py-1 text-xs font-bold text-ink/70">
-              REFERENCE PRODUCT
+              Factory Reference Image
             </span>
-            <span className="text-[11px] text-ink/45">Real supplier photo</span>
+            <span className="text-[11px] text-ink/45">Real supplier photo · not AI</span>
           </div>
           <div className="relative flex-1 overflow-hidden rounded-xl bg-cream">
             {refImage ? (
@@ -179,9 +181,9 @@ export function SceneGenerator({
         <Card className="flex flex-col p-5">
           <div className="mb-3 flex items-center justify-between">
             <span className="rounded-full bg-accent px-3 py-1 text-xs font-bold text-white">
-              AI CREATIVE
+              AI-Generated Creative / Concept Visual
             </span>
-            <span className="text-[11px] text-ink/45">Concept visual · not a real photo</span>
+            <span className="text-[11px] text-ink/45">Not a real product photo</span>
           </div>
           <div className="relative flex-1 overflow-hidden rounded-xl bg-cream">
             {/* eslint-disable-next-line @next/next/no-img-element */}

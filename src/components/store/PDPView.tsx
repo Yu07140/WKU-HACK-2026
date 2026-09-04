@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Check, Truck, RotateCcw, Star, Factory, ShoppingBag, Warehouse } from "lucide-react";
+import { Check, Truck, RotateCcw, Factory, ShoppingBag, Warehouse } from "lucide-react";
 import type { Product } from "@/lib/types";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
 import { TrendBadge } from "@/components/ui/badge";
 import { useCart } from "@/lib/store/cart";
-import { cn, ph, formatUSD, PLACEHOLDER_MODE } from "@/lib/utils";
+import { cn, ph, formatUSD, PLACEHOLDER_MODE, parseMaterial } from "@/lib/utils";
 import { EU_SIZES, WAREHOUSE, findStockRow } from "@/lib/data/stock";
 
 export function PDPView({ product }: { product: Product }) {
@@ -19,12 +19,14 @@ export function PDPView({ product }: { product: Product }) {
   const [added, setAdded] = useState(false);
 
   const color = product.colors[colorIdx];
-  const realImage = color.realImage ?? product.heroImage;
+  // 真实商品图：优先颜色 realImage → color.image → product.heroImage → product.image
+  const realImage =
+    color.realImage ??
+    color.image ??
+    product.heroImage ??
+    product.image;
   const imagePrompt = `${color.imagePrompt}, professional e-commerce product photography, soft cream studio background, soft lighting, centered`;
-  // Upstream 分支保留：color.image 作为主图；model+color 查库存行
-  const colorImage = color.image ?? product.image;
   const stockRow = findStockRow(product.model, color.name);
-  // Stashed 分支保留：sizeLabel 独立变量
   const sizeLabel = product.sizeSystem ?? "US";
 
   function handleAdd() {
@@ -39,8 +41,7 @@ export function PDPView({ product }: { product: Product }) {
       price: product.price,
       qty,
       imagePrompt: color.imagePrompt,
-      // 两边并集保留：image（Upstream）+ realImage（Stashed）
-      image: colorImage,
+      image: realImage,
       realImage: realImage,
     });
     setAdded(true);
@@ -52,48 +53,49 @@ export function PDPView({ product }: { product: Product }) {
       {/* 画廊 */}
       <div>
         <ProductImage
-          src={colorImage ?? realImage}
+          src={realImage}
           prompt={imagePrompt}
           alt={`${product.name} ${color.name}`}
           size="square_hd"
           className="aspect-square rounded-3xl"
         />
         <div className="mt-4 flex gap-3">
-          {product.colors.map((c, i) => (
-            <button
-              key={c.name}
-              onClick={() => setColorIdx(i)}
-              className={cn(
-                "h-20 w-20 overflow-hidden rounded-xl border-2 transition",
-                i === colorIdx ? "border-accent" : "border-transparent opacity-70 hover:opacity-100"
-              )}
-            >
-              <ProductImage
-                src={c.image ?? (c.realImage ?? product.heroImage)}
-                prompt={`${c.imagePrompt}, product photo, cream background`}
-                alt={c.name}
-                size="square"
-                className="h-full w-full"
-              />
-            </button>
-          ))}
+          {product.colors.map((c, i) => {
+            const thumbSrc =
+              c.realImage ?? c.image ?? product.heroImage ?? product.image;
+            return (
+              <button
+                key={c.name}
+                onClick={() => setColorIdx(i)}
+                className={cn(
+                  "h-20 w-20 overflow-hidden rounded-xl border-2 transition",
+                  i === colorIdx
+                    ? "border-accent"
+                    : "border-transparent opacity-70 hover:opacity-100"
+                )}
+              >
+                <ProductImage
+                  src={thumbSrc}
+                  prompt={`${c.imagePrompt}, product photo, cream background`}
+                  alt={c.name}
+                  size="square"
+                  className="h-full w-full"
+                />
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {/* 信息 */}
       <div>
-        <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex items-center gap-3">
           <TrendBadge trend={product.trend} />
-          {/* Upstream: 无条件显示评分 + SKU；Stashed: 评分>0才显示 + SKU 另样式。两边并集：保留 SKU + 评分（总是显示） */}
           {product.sku && (
             <span className="rounded-full bg-cream px-2.5 py-0.5 text-xs font-bold text-ink/60">
               SKU {product.sku}
             </span>
           )}
-          <span className="flex items-center gap-1 text-sm text-ink/60">
-            <Star size={14} className="text-amber-500" fill="currentColor" />
-            {product.rating} · {product.reviews} reviews
-          </span>
         </div>
 
         <h1 className="mt-3 text-4xl font-black">{ph(product.name)}</h1>
@@ -107,13 +109,19 @@ export function PDPView({ product }: { product: Product }) {
             </span>
           )}
           {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
-            <span className="text-lg text-ink/40 line-through">{formatUSD(product.compareAt)}</span>
+            <span className="text-lg text-ink/40 line-through">
+              {formatUSD(product.compareAt)}
+            </span>
           )}
           {!product.demoPricing && (
             <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-bold text-accent-dark">
               {PLACEHOLDER_MODE
                 ? "工厂直供 · 价格待定"
-                : `工厂直供 · 省 ${formatUSD(product.compareAt ? product.compareAt - product.price : Math.round(product.price * 0.5))}`}
+                : `工厂直供 · 省 ${formatUSD(
+                    product.compareAt
+                      ? product.compareAt - product.price
+                      : Math.round(product.price * 0.5)
+                  )}`}
             </span>
           )}
         </div>
@@ -144,13 +152,10 @@ export function PDPView({ product }: { product: Product }) {
         {/* 尺码 */}
         <div className="mt-6">
           <div className="mb-2 flex justify-between text-sm font-bold">
-            <span>Size: {sizeLabel} {size ?? "—"}</span>
-            <Link
-              href="/size-guide"
-              className="font-normal text-ink/50 hover:text-accent hover:underline"
-            >
-              Not sure? See size guide →
-            </Link>
+            <span>
+              Size: {sizeLabel} {size ?? "—"}
+            </span>
+            <span className="font-normal text-ink/50">不确定尺码？问右下角 AI 导购</span>
           </div>
           <div className="flex flex-wrap gap-2">
             {product.sizes.map((s) => (
@@ -187,10 +192,8 @@ export function PDPView({ product }: { product: Product }) {
               +
             </button>
           </div>
-          <Button size="lg" className="flex-1" onClick={handleAdd} disabled={!size || product.stock === 0}>
-            {product.stock === 0 ? (
-              <>Sold Out</>
-            ) : added ? (
+          <Button size="lg" className="flex-1" onClick={handleAdd} disabled={!size}>
+            {added ? (
               <>
                 <Check size={18} /> Added to bag
               </>
@@ -210,20 +213,35 @@ export function PDPView({ product }: { product: Product }) {
           </Link>
         )}
 
-        {/* 服务承诺（演示店铺政策） */}
-        <div className="mt-8 grid grid-cols-3 gap-3 rounded-2xl border border-ink/10 bg-white p-4 text-center text-xs font-semibold text-ink/70">
-          <div className="flex flex-col items-center gap-1.5">
-            <Truck size={18} className="text-accent" /> Free shipping over $75
-          </div>
-          <div className="flex flex-col items-center gap-1.5">
-            <RotateCcw size={18} className="text-accent" /> 30-day wear test
-          </div>
-          <div className="flex flex-col items-center gap-1.5">
-            <Factory size={18} className="text-accent" /> Ships from factory
+        {/* 服务说明（Demo 政策，链接到 FAQ） */}
+        <div className="mt-8 grid grid-cols-2 gap-3 rounded-2xl border border-ink/10 bg-white p-4 text-xs font-semibold text-ink/70 sm:grid-cols-3">
+          <Link href="/size-guide" className="flex flex-col items-center gap-1.5 text-center hover:text-accent">
+            <Truck size={18} className="text-accent" /> Size Guide
+            <span className="text-[10px] font-normal text-ink/40">EU/US/UK/CM</span>
+          </Link>
+          <Link href="/faq#shipping-delivery" className="flex flex-col items-center gap-1.5 text-center hover:text-accent">
+            <Truck size={18} className="text-accent" /> Shipping
+            <span className="text-[10px] font-normal text-ink/40">Demo</span>
+          </Link>
+          <Link href="/faq#returns-exchanges" className="flex flex-col items-center gap-1.5 text-center hover:text-accent">
+            <RotateCcw size={18} className="text-accent" /> Returns
+            <span className="text-[10px] font-normal text-ink/40">Demo</span>
+          </Link>
+          <Link href="/faq#duties-taxes-customs" className="flex flex-col items-center gap-1.5 text-center hover:text-accent">
+            <Factory size={18} className="text-accent" /> Customs
+            <span className="text-[10px] font-normal text-ink/40">Demo</span>
+          </Link>
+          <Link href="/faq#sizing-fit" className="flex flex-col items-center gap-1.5 text-center hover:text-accent">
+            <Factory size={18} className="text-accent" /> Care
+            <span className="text-[10px] font-normal text-ink/40">Spot clean</span>
+          </Link>
+          <div className="flex flex-col items-center gap-1.5 text-center">
+            <Factory size={18} className="text-accent" /> Factory SKU
+            <span className="text-[10px] font-normal text-ink/40">{product.sku ?? "—"}</span>
           </div>
         </div>
 
-        {/* 卖点列表 */}
+        {/* 卖点 */}
         <ul className="mt-8 space-y-2.5">
           {product.features.map((f) => (
             <li key={f} className="flex items-start gap-2.5 text-sm text-ink/75">
@@ -232,52 +250,38 @@ export function PDPView({ product }: { product: Product }) {
           ))}
         </ul>
 
-        {/* 材质与重量（消费者可理解的产品信息） */}
-        {(product.material || product.weight) && (
-          <div className="mt-8 rounded-2xl bg-cream p-5 text-sm">
-            <div className="mb-3 font-bold">Product Details</div>
-            <div className="space-y-1.5 text-ink/65">
-              {product.material && (
-                <div className="flex justify-between">
-                  <span className="font-semibold text-ink/80">Material</span>
-                  <span>{product.material}</span>
-                </div>
-              )}
-              {product.weight && (
-                <div className="flex justify-between">
-                  <span className="font-semibold text-ink/80">Weight</span>
-                  <span>{product.weight}</span>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+        {/* 材质 & 供应链参数 —— 对 14534-H 等供应商 SKU 拆分展示 Upper/Lining/Outsole */}
         <div className="mt-8 rounded-2xl bg-cream p-5 text-sm">
-          <div className="mb-2 font-bold">货盘参数 · Lanhe Factory Specs</div>
+          <div className="mb-3 font-bold">Verified Product Specs</div>
           <div className="grid grid-cols-2 gap-y-2 text-ink/65">
-            {/* Upstream：型号/工艺；两边都保留的 SKU 供应商 */}
-            <span>型号 Model：{product.model ?? "—"}</span>
-            {product.sku && <span>供应商 SKU：{product.sku}</span>}
-            <span>工艺：{product.construction ?? "—"}</span>
-            <span>材质：{product.material}</span>
-            <span>重量：{product.weight}</span>
-            <span>起订量 MOQ：{product.moq} 双</span>
-            <span>打样周期：{product.leadTimeDays} 天</span>
-            <span>尺码制式：{sizeLabel === "EU" ? "欧码 EU" : "美码 US"}</span>
+            {product.sku && <span><b>Factory SKU：</b>{product.sku}</span>}
+            {product.model && <span><b>Model：</b>{product.model}</span>}
+            {product.construction && <span><b>Construction：</b>{product.construction}</span>}
+            <span><b>Upper：</b>{parseMaterial(product.material, "upper")}</span>
+            <span><b>Lining：</b>{parseMaterial(product.material, "lining")}</span>
+            <span><b>Outsole：</b>{parseMaterial(product.material, "outsole")}</span>
+            <span><b>Sizes：</b>{sizeLabel === "EU" ? "EU 38–46" : "US"}</span>
+            <span><b>Weight：</b>{product.weight}</span>
+            <span><b>MOQ：</b>{product.moq} pairs</span>
+            <span><b>Lead time：</b>{product.leadTimeDays} days</span>
           </div>
+          <p className="mt-3 text-[11px] text-ink/45">
+            Material fields marked "supplier spec" are verified by the supplier.
+            RMB {product.factoryCost}/pair is the factory cost, not the retail price.
+          </p>
 
           {stockRow && (
             <div className="mt-4 border-t border-ink/10 pt-4">
               <div className="mb-2 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5 font-bold">
                   <Warehouse size={15} className="text-accent" />
-                  {WAREHOUSE.nameZh}现货 · {stockRow.total} 双
+                  {WAREHOUSE.nameZh} In stock · {stockRow.total} pairs
                 </div>
                 <Link
                   href="/stock"
                   className="text-xs font-semibold text-accent hover:underline"
                 >
-                  完整库存表 →
+                  Full stock table →
                 </Link>
               </div>
               <div className="grid grid-cols-6 gap-1.5 sm:grid-cols-11">
@@ -288,7 +292,7 @@ export function PDPView({ product }: { product: Product }) {
                       "rounded-lg px-1 py-1.5 text-center",
                       qty > 0 ? "bg-white" : "bg-white/40 text-ink/30"
                     )}
-                    title={`EU ${EU_SIZES[i]}：${qty} 双`}
+                    title={`EU ${EU_SIZES[i]}：${qty} pairs`}
                   >
                     <div className="text-[10px] font-semibold text-ink/50">
                       {EU_SIZES[i]}
@@ -298,7 +302,7 @@ export function PDPView({ product }: { product: Product }) {
                 ))}
               </div>
               <div className="mt-1.5 text-[11px] text-ink/45">
-                EU 35-45 分码数量（双），售完即止 · 48h 直发
+                EU 35-45 per-size stock (pairs) · (Demo stock data)
               </div>
             </div>
           )}

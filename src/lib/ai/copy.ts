@@ -12,7 +12,7 @@ import type { Product } from "@/lib/types";
  * - 真实供应商 SKU（11295-J / 14534-H / 53125-J）使用专属文案模板
  * - 通用模板措辞与 Lanhe 货盘（高帮靴）对齐
  * - 话术合规：不使用医疗舒适、防水、环保、真皮、实验室测试、
- *   48 小时发货等未经组委会/供应商验证的声明（模板内已规避）
+ *   48 小时发货等未经组委会/供应商验证的声明
  * ------------------------------------------------------------------ */
 
 export interface CopyResult {
@@ -77,16 +77,9 @@ const HEADLINES: Record<Platform, Record<Angle, (p: Product) => string>> = {
   Google: {
     comfort: (p) => `${p.name} — All-Day Comfort High-Top Boots`,
     value: (p) => `Buy ${p.name} Direct From Factory — $${p.price}`,
-    // 两边并集：同时覆盖"靴"与"复古板鞋/跑鞋"的 Google 文案（取覆盖面更广的版本）
-    trend: (p) =>
-      p.category === "running"
-        ? `${p.name} | Trending Retro Sneakers 2026`
-        : `${p.name} | Trending Street Boots 2026`,
-    performance: (p) =>
-      p.category === "running"
-        ? `${p.name} — Performance Running Shoes, $${p.price}`
-        : `${p.name} — PU Leather Boots, Factory Direct, $${p.price}`,
-    style: (p) => `${p.name} — Street Style Boots & Sneakers`,
+    trend: (p) => `${p.name} | Trending Street Boots 2026`,
+    performance: (p) => `${p.name} — Factory-Direct Boots, $${p.price}`,
+    style: (p) => `${p.name} — Street Style Boots`,
     versatility: (p) => `${p.name} — Versatile Everyday Footwear`,
     detail: (p) => `${p.name} — Craft & Detail Overview`,
   },
@@ -95,8 +88,7 @@ const HEADLINES: Record<Platform, Record<Angle, (p: Product) => string>> = {
     value: (p) => `Factory direct. $${p.price}. No middlemen.`,
     trend: (p) => `The pair everyone saves to their moodboard: ${p.name}.`,
     performance: (p) => `Engineered like $200 shoes. Priced at $${p.price}.`,
-    // 两边并集：Make the [boot/shoe] the outfit — 根据是否是靴类统一兼容，这里用更通用的"pair"
-    style: (p) => `Make the pair the outfit. ${p.name}.`,
+    style: (p) => `Make the boot the outfit. ${p.name}.`,
     versatility: (p) => `One pair, endless styling. ${p.name}.`,
     detail: (p) => `Zoom in. ${p.name} is all in the details.`,
   },
@@ -104,20 +96,18 @@ const HEADLINES: Record<Platform, Record<Angle, (p: Product) => string>> = {
 
 const BODY: Record<Angle, (p: Product) => string> = {
   comfort: (p) =>
-    `${p.features[0]}. ${p.features[1] ?? ""}. Free shipping + 30-day wear test: if they don't feel amazing, send them back.`,
+    `${p.features[0]}. ${p.features[1] ?? ""}. Try them for 30 days — if they don't feel right, the return is on us. (Demo return policy)`,
   value: (p) =>
-    `Made in the same factory that builds $200+ brands. We cut the middlemen, not the quality. ${p.material}. Factory direct: $${p.price}.`,
+    `Made in the same factory that builds $200+ brands. We cut the middlemen, not the quality. ${p.material}. Factory direct: $${p.price}. (Demo pricing)`,
   trend: (p) =>
-    `The silhouette everyone's pairing with baggy jeans this season. ${p.features[2] ?? p.features[0]}. Limited first drop — restock sells out in 9 days.`,
+    `The silhouette everyone's pairing with baggy jeans this season. ${p.features[2] ?? p.features[0]}. Limited first drop.`,
   performance: (p) =>
-    // 两边并集：保留 cold-bonded 构造（Upstream）+ 保留 Built with ... 句式
-    `${p.features[0]}. ${p.features[1] ?? ""}. Built with ${p.weight} on your feet.`,
+    `${p.features[0]}. ${p.features[1] ?? ""}. ${p.weight} on your feet, cold-bonded construction.`,
   style: (p) =>
     `${p.tagline.replace(/\.$/, "")} — ${p.features[0]?.toLowerCase() ?? "a statement silhouette"} that turns a simple outfit into the whole look.`,
   versatility: (p) =>
     `Dress it up, dress it down. ${p.name} works with tailoring, denim and everything between — one pair, multiple moods.`,
   detail: (p) =>
-    // 两边并集：保留 model（Upstream）+ SKU 兜底（p.sku ?? p.model ?? p.id.toUpperCase）
     `${p.features.map((f) => f.replace(/ \(supplier spec\)/, "")).join(" · ")}. Supplier SKU: ${p.sku ?? p.model ?? p.id.toUpperCase()}.`,
 };
 
@@ -137,16 +127,15 @@ const CTA_VARIANTS: Record<Platform, string[]> = {
 };
 
 const TAGS: Record<Platform, string[]> = {
-  // 两边并集：boots + footwear 都保留（覆盖更全品类标签）
-  Meta: ["#STRYDE", "#DTC", "#boots", "#footwear", "#streetwear"],
-  TikTok: ["#STRYDE", "#boots", "#shoes", "#sneakerhead", "#shoecollection", "#fyp", "#factorydirect"],
+  Meta: ["#STRYDE", "#DTC", "#boots", "#streetwear"],
+  TikTok: ["#STRYDE", "#boots", "#shoecollection", "#fyp", "#factorydirect"],
   Google: ["#STRYDE"],
   Instagram: ["#STRYDE", "#ootd", "#footweardaily", "#styleinspo"],
 };
 
 /* ------------------------------------------------------------------
  * 真实供应商 SKU 专属文案（源自组委会确认的 COPY EXAMPLES）
- * 键为供应商货号（Product.sku）；同时兼容带前缀 slug，匹配成功即采用
+ * 键为供应商货号（Product.sku）——兼容按 sku 查找和按 product.id 查找
  * ------------------------------------------------------------------ */
 
 interface BootCopyBase {
@@ -160,48 +149,66 @@ interface BootCopyBase {
   versatilityCta?: string;
 }
 
-function getBootCopy(sku: string | undefined, id: string): BootCopyBase | undefined {
-  const BOOT_COPY: Record<string, BootCopyBase> = {
-    // 同时接受 "11295-J"（纯 SKU）与 "boot-11295-j"（带前缀 slug）
-    "11295-J": {
-      hook: "Gloss after dark.",
-      primary:
-        "A chunky lace-up silhouette built to turn a simple outfit into the whole look.",
-      headline: "Make the boot the outfit.",
-      cta: "Explore the drop",
-      hashtags: ["#STRYDE", "#BootStyle", "#Streetwear", "#AltFashion", "#OOTD"],
-      versatilityPrimary:
-        "From polished dark tones to sharper statement finishes, 11295-J gives the same chunky shape a completely different attitude.",
-      versatilityHeadline: "Pick your mood.",
-      versatilityCta: "See the colors",
-    },
-    "14534-H": {
-      hook: "Quiet shape. Sharp detail.",
-      primary:
-        "A clean black ankle boot finished with a contrast stitch detail for a look that stays simple without disappearing.",
-      headline: "Utility, refined.",
-      cta: "View the boot",
-      hashtags: ["#STRYDE", "#MinimalStyle", "#BlackBoots", "#MensStyle", "#EverydayUniform"],
-    },
-    "53125-J": {
-      hook: "Not built to blend in.",
-      primary:
-        "A sculptural platform silhouette, glossy black finish, and graphic sole details made for the outfit that needs a focal point.",
-      headline: "Step into the future.",
-      cta: "See the statement boot",
-      hashtags: ["#STRYDE", "#PlatformBoots", "#Y2KStyle", "#CyberFashion", "#StatementShoes"],
-    },
-  };
-  if (!sku && !id) return undefined;
-  // 精确匹配 SKU
-  if (sku && BOOT_COPY[sku]) return BOOT_COPY[sku];
-  // 否则：用 id 做子串匹配（比如 id="boot-11295-j" 匹配到 "11295-J"）
-  const normId = (id ?? "").toLowerCase();
-  for (const key of Object.keys(BOOT_COPY)) {
-    if (normId.includes(key.toLowerCase())) return BOOT_COPY[key];
-  }
-  return undefined;
-}
+const BOOT_COPY: Record<string, BootCopyBase> = {
+  // 按 sku 索引
+  "11295-J": {
+    hook: "Gloss after dark.",
+    primary:
+      "A chunky lace-up silhouette built to turn a simple outfit into the whole look.",
+    headline: "Make the boot the outfit.",
+    cta: "Explore the drop",
+    hashtags: ["#STRYDE", "#BootStyle", "#Streetwear", "#AltFashion", "#OOTD"],
+    versatilityPrimary:
+      "From polished dark tones to sharper statement finishes, 11295-J gives the same chunky shape a completely different attitude.",
+    versatilityHeadline: "Pick your mood.",
+    versatilityCta: "See the colors",
+  },
+  "14534-H": {
+    hook: "Quiet shape. Sharp detail.",
+    primary:
+      "A clean black ankle boot finished with a contrast stitch detail for a look that stays simple without disappearing.",
+    headline: "Utility, refined.",
+    cta: "View the boot",
+    hashtags: ["#STRYDE", "#MinimalStyle", "#BlackBoots", "#MensStyle", "#EverydayUniform"],
+  },
+  "53125-J": {
+    hook: "Not built to blend in.",
+    primary:
+      "A sculptural platform silhouette, glossy black finish, and graphic sole details made for the outfit that needs a focal point.",
+    headline: "Step into the future.",
+    cta: "See the statement boot",
+    hashtags: ["#STRYDE", "#PlatformBoots", "#Y2KStyle", "#CyberFashion", "#StatementShoes"],
+  },
+  // 按 product.id 索引（兜底兼容）
+  "boot-11295-j": {
+    hook: "Gloss after dark.",
+    primary:
+      "A chunky lace-up silhouette built to turn a simple outfit into the whole look.",
+    headline: "Make the boot the outfit.",
+    cta: "Explore the drop",
+    hashtags: ["#STRYDE", "#BootStyle", "#Streetwear", "#AltFashion", "#OOTD"],
+    versatilityPrimary:
+      "From polished dark tones to sharper statement finishes, 11295-J gives the same chunky shape a completely different attitude.",
+    versatilityHeadline: "Pick your mood.",
+    versatilityCta: "See the colors",
+  },
+  "boot-14534-h": {
+    hook: "Quiet shape. Sharp detail.",
+    primary:
+      "A clean black ankle boot finished with a contrast stitch detail for a look that stays simple without disappearing.",
+    headline: "Utility, refined.",
+    cta: "View the boot",
+    hashtags: ["#STRYDE", "#MinimalStyle", "#BlackBoots", "#MensStyle", "#EverydayUniform"],
+  },
+  "boot-53125-j": {
+    hook: "Not built to blend in.",
+    primary:
+      "A sculptural platform silhouette, glossy black finish, and graphic sole details made for the outfit that needs a focal point.",
+    headline: "Step into the future.",
+    cta: "See the statement boot",
+    hashtags: ["#STRYDE", "#PlatformBoots", "#Y2KStyle", "#CyberFashion", "#StatementShoes"],
+  },
+};
 
 /** 平台化调整话题标签：Google 精简、TikTok 加 fyp、Instagram 去 fyp */
 function tagsForPlatform(base: string[], platform: Platform): string[] {
@@ -216,8 +223,10 @@ export function generateCopy(
   platform: Platform,
   angle: Angle
 ): CopyResult {
-  // 两边并集：同时优先按 product.sku 匹配；若 sku 为空，回退 product.id 子串匹配
-  const boot = getBootCopy(product.sku, product.id);
+  // 先按 sku 找专属文案，再按 product.id 兜底
+  const boot = product.sku
+    ? BOOT_COPY[product.sku] ?? BOOT_COPY[product.id]
+    : BOOT_COPY[product.id];
 
   if (boot) {
     // ---- 真实供应商 SKU：使用确认过的专属文案 ----
@@ -245,12 +254,11 @@ export function generateCopy(
     };
   }
 
-  // ---- 通用模板（Lanhe 货盘 + 原有 8 个演示货盘 + 新角度兜底） ----
+  // ---- 通用模板（Lanhe 货盘 + 新角度兜底） ----
   return {
     headline: HEADLINES[platform][angle](product),
     body: BODY[angle](product),
     cta: CTAS[platform],
-    // 两边并集：保留统一 Record 索引的 TAGS[platform]，更简洁
     hashtags: TAGS[platform],
     hook: HEADLINES[platform][angle](product),
     primaryCopy: BODY[angle](product),

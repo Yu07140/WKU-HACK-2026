@@ -1,108 +1,109 @@
 import Link from "next/link";
-import { Ruler, Footprints, ArrowRight } from "lucide-react";
+import { ArrowRight, Ruler } from "lucide-react";
+import { BRAND } from "@/lib/data/brand";
 import { Button } from "@/components/ui/button";
 
-const US_EU_UK = [
-  { us: "6", eu: "38", uk: "5.5" },
-  { us: "6.5", eu: "39", uk: "6" },
-  { us: "7", eu: "40", uk: "6.5" },
-  { us: "7.5", eu: "41", uk: "7" },
-  { us: "8", eu: "42", uk: "7.5" },
-  { us: "8.5", eu: "43", uk: "8" },
-  { us: "9", eu: "44", uk: "8.5" },
-  { us: "9.5", eu: "45", uk: "9" },
-  { us: "10", eu: "46", uk: "9.5" },
-  { us: "10.5", eu: "47", uk: "10" },
-  { us: "11", eu: "48", uk: "10.5" },
-  { us: "12", eu: "49", uk: "11.5" },
-  { us: "13", eu: "50", uk: "12.5" },
+export const metadata = {
+  title: `Size Guide — ${BRAND.name}`,
+  description:
+    "EU / US / UK / CM shoe size conversion for STRYDE footwear. EU 38–46, with foot measurement instructions.",
+};
+
+/**
+ * Size guide — EU / US / UK / CM conversion
+ * EU 38–46 per supplier spec for SKU 14534-H.
+ * Foot measurement instructions only — no fit guarantees invented.
+ */
+const SIZE_ROWS: { eu: number; us: number; uk: number; cm: number }[] = [
+  { eu: 38, us: 6, uk: 5, cm: 24.0 },
+  { eu: 39, us: 6.5, uk: 5.5, cm: 24.5 },
+  { eu: 40, us: 7, uk: 6, cm: 25.0 },
+  { eu: 41, us: 8, uk: 7, cm: 26.0 },
+  { eu: 42, us: 8.5, uk: 7.5, cm: 26.5 },
+  { eu: 43, us: 9.5, uk: 8.5, cm: 27.5 },
+  { eu: 44, us: 10, uk: 9, cm: 28.0 },
+  { eu: 45, us: 11, uk: 10, cm: 29.0 },
+  { eu: 46, us: 12, uk: 11, cm: 30.0 },
 ];
 
 export default function SizeGuidePage() {
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
-      <div className="mb-12">
-        <div className="mb-3 text-xs font-bold tracking-[0.2em] text-ink/45">SIZE GUIDE</div>
-        <h1 className="text-4xl font-black md:text-5xl">Find your fit.</h1>
-        <p className="mt-3 max-w-xl text-ink/60">
-          Not sure between a 9 and a 9.5? Measure your foot and use the chart below.
-          All STRYDE shoes are built on US sizing.
+    <div className="mx-auto max-w-4xl px-6 py-16">
+      <div className="mb-10">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-3 py-1.5 text-xs font-bold tracking-wider text-ink/70">
+          <Ruler size={13} className="text-accent" />
+          SIZE GUIDE
+        </div>
+        <h1 className="text-4xl font-black tracking-tight md:text-5xl">Find your size</h1>
+        <p className="mt-4 max-w-xl text-ink/60">
+          STRYDE footwear lists EU sizes (supplier spec). Use the conversion table below to
+          find your usual US / UK size or foot length in centimetres.
         </p>
       </div>
 
-      {/* ---------- US / EU / UK 对照 ---------- */}
-      <section className="rounded-3xl border border-ink/10 bg-white p-6">
-        <h2 className="mb-1 text-xl font-black">International Size Conversion</h2>
-        <p className="mb-5 text-sm text-ink/55">
-          If you normally wear EU or UK sizes, find the US equivalent below.
-        </p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead>
-              <tr className="border-b border-ink/10 text-xs font-bold uppercase tracking-wider text-ink/50">
-                <th className="pb-3 pr-6">US Men's</th>
-                <th className="pb-3 pr-6">EU</th>
-                <th className="pb-3">UK</th>
+      {/* ---------- 尺码表 ---------- */}
+      <div className="overflow-hidden rounded-3xl border border-ink/10 bg-white">
+        <table className="w-full text-left text-sm">
+          <thead>
+            <tr className="bg-cream text-ink/70">
+              <th className="px-5 py-4 font-bold">EU</th>
+              <th className="px-5 py-4 font-bold">US</th>
+              <th className="px-5 py-4 font-bold">UK</th>
+              <th className="px-5 py-4 font-bold">Foot length (cm)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {SIZE_ROWS.map((r) => (
+              <tr key={r.eu} className="border-t border-ink/5">
+                <td className="px-5 py-3 font-black text-accent">{r.eu}</td>
+                <td className="px-5 py-3">{r.us}</td>
+                <td className="px-5 py-3">{r.uk}</td>
+                <td className="px-5 py-3">{r.cm.toFixed(1)}</td>
               </tr>
-            </thead>
-            <tbody>
-              {US_EU_UK.map((r) => (
-                <tr key={r.us} className="border-b border-ink/5 last:border-0">
-                  <td className="py-3 pr-6 font-bold">{r.us}</td>
-                  <td className="py-3 pr-6 text-ink/70">{r.eu}</td>
-                  <td className="py-3 text-ink/70">{r.uk}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      {/* ---------- 量脚方法 ---------- */}
-      <section className="mt-12 grid gap-6 md:grid-cols-2">
-        <div className="rounded-3xl border border-ink/10 bg-white p-7">
-          <div className="mb-4 inline-flex rounded-2xl bg-accent/10 p-3 text-accent">
-            <Footprints size={22} />
-          </div>
-          <h3 className="text-lg font-black">How to measure your foot</h3>
-          <ol className="mt-3 space-y-2 text-sm text-ink/70">
-            <li>1. Place a blank piece of paper on a hard floor.</li>
-            <li>2. Stand on the paper with your full weight.</li>
-            <li>3. Trace around your foot with a pen held straight up.</li>
-            <li>4. Mark the longest point — from heel to tip of your longest toe.</li>
-            <li>5. Measure that distance in centimeters.</li>
-            <li>6. Use the chart above to find your US size.</li>
-          </ol>
-        </div>
-        <div className="rounded-3xl border border-ink/10 bg-white p-7">
-          <div className="mb-4 inline-flex rounded-2xl bg-sage/10 p-3 text-sage">
-            <Ruler size={22} />
-          </div>
-          <h3 className="text-lg font-black">Quick tips</h3>
-          <ul className="mt-3 space-y-2 text-sm text-ink/70">
-            <li>• Measure at the end of the day — feet swell slightly.</li>
-            <li>• Wear the socks you'll wear with the boots.</li>
-            <li>• Measure both feet — size up if they differ.</li>
-            <li>• Between two sizes? Go up for room to move.</li>
-            <li>• Our boots run true to size for most wearers.</li>
-          </ul>
-        </div>
-      </section>
+      <p className="mt-3 text-xs text-ink/45">
+        Conversion tables are approximate and may vary by last and manufacturer.
+        We do not guarantee a specific fit from this chart.
+      </p>
 
-      {/* ---------- 退换承诺 ---------- */}
-      <section className="mt-14 rounded-3xl bg-ink p-8 text-paper text-center">
-        <h2 className="text-2xl font-black md:text-3xl">Still not sure?</h2>
-        <p className="mx-auto mt-3 max-w-md text-paper/70">
-          Order both sizes. Keep the one that fits. Send the other back within 30 days — free.
+      {/* ---------- 脚长测量说明 ---------- */}
+      <section className="mt-14">
+        <h2 className="text-2xl font-black">How to measure your foot</h2>
+        <ol className="mt-5 space-y-3 text-ink/70">
+          {[
+            "Place a sheet of paper on a hard floor against a wall.",
+            "Stand on the paper with your heel against the wall.",
+            "Mark the tip of your longest toe on the paper.",
+            "Measure the distance from the wall to the mark in centimetres.",
+            "Compare your foot length (cm) to the table above and pick the closest EU size.",
+          ].map((step, i) => (
+            <li key={i} className="flex gap-3">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/10 text-xs font-black text-accent">
+                {i + 1}
+              </span>
+              <span className="pt-0.5">{step}</span>
+            </li>
+          ))}
+        </ol>
+        <p className="mt-5 rounded-2xl bg-cream p-4 text-sm text-ink/60">
+          Tip: measure both feet and use the longer one. Feet can be slightly different
+          sizes. If you are between two sizes, sizing is a personal preference — we do not
+          recommend one over the other.
         </p>
-        <div className="mt-6">
-          <Link href="/products">
-            <Button size="lg">
-              Shop all shoes <ArrowRight size={18} />
-            </Button>
-          </Link>
-        </div>
       </section>
+
+      {/* ---------- CTA ---------- */}
+      <div className="mt-14">
+        <Link href="/products">
+          <Button size="lg">
+            Shop footwear <ArrowRight size={18} />
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }

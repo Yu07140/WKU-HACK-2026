@@ -18,10 +18,10 @@ export const BRAND: BrandKit = {
 };
 
 export const BRAND_STORY = [
-  "STRYDE 由 Lanhe International 工厂直供——一家为全球品牌做 OEM/ODM 的冷粘鞋厂。",
-  "同样的鞋楦、同样的 PU 皮、同样的冷粘产线，过去只能贴着别人的 logo 漂洋过海。",
-  "今天我们用 AI 把设计、素材、投放和零售的链路压缩到几天——",
-  "工厂直达你的脚下，没有中间商，没有溢价。",
+  "STRYDE is a hackathon demo of a factory-direct footwear brand.",
+  "Our featured product is factory SKU 14534-H — a black minimalist ankle boot with microfiber upper & lining, rear zipper and rubber outsole.",
+  "We use AI to compress the design, creative, media and retail workflow into a single demo timeline.",
+  "Pricing, shipping and policies shown on this site are demo data, not verified operational commitments.",
 ];
 
 /** 供货工厂（货盘来源：Lanhe Product Collection 2026） */
@@ -30,7 +30,7 @@ export const MANUFACTURER = {
   title: "OEM / ODM Footwear Manufacturer",
   category: "Casual Boots",
   construction: "Cold Bonding 冷粘工艺",
-  mainMaterial: "PU Leather",
+  mainMaterial: "Varies by SKU — 14534-H is microfiber upper & lining; Lanhe styles are PU leather",
   moq: 300,
   leadTimeDays: 25,
 };

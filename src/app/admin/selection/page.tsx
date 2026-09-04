@@ -9,7 +9,7 @@ function decide(heat: number, marginPct: number, moq: number) {
   if (heat >= 82 && marginPct >= 0.65)
     return { icon: ThumbsUp, label: "放量 Scale", cls: "bg-green-500/15 text-green-400", tip: "加大广告预算，备足安全库存" };
   if (heat >= 68 || (marginPct >= 0.7 && moq <= 500))
-    return { icon: Eye, label: "测试 Test", cls: "bg-amber-500/15 text-amber-400", tip: "小预算 A/B 测试素材，48h 看 CTR" };
+    return { icon: Eye, label: "测试 Test", cls: "bg-amber-500/15 text-amber-400", tip: "小预算 A/B 测试素材，1-2 天看 CTR" };
   return { icon: ThumbsDown, label: "观望 Hold", cls: "bg-slate-500/15 text-slate-400", tip: "暂不投放，等季节/趋势信号" };
 }
 

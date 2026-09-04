@@ -2,14 +2,16 @@
 
 import { useState } from "react";
 import { Clapperboard, Loader2, Copy, Check, RotateCcw } from "lucide-react";
-import { PRODUCTS } from "@/lib/data/catalog";
+import { PRODUCTS, getProductById } from "@/lib/data/catalog";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label, Select } from "@/components/ui/input";
 import { generateVideoScript, scriptToText, type VideoScript } from "@/lib/ai/videoScript";
 
 export function VideoScriptGenerator() {
-  const [productId, setProductId] = useState(PRODUCTS[0].id);
+  const [productId, setProductId] = useState(
+    getProductById("boot-14534-h")?.id ?? PRODUCTS[0].id
+  );
   const [variant, setVariant] = useState(0);
   const [loading, setLoading] = useState(false);
   const [script, setScript] = useState<VideoScript | null>(null);

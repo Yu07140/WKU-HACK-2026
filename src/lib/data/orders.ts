@@ -5,7 +5,7 @@ import type { Order, OrderStatus } from "@/lib/types";
  * 新结账订单通过 addOrder 追加到内存数组（演示交易闭环）
  * 模块 D 若要持久化，可换成 SQLite/Vercel KV，接口保持不变
  */
-const SEED_ORDERS: Order[] = [
+const SEED_ORDERS_RAW: Omit<Order, "isTest">[] = [
   { id: "ST-1042", date: "2026-08-20T09:12:00Z", customer: "Emma R.", email: "emma@example.com", country: "United States", productId: "p01", productName: "No. 5910-5", color: "Orange", size: 8, qty: 1, amount: 89, channel: "meta", status: "delivered" },
   { id: "ST-1043", date: "2026-08-20T14:33:00Z", customer: "Liam T.", email: "liam@example.com", country: "Canada", productId: "p02", productName: "No. 5830", color: "Golden", size: 10, qty: 1, amount: 95, channel: "tiktok", status: "delivered" },
   { id: "ST-1044", date: "2026-08-21T11:05:00Z", customer: "Sophia M.", email: "sophia@example.com", country: "United States", productId: "p09", productName: "No. 8801", color: "Black", size: 7, qty: 2, amount: 150, channel: "google", status: "delivered" },
@@ -25,7 +25,7 @@ const SEED_ORDERS: Order[] = [
   { id: "ST-1058", date: "2026-09-03T07:59:00Z", customer: "Harper V.", email: "harper@example.com", country: "Canada", productId: "p01", productName: "No. 5910-5", color: "Yellow", size: 9, qty: 1, amount: 89, channel: "direct", status: "paid" },
 ];
 
-let orders: Order[] = [...SEED_ORDERS];
+let orders: Order[] = SEED_ORDERS_RAW.map((o) => ({ ...o, isTest: true }));
 
 export function getOrders() {
   return orders;
@@ -36,9 +36,10 @@ export function addOrder(
 ): Order {
   const order: Order = {
     ...input,
-    id: `ST-${1059 + orders.length - SEED_ORDERS.length}`,
+    id: `ST-${1059 + orders.length - SEED_ORDERS_RAW.length}`,
     date: new Date().toISOString(),
     status: "paid",
+    isTest: false,
   };
   orders = [order, ...orders];
   return order;

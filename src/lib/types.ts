@@ -18,9 +18,9 @@ export interface ProductColor {
   hex: string;
   /** 该配色对应的 AIGC 出图 prompt（素材工坊用） */
   imagePrompt: string;
-  /** 真实货盘照片（public 目录下路径），无则走 AIGC 占位 */
+  /** 真实货盘/供应商照片（public 目录下路径），无则走 AIGC 占位 */
   image?: string;
-  /** 真实供应商照片（可选）。存在时前台优先展示实拍图 */
+  /** 真实供应商照片（可选，与 image 等价，兼容旧数据）。存在时前台优先展示实拍图 */
   realImage?: string;
 }
 
@@ -64,7 +64,6 @@ export interface Product {
   weight: string;
   description: string;
   features: string[];
-  /** 主图 AIGC prompt */
   imagePrompt: string;
   /** 选款热度 0-100（AI 综合广告点击/加购/搜索趋势） */
   heatScore: number;
@@ -79,19 +78,29 @@ export type OrderChannel = "direct" | "meta" | "tiktok" | "google";
 export type OrderStatus = "paid" | "fulfilled" | "shipped" | "delivered";
 
 export interface Order {
-  id: string;
+  id: string; // order_id
   date: string;
   customer: string;
   email: string;
-  country: string;
-  productId: string;
+  country: string; // ship_to_country
+  productId: string; // brand_sku (internal product id)
   productName: string;
-  color: string;
+  color: string; // color_or_print_id (color name)
   size: number;
   qty: number;
   amount: number;
   channel: OrderChannel;
   status: OrderStatus;
+  /** Seed/demo orders (hackathon test data) vs. orders placed via the demo checkout */
+  isTest?: boolean;
+  /* ---- 官方履约字段（官方 fulfillment export 所需，均可选） ---- */
+  factory_sku?: string; // 供应商 SKU，如 14534-H
+  size_eu?: number; // 欧码
+  size_us?: number; // 美码
+  gender?: "M" | "F" | "U";
+  shipping_method?: string;
+  promised_sla?: string;
+  customer_note?: string;
 }
 
 export interface Campaign {
@@ -126,12 +135,12 @@ export interface CartItem {
   slug: string;
   color: string;
   size: number;
-  /** 尺码制式（US/EU），缺省 US（与 Product.sizeSystem 对应） */
+  /** 尺码制式（US/EU），缺省 US */
   sizeSystem?: "US" | "EU";
   price: number;
   qty: number;
   imagePrompt: string;
-  /** 真实货盘照片（可选） */
+  /** 真实货盘照片（可选）。与 realImage 等价，兼容旧数据 */
   image?: string;
   /** 真实商品图（可选），购物车/结账优先展示 */
   realImage?: string;

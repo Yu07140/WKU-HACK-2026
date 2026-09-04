@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { LayoutGrid, Loader2, Copy, Check, Download, ExternalLink } from "lucide-react";
-import { PRODUCTS } from "@/lib/data/catalog";
+import { PRODUCTS, getProductById } from "@/lib/data/catalog";
 import { aiImageUrl } from "@/lib/ai/image";
 import { generateCopy, type Platform, type Angle, PLATFORM_LABELS } from "@/lib/ai/copy";
 import { Button } from "@/components/ui/button";
@@ -43,7 +43,9 @@ const PLATFORMS: {
 const ANGLES: Angle[] = ["style", "versatility", "value", "detail"];
 
 export function CreativeMatrix() {
-  const [productId, setProductId] = useState(PRODUCTS[0].id);
+  const [productId, setProductId] = useState(
+    getProductById("boot-14534-h")?.id ?? PRODUCTS[0].id
+  );
   const [angle, setAngle] = useState<Angle>("style");
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
@@ -52,6 +54,13 @@ export function CreativeMatrix() {
 
   const { add } = useCreativeHistory();
   const product = PRODUCTS.find((p) => p.id === productId)!;
+
+  // 真实供应商参考图（heroImage / image / colors[].realImage / colors[].image）
+  const firstColor = product.colors.find((c) => c.realImage || c.image);
+  const refImage =
+    product.heroImage ??
+    product.image ??
+    (firstColor ? firstColor.realImage ?? firstColor.image : undefined);
 
   function generate() {
     setLoading(true);
@@ -68,12 +77,7 @@ export function CreativeMatrix() {
           productId: product.id,
           productName: product.name,
           sku: product.sku,
-          // 两边分支并集（与 SceneGenerator 保持一致）
-          refImage:
-            product.image ??
-            product.colors[0]?.image ??
-            product.heroImage ??
-            product.colors.find((c) => c.realImage)?.realImage,
+          refImage,
           url,
           prompt: `${product.creativePresets?.studio ?? product.imagePrompt}, ${pf.visual}`,
           styleId: "studio",
@@ -149,6 +153,37 @@ export function CreativeMatrix() {
 
       {ready && (
         <>
+          {/* Factory Reference Image */}
+          <div className="mb-6 flex items-center gap-4 rounded-2xl border border-ink/10 bg-white p-4">
+            <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-cream">
+              {refImage ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={refImage}
+                  alt={`${product.name} factory reference`}
+                  className="h-full w-full object-contain"
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center text-[10px] text-ink/40">
+                  No ref photo
+                </div>
+              )}
+            </div>
+            <div>
+              <div className="text-xs font-bold text-ink/50">
+                Factory Reference Image
+              </div>
+              <div className="text-sm font-black">{product.name}</div>
+              {product.sku && (
+                <div className="text-xs text-ink/50">Supplier SKU: {product.sku}</div>
+              )}
+              <div className="mt-1 text-[11px] text-ink/40">
+                Real supplier photo — the AI creatives below are concept visuals, not real
+                product photos.
+              </div>
+            </div>
+          </div>
+
           <div className="mb-4 flex justify-end">
             <button
               onClick={() => {
@@ -185,7 +220,7 @@ export function CreativeMatrix() {
                       {PLATFORM_LABELS[pf.id]}
                     </span>
                     <span className="absolute right-3 top-3 rounded-full bg-accent px-2.5 py-1 text-[10px] font-bold text-white">
-                      AI CREATIVE
+                      AI-Generated
                     </span>
                   </div>
                   <div className="space-y-2 p-4">

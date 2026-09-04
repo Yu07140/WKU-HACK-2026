@@ -8,11 +8,11 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className={`group block animate-fade-up ${product.stock === 0 ? "opacity-70" : ""}`}
+      className="group block animate-fade-up"
     >
       <div className="relative overflow-hidden rounded-2xl bg-cream">
         <ProductImage
-          src={product.heroImage ?? product.colors.find((c) => c.realImage)?.realImage ?? product.image}
+          src={product.heroImage ?? product.image ?? product.colors.find((c) => c.realImage)?.realImage ?? product.colors.find((c) => c.image)?.image}
           prompt={product.imagePrompt + ", professional e-commerce product photography, soft cream studio background, soft lighting"}
           alt={product.name}
           className="aspect-square transition duration-500 group-hover:scale-[1.03]"
@@ -65,7 +65,7 @@ export function ProductCard({ product }: { product: Product }) {
 export function MiniProductCard({
   product,
 }: {
-  product: Pick<Product, "slug" | "name" | "price" | "rating" | "imagePrompt"> & { image?: string };
+  product: Pick<Product, "slug" | "name" | "price" | "imagePrompt"> & { image?: string };
 }) {
   return (
     <Link
@@ -80,7 +80,7 @@ export function MiniProductCard({
       />
       <div className="min-w-0">
         <div className="truncate text-sm font-bold">{ph(product.name)}</div>
-        <div className="text-xs text-ink/50">{formatUSD(product.price)} · {product.rating}★</div>
+        <div className="text-xs text-ink/50">{formatUSD(product.price)}</div>
       </div>
     </Link>
   );
