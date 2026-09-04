@@ -9,7 +9,7 @@ import { BRAND } from "@/lib/data/brand";
 export const metadata: Metadata = {
   title: `${BRAND.name} — Factory-Direct Footwear, AI-Powered DTC Brand`,
   description:
-    "STRYDE: from white-label shoe factory to global DTC brand. Premium sneakers at factory prices. Free shipping & 30-day trial.",
+    "STRYDE: from white-label shoe factory to global DTC brand. Street-ready boots at factory prices. Free shipping & 30-day trial.",
 };
 
 export default function RootLayout({

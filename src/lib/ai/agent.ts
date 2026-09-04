@@ -44,7 +44,7 @@ export function searchProducts(query: string): Product[] {
 }
 
 export function getSizingAdvice(): string {
-  return "尺码建议：STRYDE 全部为标准美码（US size）。脚宽或介于两码之间，建议选大半码；飞织款（Cloud Knit / Slip Ease）包裹性强，正常码即可。下单后 30 天内免费换码，运费我们承担 👟";
+  return "尺码建议：STRYDE 全部为标准美码（US size）。高帮靴建议按日常运动鞋尺码选；脚宽或想塞厚袜子、介于两码之间，选大半码更舒服。侧拉链款（No. 5970 / No. 8058）穿脱很方便。下单后 30 天内免费换码，运费我们承担 👟";
 }
 
 export function getShippingInfo(): string {
@@ -69,7 +69,7 @@ export function agentReply(userMessage: string): AgentReply {
   }
   if (/deal|discount|sale|便宜|优惠|code|coupon/.test(q)) {
     return {
-      text: "新客福利 🎁 首单立减 15%，结账时输入码 STRYDE15。另外满 $75 美国境内免运费，现在入手 Cloud Knit Runner 正合适！",
+      text: "新客福利 🎁 首单立减 15%，结账时输入码 STRYDE15。另外满 $75 美国境内免运费，现在入手十色齐发的 No. 5910-5 正合适！",
       products: PRODUCTS.filter((p) => p.trend === "hot").slice(0, 2),
     };
   }
@@ -87,6 +87,6 @@ export function agentReply(userMessage: string): AgentReply {
 
   return {
     text:
-      "我是 STRYDE 的 AI 导购，可以帮你：\n• 按场景推荐鞋款（跑步 / 通勤 / 户外 / 夏日）\n• 解答尺码、物流、退换问题\n• 报上新客优惠码\n\n试试问我：\"I need shoes for daily running\" 或 \"有什么百搭的休闲鞋？\"",
+      "我是 STRYDE 的 AI 导购，可以帮你：\n• 按风格推荐靴子（亮色系 / 全黑百搭 / 金色派对 / 全息幻彩）\n• 解答尺码、物流、退换问题\n• 报上新客优惠码\n\n试试问我：\"boots with a side zipper\" 或 \"有什么百搭的黑色靴子？\"",
   };
 }

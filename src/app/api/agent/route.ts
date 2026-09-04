@@ -36,6 +36,7 @@ export async function POST(req: Request) {
                 price: p.price,
                 rating: p.rating,
                 imagePrompt: p.imagePrompt,
+                image: p.image,
               })),
             }) + "\n"
           )

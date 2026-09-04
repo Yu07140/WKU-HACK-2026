@@ -57,6 +57,7 @@ export function PDPView({ product }: { product: Product }) {
               )}
             >
               <ProductImage
+                src={c.image}
                 prompt={`${c.imagePrompt}, product photo, cream background`}
                 alt={c.name}
                 size="square"
@@ -200,8 +201,10 @@ export function PDPView({ product }: { product: Product }) {
         </ul>
 
         <div className="mt-8 rounded-2xl bg-cream p-5 text-sm">
-          <div className="mb-2 font-bold">供应链直连参数 · Factory Specs</div>
+          <div className="mb-2 font-bold">货盘参数 · Lanhe Factory Specs</div>
           <div className="grid grid-cols-2 gap-y-2 text-ink/65">
+            <span>型号 Model：{product.model ?? "—"}</span>
+            <span>工艺：{product.construction ?? "—"}</span>
             <span>材质：{product.material}</span>
             <span>重量：{product.weight}</span>
             <span>起订量 MOQ：{product.moq} 双</span>

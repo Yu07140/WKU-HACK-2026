@@ -57,7 +57,7 @@ export default function HomePage() {
 
           <div className="relative">
             <ProductImage
-              prompt="cinematic advertising photo of a single vermilion red knit running sneaker floating mid-air with dynamic orange energy ribbons, warm cream background, premium sportswear campaign, dramatic studio light"
+              prompt="cinematic advertising photo of a single bright orange pu leather high top fashion boot with side zipper, chunky cream sole and jumbo laces, floating mid-air, warm cream background, premium streetwear campaign, dramatic studio light"
               alt="STRYDE hero shoe"
               size="portrait_4_3"
               className="aspect-[4/5] rounded-3xl shadow-2xl"

@@ -9,7 +9,7 @@ export function cn(...parts: Array<string | false | null | undefined>) {
  *        全站名称显示 "?????"、价格显示 "$???"、图片显示灰色占位块
  * 拿到真实数据填入 lib/data/catalog.ts 后，把这里改成 false 即可恢复
  * ------------------------------------------------------------------ */
-export const PLACEHOLDER_MODE = true;
+export const PLACEHOLDER_MODE = false;
 
 export const PH_NAME = "?????";
 
