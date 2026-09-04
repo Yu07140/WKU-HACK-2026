@@ -68,16 +68,12 @@ export function CreativeMatrix() {
           productId: product.id,
           productName: product.name,
           sku: product.sku,
-<<<<<<< HEAD
           // 两边分支并集（与 SceneGenerator 保持一致）
           refImage:
             product.image ??
             product.colors[0]?.image ??
             product.heroImage ??
             product.colors.find((c) => c.realImage)?.realImage,
-=======
-          refImage: product.image ?? product.colors[0]?.image,
->>>>>>> b9de0bfad5ffa5d8acbf9d490a21771c14b14810
           url,
           prompt: `${product.creativePresets?.studio ?? product.imagePrompt}, ${pf.visual}`,
           styleId: "studio",
