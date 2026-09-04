@@ -29,9 +29,9 @@ export default function HomePage() {
               FACTORY DIRECT · SKU 14534-H
             </div>
             <h1 className="text-5xl font-black leading-[1.05] tracking-tight md:text-7xl">
-              the quiet
+              The Quiet
               <br />
-              <span className="text-accent">workhorse.</span>
+              <span className="text-accent">Workhorse.</span>
             </h1>
             <p className="mt-6 max-w-md text-lg text-ink/65">
               {hero.name} — a black minimalist ankle boot built for the daily route.
