@@ -20,6 +20,8 @@ export interface ProductColor {
   imagePrompt: string;
   /** 真实货盘照片（public 目录下路径），无则走 AIGC 占位 */
   image?: string;
+  /** 真实供应商照片（可选）。存在时前台优先展示实拍图 */
+  realImage?: string;
 }
 
 export interface Product {
@@ -36,6 +38,8 @@ export interface Product {
   image?: string;
   /** 真实货盘图库（主图+正面图…） */
   images?: string[];
+  /** 供应商原始 SKU（真实货盘商品必填，如 "11295-J"） */
+  sku?: string;
   /** 零售价（USD，面向海外消费者） */
   price: number;
   compareAt?: number;
@@ -48,6 +52,14 @@ export interface Product {
   colors: ProductColor[];
   /** 美码 US sizes */
   sizes: number[];
+  /** 尺码制式，缺省为美码 US；真实供应商货盘可能为欧码 EU */
+  sizeSystem?: "US" | "EU";
+  /** 真实供应商主图（白底实拍，可选）。存在时前台优先展示实拍图 */
+  heroImage?: string;
+  /** 定价未经核实，仅为演示价（前台显著标注 Demo Pricing） */
+  demoPricing?: boolean;
+  /** 素材工坊专用：按风格 id 预置的产品级出图 prompt（可选） */
+  creativePresets?: Record<string, string>;
   material: string;
   weight: string;
   description: string;
@@ -114,9 +126,13 @@ export interface CartItem {
   slug: string;
   color: string;
   size: number;
+  /** 尺码制式（US/EU），缺省 US（与 Product.sizeSystem 对应） */
+  sizeSystem?: "US" | "EU";
   price: number;
   qty: number;
   imagePrompt: string;
   /** 真实货盘照片（可选） */
   image?: string;
+  /** 真实商品图（可选），购物车/结账优先展示 */
+  realImage?: string;
 }

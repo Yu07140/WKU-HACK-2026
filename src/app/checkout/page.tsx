@@ -146,7 +146,7 @@ export default function CheckoutPage() {
                 <span className="text-ink/70">
                   {ph(i.productName)} × {i.qty}
                   <span className="block text-xs text-ink/45">
-                    {i.color} · US {i.size}
+                    {i.color} · {i.sizeSystem ?? "US"} {i.size}
                   </span>
                 </span>
                 <span className="font-semibold">{formatUSD(i.price * i.qty)}</span>

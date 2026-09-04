@@ -12,7 +12,7 @@ export function ProductCard({ product }: { product: Product }) {
     >
       <div className="relative overflow-hidden rounded-2xl bg-cream">
         <ProductImage
-          src={product.image}
+          src={product.heroImage ?? product.colors.find((c) => c.realImage)?.realImage ?? product.image}
           prompt={product.imagePrompt + ", professional e-commerce product photography, soft cream studio background, soft lighting"}
           alt={product.name}
           className="aspect-square transition duration-500 group-hover:scale-[1.03]"
@@ -20,7 +20,12 @@ export function ProductCard({ product }: { product: Product }) {
         <div className="absolute left-3 top-3">
           <TrendBadge trend={product.trend} />
         </div>
-        {!PLACEHOLDER_MODE && product.compareAt && (
+        {product.demoPricing && (
+          <div className="absolute right-3 top-3 rounded-full bg-ink/80 px-2.5 py-1 text-xs font-bold text-white">
+            Demo pricing
+          </div>
+        )}
+        {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
           <div className="absolute right-3 top-3 rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-white">
             SAVE {formatUSD(product.compareAt - product.price)}
           </div>
@@ -44,7 +49,10 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
         <div className="text-right">
           <div className="font-bold">{formatUSD(product.price)}</div>
-          {!PLACEHOLDER_MODE && product.compareAt && (
+          {product.demoPricing && (
+            <div className="text-[11px] text-ink/40">TBC</div>
+          )}
+          {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
             <div className="text-xs text-ink/40 line-through">{formatUSD(product.compareAt)}</div>
           )}
         </div>

@@ -7,7 +7,8 @@ export function cn(...parts: Array<string | false | null | undefined>) {
  * 脚手架占位模式
  * true = 组委会真实货盘（商品名/价格/图片）尚未接入，
  *        全站名称显示 "?????"、价格显示 "$???"、图片显示灰色占位块
- * 拿到真实数据填入 lib/data/catalog.ts 后，把这里改成 false 即可恢复
+ * 2026-09-04：3 个真实供应商 SKU（11295-J / 14534-H / 53125-J）已接入，
+ * 按约定切换为 false，全站恢复真实展示（真实实拍图优先，其余走 AIGC）
  * ------------------------------------------------------------------ */
 export const PLACEHOLDER_MODE = false;
 

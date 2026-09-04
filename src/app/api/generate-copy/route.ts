@@ -2,9 +2,20 @@ import { NextResponse } from "next/server";
 import { getProductById } from "@/lib/data/catalog";
 import { generateCopy, type Platform, type Angle } from "@/lib/ai/copy";
 
+const PLATFORMS: Platform[] = ["Meta", "TikTok", "Google", "Instagram"];
+const ANGLES: Angle[] = [
+  "comfort",
+  "value",
+  "trend",
+  "performance",
+  "style",
+  "versatility",
+  "detail",
+];
+
 /**
  * POST /api/generate-copy
- * body: { productId, platform: Meta|TikTok|Google, angle: comfort|value|trend|performance }
+ * body: { productId, platform: Meta|TikTok|Google|Instagram, angle }
  * 返回 AI 广告文案（当前规则引擎，模块 B 可替换为 LLM）
  */
 export async function POST(req: Request) {
@@ -13,10 +24,10 @@ export async function POST(req: Request) {
   if (!product) {
     return NextResponse.json({ error: "product not found" }, { status: 400 });
   }
-  const platform = (["Meta", "TikTok", "Google"].includes(body?.platform)
+  const platform = (PLATFORMS.includes(body?.platform)
     ? body.platform
     : "Meta") as Platform;
-  const angle = (["comfort", "value", "trend", "performance"].includes(body?.angle)
+  const angle = (ANGLES.includes(body?.angle)
     ? body.angle
     : "comfort") as Angle;
 

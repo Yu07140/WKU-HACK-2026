@@ -67,6 +67,10 @@ export default function CartPage() {
             >
               <Link href={`/products/${it.slug}`}>
                 <ProductImage
+<<<<<<< HEAD
+=======
+                  src={it.realImage ?? it.image}
+>>>>>>> fa8ecd6c6d0d2a5b50c573f5b52f368f523f5a03
                   prompt={`${it.imagePrompt}, product photo, cream background`}
                   alt={it.productName}
                   className="h-28 w-28 rounded-xl"
@@ -79,7 +83,7 @@ export default function CartPage() {
                       {ph(it.productName)}
                     </Link>
                     <div className="mt-0.5 text-sm text-ink/55">
-                      {it.color} · US {it.size}
+                      {it.color} · {it.sizeSystem ?? "US"} {it.size}
                     </div>
                   </div>
                   <button
