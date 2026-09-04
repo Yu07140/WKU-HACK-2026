@@ -38,10 +38,10 @@ const HEADLINES: Record<Platform, Record<Angle, (p: Product) => string>> = {
     performance: (p) => `Runners don't gatekeep this one 🏃💨 ${p.name}`,
   },
   Google: {
-    comfort: (p) => `${p.name} — All-Day Comfort Sneakers`,
+    comfort: (p) => `${p.name} — All-Day Comfort High-Top Boots`,
     value: (p) => `Buy ${p.name} Direct From Factory — $${p.price}`,
-    trend: (p) => `${p.name} | Trending Retro Sneakers 2026`,
-    performance: (p) => `${p.name} — Performance Running Shoes, $${p.price}`,
+    trend: (p) => `${p.name} | Trending Street Boots 2026`,
+    performance: (p) => `${p.name} — PU Leather Boots, Factory Direct, $${p.price}`,
   },
 };
 
@@ -53,7 +53,7 @@ const BODY: Record<Angle, (p: Product) => string> = {
   trend: (p) =>
     `The silhouette everyone's pairing with baggy jeans this season. ${p.features[2] ?? p.features[0]}. Limited first drop — restock sells out in 9 days.`,
   performance: (p) =>
-    `${p.features[0]}. ${p.features[1]}. Built with ${p.weight} on your feet. 4.8★ from 1,000+ runners. Ships in 48 hours.`,
+    `${p.features[0]}. ${p.features[1]}. ${p.weight} on your feet, cold-bonded construction. 4.8★ from 1,000+ happy buyers. Ships in 48 hours.`,
 };
 
 const CTAS: Record<Platform, string> = {
@@ -73,7 +73,7 @@ export function generateCopy(
     cta: CTAS[platform],
     hashtags:
       platform === "TikTok"
-        ? ["#STRYDE", "#shoes", "#sneakerhead", "#fyp", "#factorydirect"]
-        : ["#STRYDE", "#DTC", "#sneakers"],
+        ? ["#STRYDE", "#boots", "#shoecollection", "#fyp", "#factorydirect"]
+        : ["#STRYDE", "#DTC", "#boots", "#streetwear"],
   };
 }

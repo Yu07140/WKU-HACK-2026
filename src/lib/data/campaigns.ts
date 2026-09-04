@@ -8,7 +8,7 @@ import type { Campaign } from "@/lib/types";
 export const CAMPAIGNS: Campaign[] = [
   {
     id: "c01",
-    name: "Cloud Knit Runner - Meta 兴趣定向",
+    name: "No. 5910-5 Orange - Meta 兴趣定向",
     platform: "Meta",
     status: "active",
     budget: 150,
@@ -17,13 +17,13 @@ export const CAMPAIGNS: Campaign[] = [
     clicks: 2160,
     conversions: 48,
     creativePrompt:
-      "young woman running through city park at sunrise wearing white knit running sneakers, slow motion, lifestyle ad",
-    creativeCopy: "Light enough to forget you're wearing them. 238g of pure comfort. Free shipping & 30-day trial.",
+      "gen z street style photo, bright orange high top fashion boots with jumbo laces and chunky cream sole, city street at golden hour, lifestyle ad",
+    creativeCopy: "The boot that sells itself. Factory-direct PU leather, side zip, $89 shipped. Free shipping & 30-day trial.",
     startDate: "2026-08-26",
   },
   {
     id: "c02",
-    name: "Urban Chunk 90 - TikTok 达人挑战",
+    name: "No. 5910-5 - TikTok 达人挑战",
     platform: "TikTok",
     status: "active",
     budget: 200,
@@ -32,13 +32,13 @@ export const CAMPAIGNS: Campaign[] = [
     clicks: 6840,
     conversions: 57,
     creativePrompt:
-      "gen z tiktok style outfit check video still, chunky cream dad sneakers with baggy jeans, neon lighting, vertical",
-    creativeCopy: "POV: you found the sneakers all over your FYP. 4cm height boost included. #STRYDE",
+      "gen z tiktok style outfit check video still, chunky high top boots with baggy jeans, neon lighting, vertical",
+    creativeCopy: "POV: you found the boots all over your FYP. 4cm height boost + side zip included. #STRYDE",
     startDate: "2026-08-28",
   },
   {
     id: "c03",
-    name: "Glide Carbon Pro - Google 搜索",
+    name: "No. 9525 Holographic - Google 搜索",
     platform: "Google",
     status: "active",
     budget: 120,
@@ -47,13 +47,13 @@ export const CAMPAIGNS: Campaign[] = [
     clicks: 1190,
     conversions: 31,
     creativePrompt:
-      "hyper orange carbon plate running shoe on dark track, speed lines, performance focused google shopping ad",
-    creativeCopy: "Carbon plate performance without the $250 price tag. Glide Carbon Pro — $139, ship in 48h.",
+      "holographic iridescent high top fashion boot on dark studio background, color shifting purple blue reflections, premium shopping ad",
+    creativeCopy: "Holographic boots that break the algorithm — $98, ship in 48h, factory direct.",
     startDate: "2026-08-27",
   },
   {
     id: "c04",
-    name: "Breeze Sandal - 夏季清仓测试",
+    name: "No. 8801 - 入门款转化测试",
     platform: "Meta",
     status: "paused",
     budget: 80,
@@ -65,7 +65,7 @@ export const CAMPAIGNS: Campaign[] = [
   },
   {
     id: "c05",
-    name: "Slip Ease - 差旅人群测试",
+    name: "No. 5960 Lemon Drop - 新色测试",
     platform: "TikTok",
     status: "draft",
     budget: 100,

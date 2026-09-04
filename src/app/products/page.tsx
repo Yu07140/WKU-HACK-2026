@@ -8,6 +8,9 @@ import { CATEGORY_LABELS, type Category } from "@/lib/types";
 import { ProductCard } from "@/components/store/ProductCard";
 import { cn } from "@/lib/utils";
 
+/** 分类标签只展示货盘里实际存在的品类 */
+const ACTIVE_TABS = ["all", ...Array.from(new Set(PRODUCTS.map((p) => p.category)))] as const;
+
 function ProductsBrowser() {
   const params = useSearchParams();
   const [cat, setCat] = useState<string>(params.get("cat") ?? "all");
@@ -17,7 +20,7 @@ function ProductsBrowser() {
     [cat]
   );
 
-  const tabs = ["all", ...Object.keys(CATEGORY_LABELS)] as const;
+  const tabs = ACTIVE_TABS;
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">

@@ -18,8 +18,19 @@ export const BRAND: BrandKit = {
 };
 
 export const BRAND_STORY = [
-  "STRYDE 诞生于一条为全球大牌代工 18 年的鞋类产线。",
-  "同样的鞋楦、同样的材料，过去只能贴着别人的 logo 漂洋过海。",
+  "STRYDE 由 Lanhe International 工厂直供——一家为全球品牌做 OEM/ODM 的冷粘鞋厂。",
+  "同样的鞋楦、同样的 PU 皮、同样的冷粘产线，过去只能贴着别人的 logo 漂洋过海。",
   "今天我们用 AI 把设计、素材、投放和零售的链路压缩到几天——",
   "工厂直达你的脚下，没有中间商，没有溢价。",
 ];
+
+/** 供货工厂（货盘来源：Lanhe Product Collection 2026） */
+export const MANUFACTURER = {
+  name: "Lanhe International",
+  title: "OEM / ODM Footwear Manufacturer",
+  category: "Casual Boots",
+  construction: "Cold Bonding 冷粘工艺",
+  mainMaterial: "PU Leather",
+  moq: 300,
+  leadTimeDays: 25,
+};

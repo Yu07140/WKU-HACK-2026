@@ -12,6 +12,7 @@ export function ProductCard({ product }: { product: Product }) {
     >
       <div className="relative overflow-hidden rounded-2xl bg-cream">
         <ProductImage
+          src={product.image}
           prompt={product.imagePrompt + ", professional e-commerce product photography, soft cream studio background, soft lighting"}
           alt={product.name}
           className="aspect-square transition duration-500 group-hover:scale-[1.03]"
@@ -56,7 +57,7 @@ export function ProductCard({ product }: { product: Product }) {
 export function MiniProductCard({
   product,
 }: {
-  product: Pick<Product, "slug" | "name" | "price" | "rating" | "imagePrompt">;
+  product: Pick<Product, "slug" | "name" | "price" | "rating" | "imagePrompt"> & { image?: string };
 }) {
   return (
     <Link
@@ -64,6 +65,7 @@ export function MiniProductCard({
       className="mt-2 flex items-center gap-3 rounded-xl border border-ink/10 bg-white p-2 transition hover:border-accent"
     >
       <ProductImage
+        src={product.image}
         prompt={product.imagePrompt}
         alt={product.name}
         className="h-14 w-14 shrink-0 rounded-lg"

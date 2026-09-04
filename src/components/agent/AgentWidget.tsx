@@ -12,14 +12,14 @@ interface Msg {
 }
 
 const SUGGESTIONS = [
-  "I need shoes for daily running",
-  "推荐一双百搭休闲鞋",
+  "Show me your best-selling boots",
+  "推荐一双百搭黑色靴子",
   "What's your size guide?",
   "Any discount for first order?",
 ];
 
 const WELCOME =
-  "Hey! 我是 STRYDE AI 导购 👟 可以帮你按场景挑鞋、解答尺码/物流/退换，还能报新人折扣。今天想找什么鞋？";
+  "Hey! 我是 STRYDE AI 导购 👟 可以帮你按风格挑靴子、解答尺码/物流/退换，还能报新人折扣。今天想找什么鞋？";
 
 export function AgentWidget() {
   const [open, setOpen] = useState(false);
@@ -173,7 +173,7 @@ export function AgentWidget() {
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="问点什么... e.g. running shoes"
+              placeholder="问点什么... e.g. black boots"
               className="h-10 flex-1 rounded-full bg-paper px-4 text-sm outline-none placeholder:text-ink/40"
             />
             <button

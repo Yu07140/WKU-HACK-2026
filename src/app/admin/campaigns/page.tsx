@@ -68,7 +68,7 @@ export default function CampaignsPage() {
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="活动名称 e.g. Cloud Knit - 兴趣测试 #2"
+            placeholder="活动名称 e.g. No. 5910-5 - 兴趣测试 #2"
             className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-accent"
           />
           <select
