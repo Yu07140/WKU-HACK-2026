@@ -4,6 +4,15 @@
 
 WKU HACK 2026 · *24-Hour Cross-Border Sprint: AI-Powered D2C Footwear Brand & Fast Monetization* (极限出海 · 24 小时实战营)
 
+## Live Demo
+
+| Deployment | URL | Notes |
+| --- | --- | --- |
+| **Primary (China-accessible)** | [wku-hack-2026-stryde.edgeone.dev](https://wku-hack-2026-stryde.edgeone.dev) | Tencent EdgeOne global edge — fast and reachable from mainland China |
+| Mirror (International) | [wku-hack-2026.vercel.app](https://wku-hack-2026.vercel.app) | Vercel — backup deployment |
+
+The storefront runs a full commerce loop (browse → cart → checkout → order visible in the admin dashboard). The admin backend is password-protected and can be reached via the **Admin** button in the footer.
+
 ---
 
 ## 1. The Challenge
