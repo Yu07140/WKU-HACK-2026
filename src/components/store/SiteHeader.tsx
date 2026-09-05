@@ -13,7 +13,9 @@ export function SiteHeader() {
   const { lang, setLang, t } = useLang();
 
   const NAV = [
-    { href: "/products", label: t("Collection", "产品") },
+    { href: "/products/mono-boot", label: t("The Boot", "主打靴款") },
+    { href: "/products", label: t("The System", "产品系统") },
+    { href: "/about", label: t("Story", "品牌故事") },
     { href: "/studio", label: t("Studio", "工坊"), icon: Sparkles },
   ];
 

@@ -20,6 +20,7 @@ import { CreativeHistory } from "@/components/studio/CreativeHistory";
 import { getProductById } from "@/lib/data/catalog";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { cn } from "@/lib/utils";
+import { Label, Select } from "@/components/ui/input";
 
 const TABS = [
   { id: "scene", label: "Product Creative", icon: ImageIcon },
@@ -32,9 +33,43 @@ const TABS = [
 
 type TabId = (typeof TABS)[number]["id"];
 
+/** Campaign objectives (spec §17). CLIPS / CARE are concept-stage — never BUY NOW. */
+const OBJECTIVES = [
+  {
+    id: "core",
+    label: "Core Product",
+    cta: "SHOP NOW",
+    type: "TRANSACTION",
+    hooks: ["STAND UP. STAND OUT.", "ONE BOOT. THREE ROUTINES."],
+  },
+  {
+    id: "duo",
+    label: "Duo",
+    cta: "BUILD YOUR DUO",
+    type: "BUNDLE / AOV",
+    hooks: ["TWO PAIRS. ONE ROTATION."],
+  },
+  {
+    id: "clips",
+    label: "STRYDE CLIPS",
+    cta: "EXPLORE STRYDE CLIPS",
+    type: "DESIGN PREVIEW",
+    hooks: ["MAKE IT YOURS.", "SAME BOOT. YOUR DETAIL.", "SMALL DETAIL. BIG SIGNATURE."],
+  },
+  {
+    id: "care",
+    label: "Care 01",
+    cta: "COMING NEXT",
+    type: "DESIGN PREVIEW",
+    hooks: ["KEEP THE ROUTE GOING."],
+  },
+] as const;
+
 export default function StudioPage() {
   const [tab, setTab] = useState<TabId>("scene");
   const [draftPrompt, setDraftPrompt] = useState<string | undefined>(undefined);
+  const [objective, setObjective] = useState<string>("core");
+  const obj = OBJECTIVES.find((o) => o.id === objective) ?? OBJECTIVES[0];
 
   /** Creative History → Product Creative：复用 prompt */
   function reusePrompt(prompt: string) {
@@ -53,6 +88,45 @@ export default function StudioPage() {
           <p className="text-sm font-semibold tracking-wider text-ink/50">
             REAL PRODUCT. FASTER CREATIVE.
           </p>
+        </div>
+      </div>
+
+      {/* ---------- CAMPAIGN OBJECTIVE ---------- */}
+      <div className="mt-8 rounded-2xl border border-ink/10 bg-white p-5">
+        <div className="flex flex-wrap items-end gap-4">
+          <div className="min-w-56 flex-1">
+            <Label>Campaign Objective</Label>
+            <Select value={objective} onChange={(e) => setObjective(e.target.value)}>
+              {OBJECTIVES.map((o) => (
+                <option key={o.id} value={o.id}>
+                  {o.label}
+                </option>
+              ))}
+            </Select>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {obj.hooks.map((h) => (
+              <span
+                key={h}
+                className="rounded-full bg-cream px-3 py-1.5 text-xs font-black tracking-wide text-ink/70"
+              >
+                {h}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="mt-3 flex flex-wrap items-center gap-3 text-xs">
+          <span className="rounded-full bg-ink/90 px-3 py-1 font-black tracking-wider text-paper">
+            {obj.type}
+          </span>
+          <span className="font-bold text-ink/60">
+            CTA: <span className="text-ink">{obj.cta}</span>
+          </span>
+          {obj.type === "DESIGN PREVIEW" && (
+            <span className="text-amber-600 font-semibold">
+              Concept-stage — no BUY NOW / Add to Cart allowed.
+            </span>
+          )}
         </div>
       </div>
 

@@ -208,6 +208,83 @@ export default function ProofPage() {
         </div>
       </div>
 
+      {/* ---------- ONE SKU. MULTIPLE GROWTH LEVERS. ---------- */}
+      <div className="mt-12 rounded-3xl border border-ink/10 bg-white p-7">
+        <div className="mb-6">
+          <div className="text-xs font-bold tracking-[0.3em] text-ink/40">
+            BUSINESS SYSTEM
+          </div>
+          <h2 className="mt-2 text-2xl font-black">ONE SKU. MULTIPLE GROWTH LEVERS.</h2>
+          <p className="mt-2 max-w-2xl text-sm text-ink/55">
+            STRYDE extends one real footwear SKU into a complete system without introducing
+            additional footwear inventory lines.
+          </p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-5">
+          {[
+            { name: "CORE", sku: "14534-H", role: "TRANSACTION", status: "LIVE" },
+            { name: "DUO", sku: "14534-H × 2", role: "AOV", status: "BUNDLE" },
+            { name: "CLIPS", sku: "—", role: "PERSONALIZATION", status: "IN DEVELOPMENT" },
+            { name: "CARE 01", sku: "—", role: "FUTURE REPEAT", status: "IN DEVELOPMENT" },
+            { name: "AI SYSTEM", sku: "Creative + Agent + Dashboard", role: "ACQUISITION → CONVERSION → LEARNING", status: "LIVE" },
+          ].map((g) => (
+            <div key={g.name} className="rounded-2xl border border-ink/10 bg-cream p-5">
+              <div className="text-xs font-black tracking-[0.2em] text-ink/40">{g.name}</div>
+              <div className="mt-1 text-sm font-bold">{g.sku}</div>
+              <div className="mt-3 text-[11px] font-bold tracking-wide text-accent-dark">
+                {g.role}
+              </div>
+              <div className="mt-2 text-[10px] font-semibold text-ink/45">{g.status}</div>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-5 text-xs leading-relaxed text-ink/55">
+          Only SKU 14534-H is currently transaction-ready. STRYDE CLIPS and CARE 01 remain
+          extensions with supplier validation pending. STRYDE CLIPS extend one real
+          footwear SKU into a personalization system without introducing another footwear
+          inventory line.
+        </p>
+
+        {/* Flow visualization */}
+        <div className="mt-6 flex flex-wrap items-center gap-2 text-[11px] font-bold">
+          {["REAL SKU", "AI CREATIVE", "CUSTOMER ACQUISITION", "AI SHOPPING AGENT", "CONVERSION", "DUO / AOV", "FUTURE PERSONALIZATION + REPEAT", "DATA FEEDBACK LOOP"].map(
+            (step, i, arr) => (
+              <span key={step} className="flex items-center gap-2">
+                <span className="rounded-md bg-ink px-2.5 py-1.5 text-paper">{step}</span>
+                {i < arr.length - 1 && <span className="text-ink/30">→</span>}
+              </span>
+            )
+          )}
+        </div>
+      </div>
+
+      {/* ---------- WHY THIS SKU? ---------- */}
+      <div className="mt-6 rounded-3xl border border-ink/10 bg-white p-7">
+        <div className="mb-5">
+          <div className="text-xs font-bold tracking-[0.3em] text-ink/40">SELECTION RATIONALE</div>
+          <h2 className="mt-2 text-2xl font-black">WHY THIS SKU?</h2>
+          <p className="mt-2 max-w-2xl text-sm text-ink/55">
+            14534-H was selected for commercial readiness rather than whichever simulated concept
+            scored highest creatively.
+          </p>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            "Complete product assets (supplier photography)",
+            "Verified factory pricing (RMB 98 / pair)",
+            "Clear material specification (microfiber upper & lining, rubber outsole)",
+            "Simple size range (EU 38–46)",
+            "Fastest path to a verifiable transaction test",
+          ].map((r) => (
+            <div key={r} className="flex items-start gap-2 rounded-xl bg-cream p-4 text-sm text-ink/70">
+              <span className="mt-0.5 text-accent">✓</span>
+              <span>{r}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ---------- TBC list ---------- */}
       <div className="mt-10 rounded-3xl border border-ink/10 bg-cream p-7">
         <h2 className="text-xl font-black">Not yet verified — TBC</h2>

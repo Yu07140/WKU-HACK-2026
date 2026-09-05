@@ -714,9 +714,67 @@ function sceneGenericDiscount(lang: Lang): AgentReply {
     text: L(
       lang,
       `Welcome deal just for you 🎁 Use code STRYDE15 at checkout for 15% OFF your first order. Spend $75+ and shipping is on the house. Start with the 14534-H:`,
-      `新客首单优惠来啦 � 结账输码 STRYDE15，立减 15%！满 $75 免运费。就从 14534-H 开始：`
+      `新客首单优惠来啦 🎁 结账输码 STRYDE15，立减 15%！满 $75 免运费。就从 14534-H 开始：`
     ),
     products: hot,
+  };
+}
+
+/* =================================================================
+ * STRYDE Ecosystem intents (DUO / CLIPS / CARE / other_shoes / creative_lab)
+ * ================================================================= */
+
+function sceneDuo(lang: Lang): AgentReply {
+  return {
+    text: L(
+      lang,
+      `Try STRYDE DUO. You can build a two-pair rotation using the same real 14534-H and choose each EU size separately — one for the workweek, one for everything after.\n\nHead to /duo to pick both sizes.`,
+      `试试 STRYDE DUO —— 用同一双真实的 14534-H 组合两双轮换，每双欧码可以分开选：一双工作日，一双其余时间。\n\n去 /duo 选两个尺码吧。`
+    ),
+    products: HERO ? [HERO] : undefined,
+  };
+}
+
+function scenePersonalization(lang: Lang): AgentReply {
+  return {
+    text: L(
+      lang,
+      `STRYDE CLIPS are our upcoming personalization system — small removable details designed around the existing detailing of the 14534-H. They're currently in development and not available for purchase yet.`,
+      `STRYDE CLIPS 是我们即将推出的个性化系统 —— 围绕 14534-H 现有细节设计的可拆装小装饰。目前还在开发中，暂不售卖。`
+    ),
+    products: HERO ? [HERO] : undefined,
+  };
+}
+
+function sceneAccessories(lang: Lang): AgentReply {
+  return {
+    text: L(
+      lang,
+      `We're developing STRYDE CLIPS for personalization and STRYDE CARE 01 as a future care extension. Both are coming soon — neither is available for purchase yet.`,
+      `我们正在开发 STRYDE CLIPS（个性化）和 STRYDE CARE 01（未来护理延伸）。两者都即将推出，目前都还不能购买。`
+    ),
+    products: HERO ? [HERO] : undefined,
+  };
+}
+
+function sceneOtherShoes(lang: Lang): AgentReply {
+  return {
+    text: L(
+      lang,
+      `14534-H is currently STRYDE's focused transaction-ready footwear product. We built the launch around one strong boot instead of filling the store with unrelated styles.\n\nWe also explored additional footwear directions in our Creative Lab, but they're concept studies rather than part of the current commercial collection.`,
+      `14534-H 是目前 STRYDE 主推的可交易鞋款。我们围绕一双强靴做发布，而不是用一堆不相关的款式填满店铺。\n\n另外我们在 Creative Lab 里探索过更多鞋款方向，但它们属于概念研究，不在当前商业系列里。`
+    ),
+    products: HERO ? [HERO] : undefined,
+  };
+}
+
+function sceneCreativeLab(lang: Lang): AgentReply {
+  return {
+    text: L(
+      lang,
+      `Our Creative Lab preserves the footwear directions explored during the sprint — they're concept studies, not part of the 14534-H collection. You can browse them at /creative-lab.`,
+      `Creative Lab 保留了 sprint 期间探索的鞋款方向 —— 它们是概念研究，不属于 14534-H 系列。可以在 /creative-lab 浏览。`
+    ),
   };
 }
 
@@ -770,6 +828,23 @@ export function agentReply(userMessage: string, context: AgentContext = {}): Age
   if (/running|run\s*shoes?|跑鞋|跑步鞋|马拉松|碳板|jogging/.test(q)) return sceneRunning(lang);
   if (/casual|everyday|commut|\bwork\b|日常|休闲|百搭|通勤/.test(q)) return sceneCasual(lang, many);
   if (/outdoor|hik(e|ing)|trail|户外|登山|爬山|越野|徒步/.test(q)) return sceneOutdoor(lang);
+
+  /* ---- STRYDE Ecosystem intents ---- */
+  // DUO / two pairs
+  if (/\bduo\b|two pairs|two pair|second pair|a pair of|another pair|rotation|两双|两双|再来一双|第二双|轮换/.test(q))
+    return sceneDuo(lang);
+  // Personalization / CLIPS
+  if (/custom|customiz|personaliz|clip|zip tag|zipper pull|个性化|定制|配饰|装饰/.test(q))
+    return scenePersonalization(lang);
+  // Accessories
+  if (/accessor|add-?on|extension|配件|周边|附加/.test(q))
+    return sceneAccessories(lang);
+  // Creative Lab
+  if (/creative lab|concept (study|lab)|sprint|探索|实验室|概念款/.test(q))
+    return sceneCreativeLab(lang);
+  // Other shoes — focused 14534-H answer, do NOT recommend RO
+  if (/other shoes|other boots|what else|more shoes|more boots|别的鞋|其他鞋|还有什么鞋|还有别的吗|还有其他/.test(q))
+    return sceneOtherShoes(lang);
 
   // 泛推荐意图（"recommend a pair" / "help me pick" / "推荐一双"）→ 主推 1 款；
   // 用户要"多看几双"（recommend some / show me options）→ 3 款

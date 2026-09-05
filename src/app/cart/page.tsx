@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Trash2, ArrowRight, ShoppingBag, Check, X } from "lucide-react";
+import { Trash2, ArrowRight, ShoppingBag, Check, X, Sparkles, ShieldCheck } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
@@ -221,6 +221,56 @@ export default function CartPage() {
           </p>
         </div>
       </div>
+
+      {/* ---------- BUILD YOUR ROTATION — cross-sell only the 14534-H ecosystem ---------- */}
+      {items.some((it) => it.productId === "boot-14534-h") && (
+        <section className="mt-14 rounded-3xl border border-ink/10 bg-white p-8">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div>
+              <div className="text-xs font-bold tracking-[0.3em] text-ink/40">
+                BUILD YOUR ROTATION
+              </div>
+              <h3 className="mt-2 text-2xl font-black">Add a second 14534-H.</h3>
+              <p className="mt-1 text-sm text-ink/55">
+                One for the workweek. One for everything after. Choose a second size with STRYDE DUO.
+              </p>
+            </div>
+            <Link href="/duo">
+              <Button size="lg">
+                ADD SECOND PAIR <ArrowRight size={16} />
+              </Button>
+            </Link>
+          </div>
+
+          {/* Coming next — subtle, no Add to Cart */}
+          <div className="mt-8 grid gap-4 border-t border-ink/10 pt-6 sm:grid-cols-2">
+            <Link
+              href="/clips"
+              className="flex items-center gap-3 rounded-2xl bg-cream p-4 transition hover:bg-cream/70"
+            >
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-ink/10 text-ink">
+                <Sparkles size={16} />
+              </div>
+              <div>
+                <div className="text-[10px] font-black tracking-wider text-ink/40">COMING NEXT</div>
+                <div className="text-sm font-bold">STRYDE CLIPS · MAKE IT YOURS.</div>
+              </div>
+            </Link>
+            <Link
+              href="/care"
+              className="flex items-center gap-3 rounded-2xl bg-cream p-4 transition hover:bg-cream/70"
+            >
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-ink/10 text-ink">
+                <ShieldCheck size={16} />
+              </div>
+              <div>
+                <div className="text-[10px] font-black tracking-wider text-ink/40">COMING NEXT</div>
+                <div className="text-sm font-bold">STRYDE CARE 01 · KEEP THE ROUTE GOING.</div>
+              </div>
+            </Link>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

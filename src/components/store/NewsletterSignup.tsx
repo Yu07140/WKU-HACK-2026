@@ -21,7 +21,7 @@ export function NewsletterSignup() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto mt-8 flex max-w-md flex-col gap-2 sm:flex-row">
+    <form onSubmit={handleSubmit} className="mx-auto mt-5 flex max-w-md flex-col gap-2 sm:flex-row">
       <input
         type="email"
         value={email}

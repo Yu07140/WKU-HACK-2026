@@ -1,12 +1,13 @@
 ﻿import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ArrowRight, Sparkles, Layers, ShieldCheck } from "lucide-react";
 import { getProduct, PRODUCTS } from "@/lib/data/catalog";
 import { PDPView } from "@/components/store/PDPView";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { ReviewsSection } from "@/components/store/ReviewsSection";
 import { ph } from "@/lib/utils";
 import { displayName } from "@/lib/store/display";
+import { ECOSYSTEM, STATUS } from "@/lib/data/brand";
 
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ slug: p.slug }));
@@ -93,6 +94,85 @@ export default async function ProductPage({
               </div>
             </div>
           ))}
+          </div>
+        </section>
+      )}
+
+      {/* MAKE IT YOURS. — STRYDE ecosystem extensions (14534-H PDP only) */}
+      {product.sku === "14534-H" && (
+        <section className="mt-20">
+          <div className="mb-8">
+            <div className="mb-3 text-xs font-bold tracking-[0.3em] text-ink/40">
+              THE STRYDE SYSTEM
+            </div>
+            <h2 className="text-3xl font-black md:text-4xl">{ECOSYSTEM.clips}</h2>
+          </div>
+          <div className="grid gap-5 md:grid-cols-3">
+            {/* STRYDE CLIPS */}
+            <Link
+              href="/clips"
+              className="group rounded-3xl border border-ink/10 bg-white p-6 transition hover:border-ink/30"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink/5 text-ink">
+                  <Sparkles size={18} />
+                </div>
+                <span className="rounded-full bg-ink/90 px-3 py-1 text-[10px] font-black tracking-wider text-paper">
+                  {STATUS.comingSoon}
+                </span>
+              </div>
+              <h3 className="mt-4 text-lg font-black">STRYDE CLIPS</h3>
+              <p className="mt-1 text-sm text-ink/55">
+                Personalization concepts built around the detailing of the 14534-H.
+              </p>
+              <span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-ink">
+                EXPLORE CONCEPT <ArrowRight size={14} className="transition group-hover:translate-x-1" />
+              </span>
+            </Link>
+
+            {/* STRYDE DUO */}
+            <Link
+              href="/duo"
+              className="group rounded-3xl border border-ink/10 bg-white p-6 transition hover:border-ink/30"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink/5 text-ink">
+                  <Layers size={18} />
+                </div>
+                <span className="rounded-full bg-ink/10 px-3 py-1 text-[10px] font-black tracking-wider text-ink/60">
+                  BUNDLE
+                </span>
+              </div>
+              <h3 className="mt-4 text-lg font-black">STRYDE DUO</h3>
+              <p className="mt-1 text-sm text-ink/55">
+                Two pairs. One rotation. Same real 14534-H, two size choices.
+              </p>
+              <span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-ink">
+                BUILD YOUR DUO <ArrowRight size={14} className="transition group-hover:translate-x-1" />
+              </span>
+            </Link>
+
+            {/* STRYDE CARE 01 */}
+            <Link
+              href="/care"
+              className="group rounded-3xl border border-ink/10 bg-white p-6 transition hover:border-ink/30"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink/5 text-ink">
+                  <ShieldCheck size={18} />
+                </div>
+                <span className="rounded-full bg-ink/90 px-3 py-1 text-[10px] font-black tracking-wider text-paper">
+                  {STATUS.comingSoon}
+                </span>
+              </div>
+              <h3 className="mt-4 text-lg font-black">STRYDE CARE 01</h3>
+              <p className="mt-1 text-sm text-ink/55">
+                A future care extension for the STRYDE footwear system.
+              </p>
+              <span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-ink">
+                EXPLORE CONCEPT <ArrowRight size={14} className="transition group-hover:translate-x-1" />
+              </span>
+            </Link>
           </div>
         </section>
       )}
