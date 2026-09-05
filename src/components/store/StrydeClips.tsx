@@ -124,10 +124,16 @@ export function ClipCustomizerModal({
               {letters.length > 0 ? ` · Clip ${letters[0]}` : ""}
             </p>
             <p className="mt-4 max-w-sm text-xs leading-relaxed text-ink/40">
+<<<<<<< HEAD
               {t(
                 "Your initial clip is attached as a personalization note. The clip accessory itself is still a concept under sourcing validation — the boot in your cart is the standard 14534-H.",
                 "你的专属字母扣已作为个性化备注附加。字母扣配件本身仍处于概念阶段，正在供应商验证中——购物袋中的鞋子为标准款 14534-H。"
               )}
+=======
+              Your initial clip is attached as a personalization note. The clip
+              accessory is coming soon — the boot in your cart is the standard
+              14534-H.
+>>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
             </p>
             <Link
               href="/cart"
@@ -176,7 +182,11 @@ export function ClipCustomizerModal({
                   </span>
                 )}
                 <span className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-white/90 px-3 py-1 text-[10px] font-bold tracking-[0.3em] text-ink/50 shadow-sm">
+<<<<<<< HEAD
                   {t("STRYDE CLIP — CONCEPT VISUAL", "STRYDE 字母扣——概念视觉")}
+=======
+                  STRYDE CLIP — PREVIEW
+>>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
                 </span>
               </div>
 
@@ -258,12 +268,17 @@ export function ClipCustomizerModal({
                     onClick={saveToCart}
                     className="inline-flex items-center justify-center gap-1.5 rounded-full bg-ink px-5 py-2.5 text-xs font-black tracking-[0.2em] text-paper transition hover:bg-ink/85"
                   >
+<<<<<<< HEAD
                     <ShoppingBag size={14} /> {t("SAVE MY CONCEPT — ADD TO CART", "保存我的概念——加入购物袋")}
+=======
+                    <ShoppingBag size={14} /> SAVE MY STYLE — ADD TO CART
+>>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
                   </button>
                 </div>
 
                 <div className="mt-5 rounded-xl bg-cream p-3.5">
                   <p className="text-xs font-black tracking-[0.2em] text-ink/60">
+<<<<<<< HEAD
                     {t("COMING NEXT", "即将推出")}
                   </p>
                   <p className="mt-1 text-xs leading-relaxed text-ink/45">
@@ -271,6 +286,12 @@ export function ClipCustomizerModal({
                       "Custom letter clips are currently a concept under sourcing validation.",
                       "定制字母扣目前仍处于概念阶段，正在供应商验证中。"
                     )}
+=======
+                    COMING SOON
+                  </p>
+                  <p className="mt-1 text-xs leading-relaxed text-ink/45">
+                    Personalized STRYDE Clips are currently in development.
+>>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
                   </p>
                 </div>
               </div>
@@ -422,23 +443,26 @@ export function StrydeClips() {
       {/* ---------- OTHER DIRECTIONS (smaller, below the main experience) ---------- */}
       <div className="mt-12 grid gap-6 md:grid-cols-2">
         {/* STRYDE LETTERS */}
-        <article className="group overflow-hidden rounded-3xl border border-ink/10 bg-white">
-          <div className="relative aspect-[16/10] overflow-hidden">
-            <img
-              src="/products/14534-h/hero.jpg"
-              alt="14534-H boot with STRYDE letter clips"
-              className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-            />
-            <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-1.5">
-              {STRYDE_LETTERS.map((ch) => (
-                <span
-                  key={ch}
-                  className="flex h-7 w-7 items-center justify-center rounded-md border border-ink/20 bg-white/95 text-xs font-black text-ink shadow-sm"
-                >
-                  {ch}
-                </span>
-              ))}
+        <article className="overflow-hidden rounded-3xl border border-ink/10 bg-white">
+          <Link href="/clips" className="group block">
+            <div className="relative aspect-[16/10] overflow-hidden">
+              <img
+                src="/products/14534-h/hero.jpg"
+                alt="14534-H boot with STRYDE letter clips"
+                className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+              />
+              <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-1.5">
+                {STRYDE_LETTERS.map((ch) => (
+                  <span
+                    key={ch}
+                    className="flex h-7 w-7 items-center justify-center rounded-md border border-ink/20 bg-white/95 text-xs font-black text-ink shadow-sm"
+                  >
+                    {ch}
+                  </span>
+                ))}
+              </div>
             </div>
+<<<<<<< HEAD
           </div>
           <div className="p-5">
             <h3 className="text-base font-black tracking-wide">{t("STRYDE LETTERS", "STRYDE 字母扣")}</h3>
@@ -449,28 +473,38 @@ export function StrydeClips() {
               )}
             </p>
           </div>
+=======
+            <div className="p-5">
+              <h3 className="text-base font-black tracking-wide">STRYDE LETTERS</h3>
+              <p className="mt-1 text-sm text-ink/55">Signature preset exploration</p>
+            </div>
+          </Link>
+>>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
         </article>
 
         {/* MONO DETAILS */}
-        <article className="group overflow-hidden rounded-3xl border border-ink/10 bg-white">
-          <div className="relative aspect-[16/10] overflow-hidden">
-            <img
-              src="/products/14534-h/detail-01.jpg"
-              alt="14534-H boot with minimal mono clip accents"
-              className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-            />
-            {/* minimal black & silver geometric accents */}
-            <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2">
-              <span className="h-px w-8 bg-white/80" />
-              <span className="flex h-6 w-6 items-center justify-center rounded-full border border-white/70 bg-ink/70 text-[10px] font-black text-white">
-                M
-              </span>
-              <span className="h-2 w-2 rotate-45 border border-white/80 bg-white/20" />
-              <span className="flex h-6 w-6 items-center justify-center rounded-full border border-white/50 bg-white/85 text-[10px] font-black text-ink">
-                D
-              </span>
-              <span className="h-px w-8 bg-white/80" />
+        <article className="overflow-hidden rounded-3xl border border-ink/10 bg-white">
+          <Link href="/clips" className="group block">
+            <div className="relative aspect-[16/10] overflow-hidden">
+              <img
+                src="/products/14534-h/detail-01.jpg"
+                alt="14534-H boot with minimal mono clip accents"
+                className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+              />
+              {/* minimal black & silver geometric accents */}
+              <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2">
+                <span className="h-px w-8 bg-white/80" />
+                <span className="flex h-6 w-6 items-center justify-center rounded-full border border-white/70 bg-ink/70 text-[10px] font-black text-white">
+                  M
+                </span>
+                <span className="h-2 w-2 rotate-45 border border-white/80 bg-white/20" />
+                <span className="flex h-6 w-6 items-center justify-center rounded-full border border-white/50 bg-white/85 text-[10px] font-black text-ink">
+                  D
+                </span>
+                <span className="h-px w-8 bg-white/80" />
+              </div>
             </div>
+<<<<<<< HEAD
           </div>
           <div className="p-5">
             <h3 className="text-base font-black tracking-wide">{t("MONO DETAILS", "极简黑银扣")}</h3>
@@ -481,6 +515,15 @@ export function StrydeClips() {
               )}
             </p>
           </div>
+=======
+            <div className="p-5">
+              <h3 className="text-base font-black tracking-wide">MONO DETAILS</h3>
+              <p className="mt-1 text-sm text-ink/55">
+                Minimal black-and-silver detail exploration
+              </p>
+            </div>
+          </Link>
+>>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
         </article>
       </div>
 

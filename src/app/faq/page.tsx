@@ -16,6 +16,96 @@ import { useLang } from "@/lib/store/lang";
 
 type QA = { q: string; a: string };
 
+<<<<<<< HEAD
+=======
+const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
+  {
+    cat: "Shipping & Delivery",
+    icon: Truck,
+    items: [
+      {
+        q: "How long does shipping take?",
+        a: "Orders are produced in 3–5 business days, then international transit takes 8–15 days (estimate). See the full timeline on our Shipping page.",
+      },
+      {
+        q: "Do you ship internationally?",
+        a: "Yes — we ship worldwide from our factory, except a small number of restricted regions. Rates are flat by zone: $7.90 US, $12.50 UK/EU, $14.90 Canada/Australia.",
+      },
+      {
+        q: "Is there free shipping?",
+        a: "Shipping is free on US orders over $75; otherwise a $7.90 flat rate applies at checkout.",
+      },
+    ],
+  },
+  {
+    cat: "Returns & Exchanges",
+    icon: RotateCcw,
+    items: [
+      {
+        q: "What's your return policy?",
+        a: "STRYDE offers a 30-day guarantee on your first pair. To start a return, email returns@stryde.com within 30 days of delivery.",
+      },
+      {
+        q: "The shoes don't fit. Can I exchange them?",
+        a: "Email returns@stryde.com within your 30-day window and we'll help you get the right size. Use the Size Guide to measure your foot first.",
+      },
+    ],
+  },
+  {
+    cat: "Sizing & Fit",
+    icon: Ruler,
+    items: [
+      {
+        q: "What size should I get?",
+        a: "14534-H is supplied in EU sizes 38–46. Use the measurement guide and confirm your size before ordering.",
+      },
+      {
+        q: "How do I care for the boots?",
+        a: "We're finalizing care guidance for the 14534-H and will publish it before launch. Until then, feel free to ask us in the chat bubble.",
+      },
+    ],
+  },
+  {
+    cat: "Material",
+    icon: Layers,
+    items: [
+      {
+        q: "What is 14534-H made of?",
+        a: "The official supplier specification lists a microfiber upper and microfiber lining with a rubber outsole. It is not genuine leather.",
+      },
+      {
+        q: "Is this genuine leather?",
+        a: "No. The official supplier specification lists a microfiber upper.",
+      },
+    ],
+  },
+  {
+    cat: "Duties, Taxes & Customs",
+    icon: Globe2,
+    items: [
+      {
+        q: "Will I have to pay customs or import duties?",
+        a: "All orders ship DDU (Delivered Duty Unpaid): import duties and taxes are not included in your order total and are the customer's responsibility on delivery. See our Shipping page for details.",
+      },
+    ],
+  },
+  {
+    cat: "Payment",
+    icon: CreditCard,
+    items: [
+      {
+        q: "What payment methods do you accept?",
+        a: "Payment methods accepted at checkout are determined by the payment gateway. This is a demo store — supported methods have not been verified for production.",
+      },
+      {
+        q: "Is it safe to enter my card info here?",
+        a: "This is a demo prototype. Please do not enter real payment information. In production, payments would be processed by a secure payment provider.",
+      },
+    ],
+  },
+];
+
+>>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
 export default function FAQPage() {
   const { t } = useLang();
 
@@ -165,10 +255,16 @@ export default function FAQPage() {
           )}
         </p>
         <p className="mx-auto mt-3 max-w-xl text-xs text-ink/40">
+<<<<<<< HEAD
           {t(
             "This is a demo store. Shipping, return, and payment terms are not verified operational commitments.",
             "这是一个演示商店。配送、退货与支付条款尚未核实为实际运营承诺。"
           )}
+=======
+          Demo store — shipping estimates and payment handling are for this
+          demo. The 30-Day Guarantee on your first pair is a confirmed STRYDE
+          policy.
+>>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
         </p>
       </div>
 

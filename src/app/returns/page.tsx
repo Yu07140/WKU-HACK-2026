@@ -1,8 +1,12 @@
 "use client";
 
 import Link from "next/link";
+<<<<<<< HEAD
 import { RotateCcw, CheckCircle2, XCircle, ArrowRight } from "lucide-react";
 import { useLang } from "@/lib/store/lang";
+=======
+import { RotateCcw, Mail, PackageCheck, ArrowRight } from "lucide-react";
+>>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
 
 export default function ReturnsPage() {
   const { t } = useLang();
@@ -11,6 +15,7 @@ export default function ReturnsPage() {
     <div className="mx-auto max-w-3xl px-6 py-16">
       <div className="mb-12">
         <div className="mb-3 text-xs font-bold tracking-[0.2em] text-ink/45">
+<<<<<<< HEAD
           {t("RETURNS & EXCHANGES", "退货与换货")}
         </div>
         <h1 className="text-4xl font-black md:text-5xl">{t("30-day try-on guarantee.", "30 天试穿保障。")}</h1>
@@ -19,23 +24,41 @@ export default function ReturnsPage() {
             "Wear them around the house. If they don't fit, send them back. No questions asked.",
             "可以先在家试穿。不合适就寄回来，无需说明理由。"
           )}
+=======
+          RETURNS & EXCHANGES
+        </div>
+        <h1 className="text-4xl font-black md:text-5xl">30-Day Guarantee.</h1>
+        <p className="mt-3 max-w-xl text-ink/60">
+          Try STRYDE with confidence. Your first pair is covered by our 30-day
+          guarantee.
+>>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
         </p>
       </div>
 
       {/* ---------- 核心承诺 ---------- */}
       <section className="rounded-3xl bg-ink p-8 text-paper text-center">
         <RotateCcw size={40} className="mx-auto text-accent" />
+<<<<<<< HEAD
         <h2 className="mt-3 text-2xl font-black md:text-3xl">{t("Not loving them?", "不满意？")}</h2>
         <p className="mt-2 text-paper/70">
           {t(
             "Full refund within 30 days. Free return shipping on your first order.",
             "30 天内全额退款。首单退货免运费。"
           )}
+=======
+        <h2 className="mt-4 text-2xl font-black md:text-3xl">
+          30-DAY GUARANTEE
+        </h2>
+        <p className="mt-2 max-w-md mx-auto text-paper/70">
+          Shop with confidence — if it isn&apos;t right, let us know within 30
+          days of delivery and we&apos;ll take care of you.
+>>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
         </p>
       </section>
 
-      {/* ---------- 什么可以退 ---------- */}
+      {/* ---------- 如何开始 ---------- */}
       <section className="mt-8 rounded-3xl border border-ink/10 bg-white p-6">
+<<<<<<< HEAD
         <h2 className="mb-4 text-lg font-black">{t("What can be returned", "可退货商品")}</h2>
         <div className="space-y-3">
           {[
@@ -125,6 +148,45 @@ export default function ReturnsPage() {
                 "Once we receive and inspect the return, your refund goes back to your original payment method.",
                 "我们收到并验收退货后，退款将原路退回你的付款账户。"
               )}
+=======
+        <h2 className="mb-4 text-lg font-black">How to start a return</h2>
+        <div className="space-y-4 text-sm">
+          <div className="flex gap-4">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ink text-paper text-xs font-black">
+              1
+            </div>
+            <p className="text-ink/70">
+              <Mail size={14} className="mr-1 inline text-accent-dark" />
+              <strong>Email us.</strong> Send your order number and the reason
+              to{" "}
+              <Link
+                href="mailto:returns@stryde.com"
+                className="font-bold text-accent-dark hover:underline"
+              >
+                returns@stryde.com
+              </Link>{" "}
+              within 30 days of delivery.
+            </p>
+          </div>
+          <div className="flex gap-4">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ink text-paper text-xs font-black">
+              2
+            </div>
+            <p className="text-ink/70">
+              <PackageCheck size={14} className="mr-1 inline text-accent-dark" />
+              <strong>We confirm the next steps.</strong> Once your return is
+              approved, we&apos;ll reply with what to do next.
+            </p>
+          </div>
+          <div className="flex gap-4">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ink text-paper text-xs font-black">
+              3
+            </div>
+            <p className="text-ink/70">
+              <strong>We handle the rest.</strong> After your pair arrives back
+              and is inspected, your refund will be processed to the original
+              payment method.
+>>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
             </p>
           </div>
         </div>
@@ -134,6 +196,7 @@ export default function ReturnsPage() {
       <section className="mt-8 rounded-3xl border border-ink/10 bg-white p-6">
         <h2 className="mb-3 text-lg font-black">{t("Exchanges", "换货")}</h2>
         <p className="text-sm text-ink/70">
+<<<<<<< HEAD
           {t(
             "Need a different size or color? Start a return, then place a new order. It's faster and guarantees the pair you want is actually in stock. Email",
             "需要其他尺码或颜色？发起退货后重新下单即可，这样更快，也能确保你想要的款式有货。如需帮助，请发邮件至"
@@ -153,17 +216,36 @@ export default function ReturnsPage() {
             "Got a factory defect, wrong item, or damaged packaging? Let us know within 48 hours of delivery — we'll replace it free of charge, no return necessary.",
             "收到工厂瑕疵、错发商品或包装破损？请在签收后 48 小时内告知我们——我们将免费补发，无需退货。"
           )}
+=======
+          If the fit isn&apos;t right, email{" "}
+          <Link
+            href="mailto:returns@stryde.com"
+            className="font-bold text-accent-dark hover:underline"
+          >
+            returns@stryde.com
+          </Link>{" "}
+          within your 30-day window and we&apos;ll help you get the right size.
+          Measure your foot with our size guide before reordering.
+>>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
         </p>
       </section>
 
       {/* ---------- 还没下单 ---------- */}
       <section className="mt-12 text-center">
+<<<<<<< HEAD
         <p className="text-ink/55">{t("Still deciding on size?", "还在犹豫尺码？")}</p>
+=======
+        <p className="text-ink/55">Still deciding on size?</p>
+>>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
         <Link
           href="/size-guide"
           className="mt-1 inline-flex items-center gap-1 font-bold text-accent-dark hover:underline"
         >
+<<<<<<< HEAD
           {t("See our size guide", "查看尺码指南")} <ArrowRight size={16} />
+=======
+          See our size guide <ArrowRight size={16} />
+>>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
         </Link>
       </section>
     </div>
