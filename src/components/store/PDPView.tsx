@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -26,6 +26,7 @@ import {
   displayWeight,
 } from "@/lib/store/display";
 import { TrendBadge } from "@/components/ui/badge";
+import { ClipCustomizerModal } from "@/components/store/StrydeClips";
 import { STOCK_LIST, EU_SIZES } from "@/lib/data/stock";
 
 // 主推款 14534-H 商品视频 —— 真实视频放入 public/products/14534-h/video.mp4
@@ -80,6 +81,7 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
   const [size, setSize] = useState<number | null>(null);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+  const [clipOpen, setClipOpen] = useState(false);
 
   const color = product.colors[colorIdx];
   // 真实商品图：优先颜色 realImage → color.image → product.heroImage → product.image
@@ -322,6 +324,13 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
                   );
                 })}
               </div>
+              <button
+                type="button"
+                onClick={() => setClipOpen(true)}
+                className="mt-2.5 inline-block text-xs text-ink/45 underline-offset-2 transition hover:text-ink hover:underline"
+              >
+                Click here to get personalized →
+              </button>
             </div>
 
             {/* 数量 + 加购 */}
@@ -455,6 +464,9 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
           </dl>
         </div>
       </div>
+
+      {/* STRYDE CLIPS customizer — same modal as homepage "CUSTOMIZE YOUR INITIALS" */}
+      <ClipCustomizerModal open={clipOpen} onClose={() => setClipOpen(false)} />
     </div>
   );
 }
