@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+﻿import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, ArrowRight, Sparkles, Layers, ShieldCheck } from "lucide-react";
 import { getProduct, PRODUCTS } from "@/lib/data/catalog";
@@ -51,10 +51,6 @@ export default async function ProductPage({
     ? Math.max(0, product.colors.findIndex((c) => c.name.toLowerCase() === color.toLowerCase()))
     : 0;
 
-  const related = PRODUCTS.filter(
-    (p) => p.category === product.category && p.id !== product.id
-  ).slice(0, 4);
-
   const name = displayName(product);
 
   return (
@@ -68,8 +64,6 @@ export default async function ProductPage({
       </nav>
 
       <PDPView product={product} initialColorIdx={initialColorIdx} />
-
-      <ReviewsSection product={product} />
 
       {/* COMPLETE THE LOOK — styling inspiration using 14534-H only (14534-H PDP only) */}
       {product.sku === "14534-H" && (

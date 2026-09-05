@@ -7,12 +7,14 @@ import {
   ArrowLeft,
   Sparkles,
   AlertTriangle,
+  Warehouse,
 } from "lucide-react";
 
 const NAV = [
   { href: "/admin", label: "增长总览", icon: LayoutDashboard },
   { href: "/admin/campaigns", label: "投放冷启动", icon: Megaphone },
   { href: "/admin/orders", label: "交易闭环", icon: ShoppingBag },
+  { href: "/admin/stock", label: "温州库存", icon: Warehouse },
   { href: "/admin/selection", label: "AI 选款测试", icon: FlaskConical },
 ];
 

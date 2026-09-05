@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingBag, Sparkles, LayoutDashboard, Globe } from "lucide-react";
+import { ShoppingBag, Sparkles, Globe } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/lib/store/currency";
 import { useLang } from "@/lib/store/lang";
@@ -63,13 +63,6 @@ export function SiteHeader() {
             <Globe size={13} className="text-accent" />
             {lang === "EN" ? "EN" : "中文"}
           </button>
-          <Link
-            href="/admin"
-            title="Dashboard (internal)"
-            className="rounded-full p-2 text-ink/60 transition hover:bg-ink/5 hover:text-ink"
-          >
-            <LayoutDashboard size={19} />
-          </Link>
           <Link
             href="/cart"
             className="relative rounded-full p-2 text-ink transition hover:bg-ink/5"

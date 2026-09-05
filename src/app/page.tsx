@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, ShoppingBag, Sparkles, Layers, ShieldCheck } from "lucide-react";
+import { ArrowRight, ShoppingBag, Layers, ShieldCheck } from "lucide-react";
 import { getProductById } from "@/lib/data/catalog";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
@@ -12,33 +12,6 @@ import { CLIP_COLLECTIONS, ECOSYSTEM, STATUS } from "@/lib/data/brand";
 export default function HomePage() {
   const { t } = useLang();
   const hero = getProductById("boot-14534-h");
-
-  const PLANS = [
-    {
-      no: "01",
-      title: t("WORKDAY", "工作日"),
-      desc: t(
-        "A clean black silhouette that fits easily into a sharper everyday wardrobe.",
-        "利落的黑色轮廓，轻松融入日常穿搭。"
-      ),
-    },
-    {
-      no: "02",
-      title: t("AFTER HOURS", "下班后"),
-      desc: t(
-        "Simple enough for dinner, dates and city nights without changing the whole look.",
-        "足够简约，晚餐、约会、城市夜景无需换装。"
-      ),
-    },
-    {
-      no: "03",
-      title: t("WEEKEND", "周末"),
-      desc: t(
-        "Easy styling for short trips, walks and casual plans.",
-        "短途出行、散步和休闲计划的百搭之选。"
-      ),
-    },
-  ];
 
   const ROUTINES = [
     { no: "01", title: t("COMMUTE", "通勤"), img: "/products/14534-h/hero.jpg" },
@@ -56,9 +29,9 @@ export default function HomePage() {
           <div className="animate-fade-up">
             <div className="mb-6 text-xs font-bold tracking-[0.3em] text-ink/45">STRYDE</div>
             <h1 className="text-5xl font-black leading-[1.02] tracking-tight md:text-7xl">
-              {t("STAND UP.", "站起来。")}
+              {t("STAND UP", "站起来")}
               <br />
-              <span className="text-ink/80">{t("STAND OUT.", "出众。")}</span>
+              <span className="text-ink/80">{t("STAND OUT", "出众")}</span>
             </h1>
             <p className="mt-7 max-w-md text-lg leading-relaxed text-ink/65">
               {t(
@@ -97,26 +70,21 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ---------- ONE PAIR. MORE PLANS. ---------- */}
-      <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-        <div className="mb-12">
-          <div className="mb-3 text-xs font-bold tracking-[0.3em] text-ink/40">
-            {t("THE DAILY ROUTE", "日常路线")}
+      {/* ---------- FIND YOUR STRYDE — Style Quiz 入口 ---------- */}
+      <section className="bg-ink text-paper">
+        <div className="mx-auto flex max-w-7xl flex-col items-start gap-6 px-6 py-16 md:py-20 md:flex-row md:items-center md:justify-between">
+          <div>
+            <div className="text-xs font-bold tracking-[0.3em] text-paper/45">{t("STYLE QUIZ", "风格测试")}</div>
+            <h2 className="mt-3 text-4xl font-black leading-tight md:text-5xl">{t("FIND YOUR STRYDE", "寻找你的 STRYDE")}</h2>
+            <p className="mt-4 max-w-md text-paper/60">
+              {t("Three questions. Find the pair that matches your style.", "三个问题，找到最适合你风格的那双。")}
+            </p>
           </div>
-          <h2 className="text-4xl font-black leading-tight md:text-5xl">
-            {t("ONE PAIR.", "一双鞋。")}
-            <br />
-            {t("MORE PLANS.", "更多可能。")}
-          </h2>
-        </div>
-        <div className="grid gap-8 md:grid-cols-3">
-          {PLANS.map((p) => (
-            <div key={p.no} className="border-t border-ink/15 pt-6">
-              <div className="text-xs font-black tracking-[0.25em] text-ink/40">{p.no}</div>
-              <h3 className="mt-3 text-2xl font-black tracking-wide">{p.title}</h3>
-              <p className="mt-3 text-ink/60 leading-relaxed">{p.desc}</p>
-            </div>
-          ))}
+          <Link href="/find-your-stryde">
+            <Button size="lg" className="!bg-paper !text-ink hover:!bg-white">
+              {t("FIND MY PAIR", "找到我的鞋")} <ArrowRight size={18} />
+            </Button>
+          </Link>
         </div>
       </section>
 
@@ -128,9 +96,9 @@ export default function HomePage() {
               {t("EDITORIAL", "编辑精选")}
             </div>
             <h2 className="text-4xl font-black leading-tight md:text-5xl">
-              {t("ONE BOOT.", "一双靴。")}
+              {t("ONE BOOT", "一双靴")}
               <br />
-              {t("THREE ROUTINES.", "三种场景。")}
+              {t("THREE ROUTINES", "三种场景")}
             </h2>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
@@ -312,15 +280,23 @@ export default function HomePage() {
       <section className="mx-auto max-w-5xl px-6 pb-20">
         <div className="rounded-3xl bg-ink p-10 text-center text-paper md:p-14">
           <h2 className="text-3xl font-black leading-tight md:text-4xl">
-            {t("STAND UP. STAND OUT.", "站起来。出众。")}
+            {t("STAND UP STAND OUT", "站起来 出众")}
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-paper/60">
             {t("The 14534-H — a clean black boot for the way your day moves.", "14534-H——为你一天的每个时刻而生的黑色靴。")}
           </p>
-          <p className="mx-auto mt-2 max-w-md text-sm text-paper/40">
-            {t("Drop your email for 15% off your first pair.", "输入邮箱，首双立享 15% 折扣。")}
-          </p>
-          <NewsletterSignup />
+          <div className="mt-6">
+            <div className="text-xs font-black tracking-[0.25em] text-paper/50">
+              {t("JOIN THE STRYDE LIST", "加入 STRYDE 名单")}
+            </div>
+            <p className="mx-auto mt-2 max-w-md text-sm text-paper/40">
+              {t(
+                "Get 15% off your first pair, plus launch updates and early access.",
+                "首双立享 15% 折扣，抢先获取发售动态与早鸟权益。"
+              )}
+            </p>
+            <NewsletterSignup />
+          </div>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link href={`/products/${hero.slug}`}>
               <Button size="lg">

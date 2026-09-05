@@ -47,6 +47,12 @@ export function SiteFooter() {
           Demo store — pricing, shipping, returns and review data are not verified operational
           commitments until live commercial launch.
         </span>
+        <Link
+          href="/admin"
+          className="mt-2 inline-block rounded-md border border-paper/20 px-3 py-1 text-xs font-bold text-paper/60 transition hover:border-paper/40 hover:text-paper"
+        >
+          Admin
+        </Link>
       </div>
     </footer>
   );
