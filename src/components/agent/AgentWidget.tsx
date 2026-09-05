@@ -65,16 +65,18 @@ export function AgentWidget() {
       if (saved) {
         const parsed = JSON.parse(saved) as Msg[];
         if (Array.isArray(parsed) && parsed.length) {
-          // 旧数据自愈：主动搭话只保留第一条；首条欢迎语（含历史版本文案）升级为双语版
+          // 旧数据自愈：主动搭话只保留第一条并升级为双语版；首条欢迎语（含历史版本文案）升级为双语版
           let seenProactive = false;
-          const healed = parsed.filter((m) => {
-            if (m.role !== "ai") return true;
-            if (isProactiveMsg(m.text)) {
-              if (seenProactive) return false;
+          const healed: Msg[] = [];
+          for (const m of parsed) {
+            if (m.role === "ai" && isProactiveMsg(m.text)) {
+              if (seenProactive) continue;
               seenProactive = true;
+              healed.push({ ...m, text: AGENT_PERSONA.proactiveBilingual });
+              continue;
             }
-            return true;
-          });
+            healed.push(m);
+          }
           if (healed[0]?.role === "ai" && isWelcomeMsg(healed[0].text)) {
             healed[0] = { role: "ai", text: AGENT_PERSONA.welcomeBilingual };
           }
@@ -132,7 +134,7 @@ export function AgentWidget() {
         ...m,
         {
           role: "ai",
-          text: lang === "zh" ? AGENT_PERSONA.proactiveZh : AGENT_PERSONA.proactive,
+          text: AGENT_PERSONA.proactiveBilingual,
         },
       ]);
     }, 30_000);
@@ -213,7 +215,9 @@ export function AgentWidget() {
     }
   }
 
-  const suggestions = lang === "zh" ? AGENT_PERSONA.suggestionsZh : AGENT_PERSONA.suggestions;
+  // 快捷气泡：用户还没发过第一条消息前一直显示（含主动搭话出现后），发过即隐藏
+  const suggestions = AGENT_PERSONA.suggestionsBilingual;
+  const showSuggestions = !msgs.some((m) => m.role === "user");
 
   return (
     <>
@@ -290,7 +294,7 @@ export function AgentWidget() {
           </div>
 
           {/* 建议问题 */}
-          {msgs.length <= 1 && (
+          {showSuggestions && (
             <div className="flex flex-wrap gap-1.5 border-t border-ink/10 bg-white px-3 pt-3">
               {suggestions.map((s) => (
                 <button
@@ -315,7 +319,7 @@ export function AgentWidget() {
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={lang === "zh" ? AGENT_PERSONA.inputPlaceholderZh : AGENT_PERSONA.inputPlaceholder}
+              placeholder={AGENT_PERSONA.inputPlaceholderBilingual}
               className="h-10 flex-1 rounded-full bg-paper px-4 text-sm outline-none placeholder:text-ink/40"
             />
             <button
