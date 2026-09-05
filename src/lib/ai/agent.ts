@@ -8,17 +8,29 @@ import { ph, formatUSD } from "@/lib/utils";
  * 双语回复：跟随用户输入语言（detectLang），不是根据这里的语言常量。
  * ------------------------------------------------------------------ */
 
+/** 欢迎语（单语版供语言切换复用；首条消息统一用双语版 welcomeBilingual） */
+const WELCOME_EN =
+  "Hey! I'm Mia 👋 From commute-ready boots to weekend pairs that won't break the bank — tell me what you're after and I'll do the rest.";
+const WELCOME_ZH =
+  "嘿！我是 Mia 👢 从通勤能穿的靴子到高性价比周末款——告诉我你想找什么，剩下的交给我。";
+
+/** 30 秒主动搭话（单语版供匹配复用；实际展示用双语版 proactiveBilingual） */
+const PROACTIVE_EN = "Hi! Need help picking the right pair? 😊";
+const PROACTIVE_ZH = "嗨！需要帮你挑一双合适的鞋吗？😊";
+
 export const AGENT_PERSONA = {
   name: "Mia",
   headerTitle: "Mia · STRYDE AI Buddy",
   headerStatus: "Online · replies in seconds",
   headerStatusZh: "在线 · 秒级响应",
-  welcome:
-    "Hey! I'm Mia 👋 From commute-ready boots to weekend pairs that won't break the bank — tell me what you're after and I'll do the rest.",
-  welcomeZh:
-    "嘿！我是 Mia 👢 从通勤能穿的靴子到高性价比周末款——告诉我你想找什么，剩下的交给我。",
+  welcome: WELCOME_EN,
+  welcomeZh: WELCOME_ZH,
+  /** 首条消息固定双语介绍（EN + ZH 一条），打开面板第一眼即可认识 Mia */
+  welcomeBilingual: `${WELCOME_EN}\n\n${WELCOME_ZH}`,
   inputPlaceholder: "Ask me anything… e.g. boots for commuting",
   inputPlaceholderZh: "想问点什么…比如：通勤穿的靴子",
+  /** 输入框占位符双语版 */
+  inputPlaceholderBilingual: "想问点什么…比如：通勤穿的靴子 · or boots for commuting",
   /** 4 个快捷气泡（选款 / 尺码 / 物流 / 优惠；货盘 D 为男靴，选款气泡对齐通勤场景） */
   suggestions: [
     "Help me pick everyday boots",
@@ -32,11 +44,19 @@ export const AGENT_PERSONA = {
     "多久能到货？",
     "有什么优惠？",
   ] as const,
+  /** 快捷气泡双语版（同一 chip 内中英并列，点击后规则引擎按关键词命中，两种语言都能正确路由） */
+  suggestionsBilingual: [
+    "帮我挑一双通勤靴 · Help me pick boots",
+    "尺码怎么选？ · Size guide",
+    "多久能到货？ · Shipping time",
+    "有什么优惠？ · Discounts",
+  ] as const,
   fallbackHelp:
     "I can help you with 👢\n• Boot picks (commute / date night / travel / light outdoor)\n• Size, shipping & return info\n• Deals & student discounts\n\nTry: \"What goes with jeans?\" or \"I need a gift for him.\"",
-  /** 30 秒无响应主动搭话（按用户要求保持简短自然的英文） */
-  proactive: "Hi! Need help picking the right pair? 😊",
-  proactiveZh: "嗨！需要帮你挑一双合适的鞋吗？😊",
+  /** 30 秒无响应主动搭话（实际展示用双语版 proactiveBilingual） */
+  proactive: PROACTIVE_EN,
+  proactiveZh: PROACTIVE_ZH,
+  proactiveBilingual: `${PROACTIVE_EN}\n\n${PROACTIVE_ZH}`,
 };
 
 /* =================================================================
