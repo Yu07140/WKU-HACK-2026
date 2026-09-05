@@ -30,8 +30,8 @@ export default function CarePage() {
         </h1>
         <p className="mt-4 text-2xl font-bold tracking-wide text-ink/70">STRYDE CARE 01</p>
         <p className="mt-5 max-w-xl text-lg text-ink/60">
-          A future care extension designed around the STRYDE footwear system. In development —
-          final materials and availability will be confirmed before launch.
+          A future extension of the STRYDE footwear system — in development.
+          Care, storage and travel solutions designed around the 14534-H.
         </p>
       </div>
 
@@ -58,20 +58,20 @@ export default function CarePage() {
           ))}
         </div>
         <p className="mt-4 text-xs text-ink/40">
-          System roles only. No specific chemical, material or component claims are made until
-          supplier validation is complete.
+          Roles shown at a high level — specific products, materials and timing will be shared as
+          CARE 01 develops.
         </p>
       </section>
 
       {/* ---------- HONEST DISCLOSURE ---------- */}
       <section className="mb-16 rounded-3xl border border-ink/10 bg-cream p-8">
         <div className="text-xs font-bold tracking-[0.25em] text-ink/50">
-          {STATUS.validationPending}
+          {STATUS.inDevelopment}
         </div>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink/70">
-          Product-specific care guidance is still pending supplier confirmation. We won't publish
-          unverified cleaning methods, formulas or material specifications. When CARE 01 is ready,
-          it will be designed to work with the real 14534-H — not a fictional product.
+          CARE 01 is in development as a future extension of the STRYDE footwear system. No
+          specific products, materials or pricing are announced yet — when it&apos;s ready, it
+          will be designed around the real 14534-H.
         </p>
       </section>
 
@@ -81,7 +81,7 @@ export default function CarePage() {
           START WITH THE BOOT.
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-paper/60">
-          The 14534-H is available now. CARE 01 follows once sourcing is validated.
+          The 14534-H is available now. CARE 01 joins the system when it&apos;s ready.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link href="/products/mono-boot">

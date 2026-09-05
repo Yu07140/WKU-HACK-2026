@@ -5,23 +5,28 @@ import { Copy, Check, Download, ExternalLink, History, Trash2 } from "lucide-rea
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { downloadImage, useCreativeHistory, type CreativeRecord } from "@/lib/store/creativeHistory";
+import { useLang } from "@/lib/store/lang";
 
 export function CreativeHistory({
   onReusePrompt,
 }: {
   onReusePrompt: (prompt: string) => void;
 }) {
+  const { t } = useLang();
   const { records, clear } = useCreativeHistory();
 
   return (
     <div>
       <div className="mb-5 flex items-center justify-between">
         <p className="text-sm text-ink/55">
-          Latest {records.length}/20 generated creatives · stored locally in your browser
+          {t(
+            `Latest ${records.length}/20 generated creatives · stored locally in your browser`,
+            `最近生成 ${records.length}/20 条创意 · 仅保存在本地浏览器`
+          )}
         </p>
         {records.length > 0 && (
           <Button variant="outline" size="sm" onClick={clear}>
-            <Trash2 size={14} /> Clear history
+            <Trash2 size={14} /> {t("Clear history", "清空历史")}
           </Button>
         )}
       </div>
@@ -30,8 +35,10 @@ export function CreativeHistory({
         <Card className="flex h-64 flex-col items-center justify-center text-center text-ink/40">
           <History size={36} className="mb-3 opacity-40" />
           <p className="text-sm">
-            No creatives yet — generate visuals in Product Creative or Creative Matrix and they
-            will show up here.
+            {t(
+              "No creatives yet — generate visuals in Product Creative or Creative Matrix and they will show up here.",
+              "还没有创意 — 去「产品创意」或「创意矩阵」生成图片，就会显示在这里。"
+            )}
           </p>
         </Card>
       ) : (
@@ -52,6 +59,7 @@ function HistoryCard({
   rec: CreativeRecord;
   onReusePrompt: (prompt: string) => void;
 }) {
+  const { t, lang } = useLang();
   const [copied, setCopied] = useState(false);
   const [downloadFail, setDownloadFail] = useState(false);
 
@@ -59,9 +67,9 @@ function HistoryCard({
     <Card className="overflow-hidden animate-fade-up">
       <div className="relative">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={rec.url} alt={`creative ${rec.styleLabel}`} className="aspect-square w-full object-cover" />
+        <img src={rec.url} alt={t("creative", "创意图") + ` ${rec.styleLabel}`} className="aspect-square w-full object-cover" />
         <span className="absolute left-3 top-3 rounded-full bg-accent px-2.5 py-1 text-[10px] font-bold text-white">
-          AI CREATIVE
+          {t("AI CREATIVE", "AI 生成")}
         </span>
         {rec.platform && (
           <span className="absolute right-3 top-3 rounded-full bg-ink/85 px-2.5 py-1 text-[10px] font-bold text-white">
@@ -73,7 +81,7 @@ function HistoryCard({
         <div className="flex items-center justify-between text-xs">
           <span className="font-bold text-ink/75">{rec.productName}</span>
           <span className="text-ink/40">
-            {new Date(rec.timestamp).toLocaleString("en-US", {
+            {new Date(rec.timestamp).toLocaleString(lang === "CN" ? "zh-CN" : "en-US", {
               month: "short",
               day: "numeric",
               hour: "2-digit",
@@ -99,7 +107,7 @@ function HistoryCard({
             }}
             className="inline-flex items-center gap-1 text-[11px] font-bold text-ink/60 hover:text-ink"
           >
-            <Download size={12} /> Download
+            <Download size={12} /> {t("Download", "下载")}
           </button>
           {downloadFail && (
             <a
@@ -108,7 +116,7 @@ function HistoryCard({
               rel="noreferrer"
               className="inline-flex items-center gap-1 text-[11px] font-bold text-ink/50"
             >
-              <ExternalLink size={12} /> Open Image
+              <ExternalLink size={12} /> {t("Open Image", "打开图片")}
             </a>
           )}
           <button
@@ -120,13 +128,13 @@ function HistoryCard({
             className="inline-flex items-center gap-1 text-[11px] font-bold text-ink/60 hover:text-ink"
           >
             {copied ? <Check size={12} className="text-sage" /> : <Copy size={12} />}
-            {copied ? "Copied" : "Copy Prompt"}
+            {copied ? t("Copied", "已复制") : t("Copy Prompt", "复制提示词")}
           </button>
           <button
             onClick={() => onReusePrompt(rec.prompt)}
             className="inline-flex items-center gap-1 text-[11px] font-bold text-accent-dark"
           >
-            ♻ Reuse Prompt
+            ♻ {t("Reuse Prompt", "复用提示词")}
           </button>
         </div>
       </div>

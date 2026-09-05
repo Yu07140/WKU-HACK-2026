@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, ShoppingBag, Layers, Sparkles, ShieldCheck } from "lucide-react";
 import { Suspense } from "react";
@@ -6,8 +8,10 @@ import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
 import { PromoBanner } from "@/components/store/PromoBanner";
 import { ECOSYSTEM, STATUS } from "@/lib/data/brand";
+import { useLang } from "@/lib/store/lang";
 
 export default function ProductsPage() {
+  const { t } = useLang();
   const hero = getProductById("boot-14534-h");
 
   return (
@@ -15,15 +19,18 @@ export default function ProductsPage() {
       {/* ---------- HEADER ---------- */}
       <div className="mb-14 border-b border-ink/10 pb-10">
         <div className="mb-3 text-xs font-bold tracking-[0.3em] text-ink/40">
-          THE STRYDE SYSTEM
+          {t("THE STRYDE SYSTEM", "STRYDE 产品系统")}
         </div>
         <h1 className="text-5xl font-black leading-[0.95] tracking-tight md:text-7xl">
-          ONE BOOT.
+          {t("ONE BOOT.", "一双鞋。")}
           <br />
-          MORE WAYS TO MAKE IT YOURS.
+          {t("MORE WAYS TO MAKE IT YOURS.", "更多方式，打造你的专属。")}
         </h1>
         <p className="mt-5 max-w-xl text-lg text-ink/60">
-          One real boot. One focused system. Built around the 14534-H.
+          {t(
+            "One real boot. One focused system. Built around the 14534-H.",
+            "一双真实量产的鞋，一个专注的系统，围绕 14534-H 而构建。"
+          )}
         </p>
         <Suspense fallback={null}>
           <PromoBanner />
@@ -51,32 +58,34 @@ export default function ProductsPage() {
             </div>
             <div className="flex flex-col justify-center">
               <div className="text-xs font-bold tracking-[0.2em] text-accent">
-                SKU {hero.sku}
+                {t("SKU", "编号")} {hero.sku}
               </div>
               <h2 className="mt-2 text-3xl font-black md:text-4xl">STRYDE MONO BOOT</h2>
               <p className="mt-3 text-ink/60">
-                A clean black ankle boot built for workdays, evenings and everyday city routines.
-                The only transaction-ready footwear in the STRYDE launch.
+                {t(
+                  "A clean black ankle boot built for workdays, evenings and everyday city routines. The only transaction-ready footwear in the STRYDE launch.",
+                  "一双利落的黑色短靴，适配工作日、夜晚与日常城市出行，是 STRYDE 首发中唯一可直接下单的鞋款。"
+                )}
               </p>
               <dl className="mt-6 grid grid-cols-3 gap-3">
                 <div className="rounded-xl bg-cream p-3">
-                  <dt className="text-[11px] text-ink/50">Sizes</dt>
+                  <dt className="text-[11px] text-ink/50">{t("Sizes", "尺码")}</dt>
                   <dd className="mt-0.5 text-sm font-bold">EU 38–46</dd>
                 </div>
                 <div className="rounded-xl bg-cream p-3">
-                  <dt className="text-[11px] text-ink/50">Upper</dt>
-                  <dd className="mt-0.5 text-sm font-bold">Microfiber</dd>
+                  <dt className="text-[11px] text-ink/50">{t("Upper", "鞋面")}</dt>
+                  <dd className="mt-0.5 text-sm font-bold">{t("Microfiber", "超纤")}</dd>
                 </div>
                 <div className="rounded-xl bg-cream p-3">
-                  <dt className="text-[11px] text-ink/50">Outsole</dt>
-                  <dd className="mt-0.5 text-sm font-bold">Rubber</dd>
+                  <dt className="text-[11px] text-ink/50">{t("Outsole", "鞋底")}</dt>
+                  <dd className="mt-0.5 text-sm font-bold">{t("Rubber", "橡胶")}</dd>
                 </div>
               </dl>
               <Link
                 href={`/products/${hero.slug}`}
                 className="mt-8 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-bold text-paper transition hover:bg-ink/85"
               >
-                <ShoppingBag size={16} /> SHOP THE BOOT
+                <ShoppingBag size={16} /> {t("SHOP THE BOOT", "选购这双鞋")}
               </Link>
             </div>
           </div>
@@ -88,7 +97,7 @@ export default function ProductsPage() {
         <div className="mb-6 flex items-center gap-3">
           <div className="text-xs font-black tracking-[0.25em] text-ink/40">02</div>
           <span className="rounded-full bg-ink/90 px-3 py-1 text-[11px] font-black tracking-wider text-paper">
-            BUNDLE
+            {t("BUNDLE", "套装")}
           </span>
         </div>
         <Link
@@ -126,11 +135,13 @@ export default function ProductsPage() {
               ))}
             </h2>
             <p className="mt-3 text-ink/60">
-              Two units of the same real 14534-H. Choose each EU size separately and build a
-              rotation for work and everything after.
+              {t(
+                "Two units of the same real 14534-H. Choose each EU size separately and build a rotation for work and everything after.",
+                "两双同一款真实 14534-H。可分别为每双选择 EU 码数，为工作与工作之外的日常构建轮换穿搭。"
+              )}
             </p>
             <span className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-ink">
-              BUILD YOUR DUO <ArrowRight size={16} className="transition group-hover:translate-x-1" />
+              {t("BUILD YOUR DUO", "定制你的 DUO")} <ArrowRight size={16} className="transition group-hover:translate-x-1" />
             </span>
           </div>
         </Link>
@@ -159,7 +170,7 @@ export default function ProductsPage() {
               />
             )}
             <div className="absolute left-1/2 top-[38%] -translate-x-1/2 rounded-full border-2 border-accent bg-paper/90 px-2 py-0.5 text-[9px] font-black text-accent-dark">
-              CLIP
+              {t("CLIP", "字母扣")}
             </div>
           </div>
           <div className="flex flex-col justify-center">
@@ -168,11 +179,13 @@ export default function ProductsPage() {
             </div>
             <h2 className="mt-2 text-3xl font-black md:text-4xl">{ECOSYSTEM.clips}</h2>
             <p className="mt-3 text-ink/60">
-              Removable decorative clip-on accessories designed around the existing detailing of
-              the 14534-H. Personalize without changing the boot.
+              {t(
+                "Removable decorative clip-on accessories designed around the existing detailing of the 14534-H. Personalize without changing the boot.",
+                "围绕 14534-H 既有细节设计的可拆卸装饰字母扣，不换鞋也能实现个性化。"
+              )}
             </p>
             <span className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-ink">
-              EXPLORE THE CONCEPT <ArrowRight size={16} className="transition group-hover:translate-x-1" />
+              {t("EXPLORE THE CONCEPT", "探索这个概念")} <ArrowRight size={16} className="transition group-hover:translate-x-1" />
             </span>
           </div>
         </Link>
@@ -207,11 +220,13 @@ export default function ProductsPage() {
             </div>
             <h2 className="mt-2 text-3xl font-black md:text-4xl">{ECOSYSTEM.care}</h2>
             <p className="mt-3 text-ink/60">
-              A future care extension designed around the STRYDE footwear system. In development —
-              details will be shared at launch.
+              {t(
+                "A future care extension designed around the STRYDE footwear system. In development — details will be shared at launch.",
+                "围绕 STRYDE 鞋履系统打造的未来护理延伸，正在开发中——细节将在发布时公布。"
+              )}
             </p>
             <span className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-ink">
-              EXPLORE THE CONCEPT <ArrowRight size={16} className="transition group-hover:translate-x-1" />
+              {t("EXPLORE THE CONCEPT", "探索这个概念")} <ArrowRight size={16} className="transition group-hover:translate-x-1" />
             </span>
           </div>
         </Link>
@@ -220,13 +235,13 @@ export default function ProductsPage() {
       {/* ---------- CREATIVE LAB LINK ---------- */}
       <section className="mt-12 border-t border-ink/10 pt-10 text-center">
         <p className="text-sm text-ink/50">
-          Looking for sprint exploration?
+          {t("Looking for sprint exploration?", "想看冲刺期间的创意探索？")}
         </p>
         <Link
           href="/creative-lab"
           className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-ink/70 underline underline-offset-4 hover:text-ink"
         >
-          EXPLORE THE CREATIVE LAB <ArrowRight size={15} />
+          {t("EXPLORE THE CREATIVE LAB", "探索创意实验室")} <ArrowRight size={15} />
         </Link>
       </section>
     </div>

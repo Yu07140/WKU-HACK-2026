@@ -1,4 +1,4 @@
-﻿import { notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, ArrowRight, Sparkles, Layers, ShieldCheck } from "lucide-react";
 import { getProduct, PRODUCTS } from "@/lib/data/catalog";
@@ -74,13 +74,13 @@ export default async function ProductPage({
           </p>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {LOOKS.map((l) => (
-            <div key={l.no} className="group overflow-hidden rounded-3xl border border-ink/10 bg-white">
+            <div key={l.no} className="overflow-hidden rounded-3xl border border-ink/10 bg-white">
               <div className="relative aspect-[4/5] overflow-hidden">
                 <ProductImage
                   src={l.img}
                   alt={`14534-H — ${l.title} styling`}
                   size="portrait_4_3"
-                  className="h-full w-full transition duration-500 group-hover:scale-105"
+                  className="h-full w-full"
                 />
                 <div className="absolute left-4 top-4 rounded-full bg-ink/80 px-3 py-1 text-xs font-black tracking-wider text-paper">
                   {l.no} · {l.title}

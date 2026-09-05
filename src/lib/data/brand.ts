@@ -21,7 +21,7 @@ export const BRAND_STORY = [
   "STRYDE is a footwear brand built for the way your day moves.",
   "Our featured product is factory SKU 14534-H — a black minimalist ankle boot with microfiber upper & lining, rear zipper and rubber outsole.",
   "We use AI to compress the design, creative, media and retail workflow into a single demo timeline.",
-  "Pricing, shipping and policies shown on this site are demo data, not verified operational commitments.",
+  "Product and shipping details shown on this site are demo data. The 30-Day Guarantee on your first pair and the 15% first-pair offer are confirmed STRYDE policies.",
 ];
 
 /**
@@ -44,27 +44,48 @@ export const ECOSYSTEM = {
 export const CLIP_COLLECTIONS = [
   {
     no: "01",
+    slug: "signature",
     name: "SIGNATURE",
     desc: "STRYDE-branded marks designed around the brand wordmark.",
     samples: ["S", "STRYDE", "STAND OUT"],
+    images: {
+      S: "/clips/collections/signature/S.jpg",
+      STRYDE: "/clips/collections/signature/STRYDE.jpg",
+      "STAND OUT": "/clips/collections/signature/STAND-OUT.jpg",
+    },
   },
   {
     no: "02",
+    slug: "mono",
     name: "MONO",
     desc: "Minimal graphic symbols in black, graphite and silver-tone.",
     samples: [">", "≡", "◯", "▭"],
+    images: {
+      ">": "/clips/collections/mono/greater.png",
+      "≡": "/clips/collections/mono/equal.png",
+      "◯": "/clips/collections/mono/circle.jpg",
+      "▭": "/clips/collections/mono/square.jpg",
+    },
   },
   {
     no: "03",
+    slug: "personal",
     name: "PERSONAL",
     desc: "Choose your initial — a quiet, personal signature.",
     samples: ["A", "F", "M", "S"],
+    images: {},
   },
   {
     no: "04",
+    slug: "city",
     name: "CITY",
     desc: "City-inspired text identity. No official logos or trademarks.",
     samples: ["NYC", "LDN", "TYO"],
+    images: {
+      LDN: "/clips/collections/city/LDN.jpg",
+      NYC: "/clips/collections/city/NYC.png",
+      TYO: "/clips/collections/city/TYO.jpg",
+    },
   },
 ] as const;
 

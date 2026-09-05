@@ -120,7 +120,7 @@ export default function DuoPage() {
           )}
 
           <div className="mt-6 rounded-2xl bg-cream p-4 text-xs leading-relaxed text-ink/55">
-            Bundle savings will be finalized after launch-cost validation.
+            Two pairs, one order — build your rotation and check out as a single bag.
           </div>
 
           <Button

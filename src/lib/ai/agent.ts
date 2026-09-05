@@ -319,22 +319,22 @@ export function getReturnInfo(): string {
 function sizingBilingual(lang: Lang): string {
   return L(
     lang,
-    "Most of our boots run in standard US sizes; our STRYDE-labeled pairs use EU 38–46 (every product page has a full EU/US size chart). If your feet are wide or you're between sizes, go up by half a size ✨ Our lace-up boots are adjustable across the instep, and the side zip makes them easy to get on and off. Free size exchanges within 30 days, on us!",
-    "咱们大部分靴款是标准美码，STRYDE 系列用欧码 EU 38–46（每个商品页都有完整的欧码/美码对照表）✨ 脚比较宽、或者在两码之间的话，建议选大半码；系带款脚背松紧可以自己调，侧面还有拉链，穿脱很方便。30 天内免费换码，运费我们包～"
+    "Most of our boots run in standard US sizes; our STRYDE-labeled pairs use EU 38–46 (every product page has a full EU/US size chart). If your feet are wide or you're between sizes, go up by half a size ✨ Our lace-up boots are adjustable across the instep, and the side zip makes them easy to get on and off. If the fit isn't right, your first pair is covered by our 30-day guarantee.",
+    "咱们大部分靴款是标准美码，STRYDE 系列用欧码 EU 38–46（每个商品页都有完整的欧码/美码对照表）✨ 脚比较宽、或者在两码之间的话，建议选大半码；系带款脚背松紧可以自己调，侧面还有拉链，穿脱很方便。如果不合脚也没关系——你的第一双享 30 天质保。"
   );
 }
 function shippingBilingual(lang: Lang): string {
   return L(
     lang,
-    "Orders are processed within 1–2 business days 🚚 International delivery usually takes 7–15 business days depending on your country, and shipping is free over $75. You'll get a tracking email the moment your order ships!",
-    "下单后 1–2 个工作日内处理出库 🚚 国际运输一般 7–15 个工作日送达，具体看目的地国家；满 $75 免运费。一出库就会给你发追踪邮件哒～"
+    "Orders are produced in 3–5 business days, then international transit takes 8–15 days (estimate). US orders over $75 ship free; other regions use flat rates shown at checkout. You'll get tracking the moment your order ships!",
+    "下单后 3–5 个工作日生产出库，国际运输一般再需 8–15 个工作日（预估）。美国满 $75 免运费，其他地区按结账时的固定运费计费。出库后立即发送物流单号。"
   );
 }
 function returnBilingual(lang: Lang): string {
   return L(
     lang,
-    "30-day trial, zero stress 🧡 If they don't fit or you change your mind, send them back in original condition for a full refund. We also cover the shipping cost for one free size exchange per order.",
-    "30 天无忧试穿 🧡 不合脚或者改变主意，保持原状态寄回就能全额退款。每单还包一次免费换码的运费哦。"
+    "STRYDE offers a 30-day guarantee on your first pair. If something isn't right, email returns@stryde.com within 30 days of delivery and we'll make it right.",
+    "STRYDE 为你的第一双提供 30 天质保。如有任何问题，请在收货后 30 天内邮件 returns@stryde.com，我们会帮你处理好。"
   );
 }
 
@@ -562,8 +562,8 @@ function sceneNarrowFeet(lang: Lang): AgentReply {
   return {
     text: L(
       lang,
-      `Narrow feet? Look for slim-last, higher-shaft pairs — they hug the ankle and heel so there's no slippage, and lacing one eyelet tighter dials in the fit. ${picks.length > 1 ? "Two best fits" : "My pick"}:\n${productList(picks, lang)}\n\nFree size exchange within 30 days if the fit feels off.`,
-      `瘦脚推荐挑窄楦收口、靴筒略高的款——脚踝和后跟包裹住走路不掉跟，鞋带最上面一格系紧一点更贴合。最合适${picks.length > 1 ? "的两双" : "的一双"}：\n${productList(picks, lang)}\n\n不合适的话 30 天内免费换码，放心～`
+      `Narrow feet? Look for slim-last, higher-shaft pairs — they hug the ankle and heel so there's no slippage, and lacing one eyelet tighter dials in the fit. ${picks.length > 1 ? "Two best fits" : "My pick"}:\n${productList(picks, lang)}\n\nIf the fit isn't right, your first pair is covered by our 30-day guarantee.`,
+      `瘦脚推荐挑窄楦收口、靴筒略高的款——脚踝和后跟包裹住走路不掉跟，鞋带最上面一格系紧一点更贴合。最合适${picks.length > 1 ? "的两双" : "的一双"}：\n${productList(picks, lang)}\n\n如果不合脚也没关系——你的第一双享 30 天质保。`
     ),
     products: picks,
   };
@@ -574,8 +574,8 @@ function sceneWaterproof(lang: Lang, withCard = true): AgentReply {
   return {
     text: L(
       lang,
-      `Quick honesty — the 14534-H isn't a seam-sealed rain boot. The microfiber upper may handle light drizzle, but heavy downpours aren't its stage, and care guidance is pending supplier confirmation. For wet commutes, keep a protective spray (once we publish an approved care method) and a spare pair handy:\n${withCard && HERO ? productList([HERO], lang) : ""}`,
-      `说实话哈 — 14534-H 不是压胶雨靴，超纤鞋面可能应付小雨，但大雨天不是它的主场，具体护理方式待供应商确认。雨季通勤建议后续按官方护理说明做防护、备一双换穿：\n${withCard && HERO ? productList([HERO], lang) : ""}`
+      `Quick honesty — the 14534-H isn't a seam-sealed rain boot. The microfiber upper may handle light drizzle, but heavy downpours aren't its stage. We're finalizing care guidance and will publish it before launch. For wet commutes, keep a protective spray and a spare pair handy:\n${withCard && HERO ? productList([HERO], lang) : ""}`,
+      `说实话哈 — 14534-H 不是压胶雨靴，超纤鞋面可能应付小雨，但大雨天不是它的主场。官方护理说明会在发售前公布。雨季通勤建议做好防护、备一双换穿：\n${withCard && HERO ? productList([HERO], lang) : ""}`
     ),
     products: withCard && HERO ? [HERO] : undefined,
   };
@@ -586,8 +586,8 @@ function sceneWashable(lang: Lang): AgentReply {
   return {
     text: L(
       lang,
-      "Great question! 💡 The 14534-H isn't machine-washable. Product-specific care guidance is pending supplier confirmation — we'll publish an approved care method before live sales rather than guess at one.",
-      "好问题！💡 14534-H 不能机洗。具体护理方式待供应商确认——在官方护理说明发布前，我们不擅自给出清洁建议。"
+      "Great question! 💡 The 14534-H isn't machine-washable. We're finalizing care guidance and will publish it before launch rather than guess at one.",
+      "好问题！💡 14534-H 不能机洗。我们正在完善护理说明并会在发售前公布，不会擅自给出清洁建议。"
     ),
     products: HERO ? [HERO] : undefined,
   };
@@ -600,8 +600,8 @@ function sceneMaterial(lang: Lang): AgentReply {
   return {
     text: L(
       lang,
-      "Great question — totally fair to ask! Our boots use microfiber for the upper and lining — not genuine leather — with a rubber outsole. Care guidance is pending supplier confirmation. Here's our signature pair:",
-      "好问题，这个必须说清楚！咱们靴子的鞋面和内里都是 microfiber（超纤），不是真皮；大底是橡胶。具体护理方式待供应商确认。给你看主推款："
+      "Great question — totally fair to ask! Our boots use microfiber for the upper and lining — not genuine leather — with a rubber outsole. We're finalizing care guidance and will publish it before launch. Here's our signature pair:",
+      "好问题，这个必须说清楚！咱们靴子的鞋面和内里都是 microfiber（超纤），不是真皮；大底是橡胶。护理说明将在发售前公布。给你看主推款："
     ),
     products: hero ? [hero] : undefined,
   };
@@ -613,8 +613,8 @@ function sceneGift(lang: Lang): AgentReply {
   return {
     text: L(
       lang,
-      `Gift shopping for him? I got you 🎁 The 14534-H is our safest pick — a clean black ankle boot that works for commuting, business casual and weekends:\n${productList(picks, lang)}\n\n30-day try-on guarantee, so it's genuinely low risk.`,
-      `挑礼物对不对？🎁 14534-H 是最稳的选择——一双黑色极简短靴，通勤、商务休闲、周末都能穿：\n${productList(picks, lang)}\n\n30 天试穿可退，放心送～`
+      `Gift shopping for him? I got you 🎁 The 14534-H is our safest pick — a clean black ankle boot that works for commuting, business casual and weekends:\n${productList(picks, lang)}\n\n30-day guarantee, so it's genuinely low risk.`,
+      `挑礼物对不对？🎁 14534-H 是最稳的选择——一双黑色极简短靴，通勤、商务休闲、周末都能穿：\n${productList(picks, lang)}\n\n30 天质保，放心送～`
     ),
     products: picks,
   };

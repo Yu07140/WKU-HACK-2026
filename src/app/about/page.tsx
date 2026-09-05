@@ -1,36 +1,42 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, Package, Sparkles, Compass } from "lucide-react";
-import { BRAND } from "@/lib/data/brand";
 import { getProductById } from "@/lib/data/catalog";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
-
-export const metadata = {
-  title: `About — ${BRAND.name}`,
-  description:
-    "STRYDE — one real product, a faster way to market. The product stays real. The process gets smarter.",
-};
-
-const PILLARS = [
-  {
-    icon: Package,
-    title: "PRODUCT",
-    items: ["Real factory SKU", "Real material", "Real construction"],
-  },
-  {
-    icon: Sparkles,
-    title: "PROCESS",
-    items: ["AI-assisted creative", "Copy", "Product discovery", "Market testing"],
-  },
-  {
-    icon: Compass,
-    title: "PRINCIPLE",
-    items: ["Move faster.", "Stay honest."],
-  },
-];
+import { useLang } from "@/lib/store/lang";
 
 export default function AboutPage() {
+  const { t } = useLang();
   const featured = getProductById("boot-14534-h");
+
+  const PILLARS = [
+    {
+      icon: Package,
+      title: t("PRODUCT", "产品"),
+      items: [
+        t("Real factory SKU", "真实工厂 SKU"),
+        t("Real material", "真实材质"),
+        t("Real construction", "真实工艺"),
+      ],
+    },
+    {
+      icon: Sparkles,
+      title: t("PROCESS", "流程"),
+      items: [
+        t("AI-assisted creative", "AI 辅助创意"),
+        t("Copy", "文案"),
+        t("Product discovery", "产品发掘"),
+        t("Market testing", "市场测试"),
+      ],
+    },
+    {
+      icon: Compass,
+      title: t("PRINCIPLE", "原则"),
+      items: [t("Move faster.", "更快行动。"), t("Stay honest.", "保持坦诚。")],
+    },
+  ];
 
   return (
     <div>
@@ -45,28 +51,34 @@ export default function AboutPage() {
               <span className="text-ink/80">STAND OUT.</span>
             </h1>
             <div className="mt-5 text-lg font-semibold text-ink/60">
-              ONE REAL PRODUCT. A FASTER WAY TO MARKET.
+              {t("ONE REAL PRODUCT. A FASTER WAY TO MARKET.", "一款真实产品。一条更快的上市之路。")}
             </div>
             <p className="mt-7 max-w-lg text-lg leading-relaxed text-ink/65">
-              STRYDE began with a simple idea: a good product should not need months of
-              traditional brand-building before it can meet its customer.
+              {t(
+                "STRYDE began with a simple idea: a good product should not need months of traditional brand-building before it can meet its customer.",
+                "STRYDE 源于一个简单的想法：好产品不该先经历数月的传统品牌打造，才能见到它的顾客。"
+              )}
             </p>
             <p className="mt-4 max-w-lg text-lg leading-relaxed text-ink/65">
-              We start with a real footwear product and use an AI-assisted creative and
-              commerce workflow to move faster — from positioning and campaign concepts to
-              product discovery and checkout.
+              {t(
+                "We start with a real footwear product and use an AI-assisted creative and commerce workflow to move faster — from positioning and campaign concepts to product discovery and checkout.",
+                "我们从一个真实的鞋履产品出发，借助 AI 辅助的创意与电商流程加速前行——从定位与广告创意，到产品发掘与结算。"
+              )}
             </p>
             <p className="mt-4 max-w-lg text-lg font-medium leading-relaxed text-ink/80">
-              The product stays real. The process gets smarter.
+              {t("The product stays real. The process gets smarter.", "产品保持真实。流程更加聪明。")}
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link href="/products/mono-boot">
                 <Button size="lg">
-                  Shop the boot <ArrowRight size={18} />
+                  {t("Shop the boot", "选购这双靴子")} <ArrowRight size={18} />
                 </Button>
               </Link>
-              <Link href="/proof" className="text-sm font-bold text-ink/70 underline underline-offset-4 decoration-ink/30">
-                See the evidence
+              <Link
+                href="/proof"
+                className="text-sm font-bold text-ink/70 underline underline-offset-4 decoration-ink/30"
+              >
+                {t("See the evidence", "查看实证")}
               </Link>
             </div>
           </div>
@@ -74,7 +86,7 @@ export default function AboutPage() {
             <ProductImage
               src={featured.heroImage ?? featured.image}
               prompt={featured.imagePrompt}
-              alt={`STRYDE 14534-H — black minimalist ankle boot`}
+              alt={t("STRYDE 14534-H — black minimalist ankle boot", "STRYDE 14534-H——黑色极简短靴")}
               size="landscape_4_3"
               className="aspect-[4/3] rounded-3xl shadow-2xl"
             />
@@ -109,15 +121,18 @@ export default function AboutPage() {
       {/* ---------- CTA ---------- */}
       <section className="mx-auto max-w-3xl px-6 py-24 text-center">
         <h2 className="text-4xl font-black leading-tight md:text-5xl">
-          The boot built for the way your day moves.
+          {t("The boot built for the way your day moves.", "为你的日常步伐而生的靴子。")}
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-ink/55">
-          14534-H — microfiber upper, rear zipper, rubber outsole. Sizes EU 38–46.
+          {t(
+            "14534-H — microfiber upper, rear zipper, rubber outsole. Sizes EU 38–46.",
+            "14534-H——超纤革鞋面、后跟拉链、橡胶外底。尺码 EU 38–46。"
+          )}
         </p>
         <div className="mt-8">
           <Link href="/products/mono-boot">
             <Button size="lg">
-              SHOP THE BOOT <ArrowRight size={18} />
+              {t("SHOP THE BOOT", "选购这双靴子")} <ArrowRight size={18} />
             </Button>
           </Link>
         </div>

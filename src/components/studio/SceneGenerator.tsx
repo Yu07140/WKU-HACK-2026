@@ -10,12 +10,13 @@ import { Label, Select, Textarea } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { downloadImage, useCreativeHistory } from "@/lib/store/creativeHistory";
 import { cn } from "@/lib/utils";
+import { useLang } from "@/lib/store/lang";
 
-const SIZES: { id: ImageSize; label: string; aspect: string }[] = [
-  { id: "square", label: "1:1 Social", aspect: "1:1" },
-  { id: "portrait_4_3", label: "3:4 Feed", aspect: "3:4" },
-  { id: "portrait_16_9", label: "9:16 Vertical / TikTok", aspect: "9:16" },
-  { id: "landscape_16_9", label: "16:9 Banner", aspect: "16:9" },
+const SIZES: { id: ImageSize; label: string; labelCn: string; aspect: string }[] = [
+  { id: "square", label: "1:1 Social", labelCn: "1:1 社媒", aspect: "1:1" },
+  { id: "portrait_4_3", label: "3:4 Feed", labelCn: "3:4 信息流", aspect: "3:4" },
+  { id: "portrait_16_9", label: "9:16 Vertical / TikTok", labelCn: "9:16 竖版 / TikTok", aspect: "9:16" },
+  { id: "landscape_16_9", label: "16:9 Banner", labelCn: "16:9 横幅", aspect: "16:9" },
 ];
 
 export function SceneGenerator({
@@ -25,6 +26,7 @@ export function SceneGenerator({
   draftPrompt?: string;
   onDraftConsumed?: () => void;
 }) {
+  const { t } = useLang();
   const searchParams = useSearchParams();
   const [productId, setProductId] = useState(() => {
     // 支持从 AI 导购 /studio?productId=xxx 深链自动选中对应商品
@@ -96,7 +98,7 @@ export function SceneGenerator({
     <div className="grid gap-6 lg:grid-cols-[380px_1fr]">
       <Card className="space-y-4 p-5">
         <div>
-          <Label>Select Product / SKU</Label>
+          <Label>{t("Select Product / SKU", "选择商品 / SKU")}</Label>
           <Select value={productId} onChange={(e) => setProductId(e.target.value)}>
             {PRODUCTS.map((p) => (
               <option key={p.id} value={p.id}>
@@ -107,7 +109,7 @@ export function SceneGenerator({
           </Select>
         </div>
         <div>
-          <Label>Style</Label>
+          <Label>{t("Style", "风格")}</Label>
           <div className="grid grid-cols-2 gap-2">
             {IMAGE_STYLES.map((s) => (
               <button
@@ -126,30 +128,35 @@ export function SceneGenerator({
               </button>
             ))}
           </div>
-          <p className="mt-1.5 text-[11px] text-ink/40">★ = product-tuned prompt preset</p>
+          <p className="mt-1.5 text-[11px] text-ink/40">
+            {t("★ = product-tuned prompt preset", "★ = 针对该商品调优过的提示词预设")}
+          </p>
         </div>
         <div>
-          <Label>Aspect Ratio</Label>
+          <Label>{t("Aspect Ratio", "画面比例")}</Label>
           <Select value={size} onChange={(e) => setSize(e.target.value as ImageSize)}>
             {SIZES.map((s) => (
               <option key={s.id} value={s.id}>
-                {s.label}
+                {t(s.label, s.labelCn)}
               </option>
             ))}
           </Select>
         </div>
         <div>
-          <Label>Extra Description (optional)</Label>
+          <Label>{t("Extra Description (optional)", "补充描述（可选）")}</Label>
           <Textarea
             value={extra}
             onChange={(e) => setExtra(e.target.value)}
-            placeholder="e.g. wearing beige cargo pants, rainy Tokyo street at night"
+            placeholder={t(
+              "e.g. wearing beige cargo pants, rainy Tokyo street at night",
+              "例如：身穿卡其色工装裤，雨夜的东京街头"
+            )}
             className="min-h-20"
           />
         </div>
         <Button className="w-full" onClick={generate} disabled={loading}>
           {loading ? <Loader2 size={17} className="animate-spin" /> : <Wand2 size={17} />}
-          {loading ? "Generating..." : "Generate Creative"}
+          {loading ? t("Generating...", "出图中…") : t("Generate Creative", "生成创意")}
         </Button>
       </Card>
 
@@ -158,27 +165,36 @@ export function SceneGenerator({
         <Card className="flex flex-col p-5">
           <div className="mb-3 flex items-center justify-between">
             <span className="rounded-full bg-cream px-3 py-1 text-xs font-bold text-ink/70">
-              Factory Reference Image
+              {t("Factory Reference Image", "工厂实拍参考图")}
             </span>
-            <span className="text-[11px] text-ink/45">Real supplier photo · not AI</span>
+            <span className="text-[11px] text-ink/45">
+              {t("Real supplier photo · not AI", "真实供应商实拍 · 非 AI")}
+            </span>
           </div>
           <div className="relative flex-1 overflow-hidden rounded-xl bg-cream">
             {refImage ? (
               /* eslint-disable-next-line @next/next/no-img-element */
               <img
                 src={refImage}
-                alt={`${product.name} real reference`}
+                alt={`${product.name} ${t("real reference", "实拍参考")}`}
                 className="h-full w-full object-contain"
               />
             ) : (
               <div className="flex h-full min-h-56 items-center justify-center px-6 text-center text-xs text-ink/40">
-                No real photography for this SKU — it uses the demo catalog (AIGC visuals).
+                {t(
+                  "No real photography for this SKU — it uses the demo catalog (AIGC visuals).",
+                  "该 SKU 暂无实拍图 — 使用演示货盘（AIGC 视觉图）。"
+                )}
               </div>
             )}
           </div>
           <div className="mt-3 text-xs text-ink/55">
             <div className="font-bold text-ink/75">{product.name}</div>
-            {product.sku && <div>Supplier SKU: {product.sku}</div>}
+            {product.sku && (
+              <div>
+                {t("Supplier SKU", "供应商货号")}: {product.sku}
+              </div>
+            )}
           </div>
         </Card>
 
@@ -186,21 +202,28 @@ export function SceneGenerator({
         <Card className="flex flex-col p-5">
           <div className="mb-3 flex items-center justify-between">
             <span className="rounded-full bg-accent px-3 py-1 text-xs font-bold text-white">
-              AI-Generated Creative / Concept Visual
+              {t("AI-Generated Creative / Concept Visual", "AI 生成创意 / 概念图")}
             </span>
-            <span className="text-[11px] text-ink/45">Not a real product photo</span>
+            <span className="text-[11px] text-ink/45">
+              {t("Not a real product photo", "非真实商品照片")}
+            </span>
           </div>
           <div className="relative flex-1 overflow-hidden rounded-xl bg-cream">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={url} alt="AI generated creative" className="h-full w-full object-contain" />
+            <img
+              src={url}
+              alt={t("AI generated creative", "AI 生成创意")}
+              className="h-full w-full object-contain"
+            />
             {loading && (
               <div className="absolute inset-0 flex items-center justify-center bg-cream/70 text-sm font-semibold text-ink/60">
-                <Loader2 size={18} className="mr-2 animate-spin" /> Rendering (~10s)...
+                <Loader2 size={18} className="mr-2 animate-spin" />{" "}
+                {t("Rendering (~10s)...", "出图中（约 10 秒）…")}
               </div>
             )}
           </div>
           <div className="mt-3 rounded-xl bg-cream p-3">
-            <div className="mb-1 text-xs font-bold text-ink/50">PROMPT</div>
+            <div className="mb-1 text-xs font-bold text-ink/50">{t("PROMPT", "提示词")}</div>
             <p className="line-clamp-3 text-xs leading-relaxed text-ink/70">{prompt}</p>
             <div className="mt-2 flex flex-wrap items-center gap-3">
               <button
@@ -212,14 +235,14 @@ export function SceneGenerator({
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-accent-dark"
               >
                 {copied ? <Check size={13} /> : <Copy size={13} />}
-                {copied ? "URL copied" : "Copy Image URL"}
+                {copied ? t("URL copied", "链接已复制") : t("Copy Image URL", "复制图片链接")}
               </button>
               <button
                 onClick={handleDownload}
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-accent-dark"
               >
                 <Download size={13} />
-                {downloaded === "ok" ? "Saved" : "Download Image"}
+                {downloaded === "ok" ? t("Saved", "已保存") : t("Download Image", "下载图片")}
               </button>
               {downloaded === "fail" && (
                 <a
@@ -228,7 +251,7 @@ export function SceneGenerator({
                   rel="noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs font-bold text-ink/55"
                 >
-                  <ExternalLink size={13} /> Open Image
+                  <ExternalLink size={13} /> {t("Open Image", "打开图片")}
                 </a>
               )}
               <button
@@ -239,12 +262,15 @@ export function SceneGenerator({
                   loading && "opacity-50"
                 )}
               >
-                <RotateCcw size={13} /> Regenerate
+                <RotateCcw size={13} /> {t("Regenerate", "重新生成")}
               </button>
             </div>
             {downloaded === "fail" && (
               <p className="mt-1.5 text-[11px] text-ink/40">
-                Direct download blocked by image host CORS — use Open Image instead.
+                {t(
+                  "Direct download blocked by image host CORS — use Open Image instead.",
+                  "图片服务商 CORS 限制，无法直接下载 — 请改用「打开图片」。"
+                )}
               </p>
             )}
           </div>
