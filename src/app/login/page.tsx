@@ -21,7 +21,7 @@ function LoginForm() {
     setLoading(true);
 
     if (password === ADMIN_PASSWORD) {
-      document.cookie = `stryde-admin-token=${ADMIN_PASSWORD}; path=/; max-age=86400; samesite=lax`;
+      document.cookie = `stryde-admin-token=${ADMIN_PASSWORD}; path=/; samesite=lax`;
       const redirect = params.get("redirect") || "/admin";
       router.push(redirect);
     } else {
