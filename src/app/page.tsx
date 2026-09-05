@@ -152,7 +152,7 @@ export default function HomePage() {
             </p>
             <div className="mt-8">
               <Link href="/duo">
-                <Button size="lg" className="bg-paper text-ink hover:bg-paper/90">
+                <Button size="lg" className="bg-paper! text-ink! hover:bg-paper/90!">
                   {t("BUILD YOUR DUO", "组合你的 DUO")} <ArrowRight size={18} />
                 </Button>
               </Link>
