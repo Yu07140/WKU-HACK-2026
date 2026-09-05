@@ -78,10 +78,6 @@ function LoginForm() {
             "进入后台"
           )}
         </Button>
-
-        <p className="text-center text-xs text-slate-600">
-          Hackathon demo · password: stryde2026
-        </p>
       </form>
 
       <button
