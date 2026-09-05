@@ -44,25 +44,18 @@ export default async function ProductPage({
   const product = getProduct(slug);
   if (!product) notFound();
 
-<<<<<<< Updated upstream
-  const name = displayName(product);
-=======
   // 支持 ?color=ColorName 预选配色（来自 Style Quiz 等入口）
   const { color } = await searchParams;
   const initialColorIdx = color
     ? Math.max(0, product.colors.findIndex((c) => c.name.toLowerCase() === color.toLowerCase()))
     : 0;
 
->>>>>>> Stashed changes
   const related = PRODUCTS.filter(
     (p) => p.category === product.category && p.id !== product.id
   ).slice(0, 4);
 
-<<<<<<< Updated upstream
-=======
   const name = displayName(product);
 
->>>>>>> Stashed changes
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
       <nav className="mb-8 flex items-center gap-2 text-sm text-ink/50">
@@ -75,11 +68,8 @@ export default async function ProductPage({
 
       <PDPView product={product} initialColorIdx={initialColorIdx} />
 
-<<<<<<< Updated upstream
-=======
       <ReviewsSection product={product} />
 
->>>>>>> Stashed changes
       {/* COMPLETE THE LOOK — styling inspiration using 14534-H only (14534-H PDP only) */}
       {product.sku === "14534-H" && (
         <section className="mt-20">

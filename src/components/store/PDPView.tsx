@@ -242,119 +242,16 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
         <h1 className="mt-3 text-4xl font-black">{ph(name)}</h1>
         <p className="mt-1 text-lg text-ink/55">{tagline}</p>
 
-<<<<<<< Updated upstream
         {isHero && (
           <div className="mt-4 flex items-baseline gap-3">
             <span className="text-3xl font-black">{formatPrice(product.price)}</span>
             {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
               <span className="text-lg text-ink/40 line-through">{formatPrice(product.compareAt)}</span>
-=======
-        <div className="mt-4 flex items-baseline gap-3">
-          <span className="text-3xl font-black">{formatPrice(product.price)}</span>
-          {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
-            <span className="text-lg text-ink/40 line-through">{formatPrice(product.compareAt)}</span>
-          )}
-          {!product.demoPricing && (
-            <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-bold text-accent-dark">
-              Factory Direct · Save {formatPrice(product.compareAt ? product.compareAt - product.price : Math.round(product.price * 0.5))}
-            </span>
-          )}
-        </div>
-
-        {/* 配色 */}
-        <div className="mt-7">
-          <div className="mb-2 text-sm font-bold">
-            Color: <span className="font-normal text-ink/60">{color.name}</span>
-          </div>
-          <div className="flex gap-2.5">
-            {product.colors.map((c, i) => (
-              <button
-                key={c.name}
-                onClick={() => setColorIdx(i)}
-                className={cn(
-                  "h-9 w-9 rounded-full border-2 transition",
-                  i === colorIdx ? "border-ink scale-110" : "border-ink/15"
-                )}
-                style={{ background: c.hex }}
-                title={c.name}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* 尺码 */}
-        <div className="mt-6">
-          <div className="mb-2 flex justify-between text-sm font-bold">
-            <span>
-              Size: {sizeLabel} {size ?? "—"}
-            </span>
-            <Link
-              href="/size-guide"
-              className="font-normal text-ink/50 hover:text-accent hover:underline"
-            >
-              Not sure? See size guide →
-            </Link>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {product.sizes.map((s) => {
-              const stk = getSizeStock(product, color.name, s);
-              const soldOut = stk !== null && stk === 0;
-              return (
-                <button
-                  key={s}
-                  onClick={() => !soldOut && setSize(s)}
-                  disabled={soldOut}
-                  className={cn(
-                    "relative flex h-11 w-14 flex-col items-center justify-center rounded-xl border text-sm font-bold transition",
-                    soldOut
-                      ? "cursor-not-allowed border-ink/10 bg-ink/5 text-ink/30"
-                      : size === s
-                        ? "border-ink bg-ink text-paper"
-                        : "border-ink/20 bg-white hover:border-ink/60"
-                  )}
-                >
-                  <span>{s}</span>
-                  {stk !== null && !soldOut && (
-                    <span className="text-[9px] font-normal opacity-60">
-                      {stk}
-                    </span>
-                  )}
-                  {soldOut && (
-                    <span className="text-[9px] font-normal">SOLD</span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* 数量 + 加购 */}
-        <div className="mt-8 flex gap-3">
-          <div className="flex h-[52px] items-center rounded-full border border-ink/20 bg-white">
-            <button
-              className="h-full w-11 text-xl font-bold"
-              onClick={() => setQty((q) => Math.max(1, q - 1))}
-            >
-              −
-            </button>
-            <span className="w-8 text-center font-bold">{qty}</span>
-            <button
-              className="h-full w-11 text-xl font-bold"
-              onClick={() => setQty((q) => q + 1)}
-            >
-              +
-            </button>
-          </div>
-          <Button size="lg" className="flex-1" onClick={handleAdd} disabled={!size}>
-            {added ? (
-              <>
-                <Check size={18} /> Added to bag
-              </>
-            ) : (
-              <>
-                <ShoppingBag size={18} /> {size ? "Add to bag" : "Select a size"}
-              </>
->>>>>>> Stashed changes
+            )}
+            {!product.demoPricing && (
+              <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-bold text-accent-dark">
+                Factory Direct · Save {formatPrice(product.compareAt ? product.compareAt - product.price : Math.round(product.price * 0.5))}
+              </span>
             )}
             {product.demoPricing && (
               <span className="rounded-full bg-ink/10 px-2.5 py-0.5 text-xs font-bold text-ink/55">
@@ -401,20 +298,35 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
                 </Link>
               </div>
               <div className="flex flex-wrap gap-2">
-                {product.sizes.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => setSize(s)}
-                    className={cn(
-                      "h-11 w-14 rounded-xl border text-sm font-bold transition",
-                      size === s
-                        ? "border-ink bg-ink text-paper"
-                        : "border-ink/20 bg-white hover:border-ink/60"
-                    )}
-                  >
-                    {s}
-                  </button>
-                ))}
+                {product.sizes.map((s) => {
+                  const stk = getSizeStock(product, color.name, s);
+                  const soldOut = stk !== null && stk === 0;
+                  return (
+                    <button
+                      key={s}
+                      onClick={() => !soldOut && setSize(s)}
+                      disabled={soldOut}
+                      className={cn(
+                        "relative flex h-11 w-14 flex-col items-center justify-center rounded-xl border text-sm font-bold transition",
+                        soldOut
+                          ? "cursor-not-allowed border-ink/10 bg-ink/5 text-ink/30"
+                          : size === s
+                            ? "border-ink bg-ink text-paper"
+                            : "border-ink/20 bg-white hover:border-ink/60"
+                      )}
+                    >
+                      <span>{s}</span>
+                      {stk !== null && !soldOut && (
+                        <span className="text-[9px] font-normal opacity-60">
+                          {stk}
+                        </span>
+                      )}
+                      {soldOut && (
+                        <span className="text-[9px] font-normal">SOLD</span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -548,8 +460,6 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
             {product.sku && <Spec label="Product code" value={product.sku} />}
           </dl>
         </div>
-<<<<<<< Updated upstream
-=======
 
         {/* 服务承诺 — 4 项：免运费 + 30 天退货 + 真实交期 + 关税 */}
         <div className="mt-8 grid grid-cols-2 gap-3 rounded-2xl border border-ink/10 bg-white p-4 text-center text-xs font-semibold text-ink/70 sm:grid-cols-4">
@@ -569,7 +479,6 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
             <ShoppingBag size={18} className="text-accent" /> DDU — duties may apply
           </div>
         </div>
->>>>>>> Stashed changes
       </div>
     </div>
   );
