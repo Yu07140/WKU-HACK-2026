@@ -11,17 +11,7 @@ import { CLIP_COLLECTIONS, ECOSYSTEM, STATUS } from "@/lib/data/brand";
 
 export default function HomePage() {
   const { t } = useLang();
-<<<<<<< HEAD
-  const hero = getProductById("boot-14534-h") ?? PRODUCTS[0];
-
-  const PLANS = [
-    { no: "01", title: t("WORKDAY", "工作日"), desc: t("A clean black silhouette that fits easily into a sharper everyday wardrobe.", "利落的黑色轮廓，轻松融入日常穿搭。") },
-    { no: "02", title: t("AFTER HOURS", "下班后"), desc: t("Simple enough for dinner, dates and city nights without changing the whole look.", "足够简约，晚餐、约会、城市夜景无需换装。") },
-    { no: "03", title: t("WEEKEND", "周末"), desc: t("Easy styling for short trips, walks and casual plans.", "短途出行、散步和休闲计划的百搭之选。") },
-  ];
-=======
   const hero = getProductById("boot-14534-h");
->>>>>>> 716aed4607811b264e2cb7e7d756f8e88eca8012
 
   const ROUTINES = [
     { no: "01", title: t("COMMUTE", "通勤"), img: "/products/14534-h/hero.jpg" },
@@ -135,10 +125,6 @@ export default function HomePage() {
         </div>
       </section>
 
-<<<<<<< HEAD
-      {/* ---------- STRYDE CLIPS — brand personalization concept around 14534-H ---------- */}
-      <StrydeClips />
-=======
       {/* ---------- MAKE IT YOURS. — STRYDE CLIPS ---------- */}
       <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
         <div className="mb-12 grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
@@ -181,7 +167,6 @@ export default function HomePage() {
             </div>
           ))}
         </div>
->>>>>>> 716aed4607811b264e2cb7e7d756f8e88eca8012
 
         <div className="mt-8">
           <Link href="/clips">
