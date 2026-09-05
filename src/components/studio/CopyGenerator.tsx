@@ -14,11 +14,31 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label, Select } from "@/components/ui/input";
+import { useLang } from "@/lib/store/lang";
 
 const PLATFORMS: Platform[] = ["TikTok", "Instagram", "Meta", "Google"];
 const ANGLES: Angle[] = ["style", "versatility", "value", "detail"];
 
+/** 平台/角度枚举值保持原文（存入记录 / 拼接文案），展示用本地翻译映射 */
+const PLATFORM_DISPLAY: Record<Platform, [string, string]> = {
+  Meta: ["Meta Ads", "Meta 广告"],
+  TikTok: ["TikTok", "TikTok"],
+  Instagram: ["Instagram", "Instagram"],
+  Google: ["Google Ads", "Google 广告"],
+};
+
+const ANGLE_DISPLAY: Record<Angle, [string, string]> = {
+  comfort: ["Comfort", "舒适脚感"],
+  value: ["Value", "性价比 / 工厂直供"],
+  trend: ["Trend", "潮流社交货币"],
+  performance: ["Performance", "性能硬核"],
+  style: ["Style", "风格穿搭"],
+  versatility: ["Versatility", "一鞋多穿"],
+  detail: ["Detail", "产品细节"],
+};
+
 export function CopyGenerator() {
+  const { t } = useLang();
   const searchParams = useSearchParams();
   const [productId, setProductId] = useState(() => {
     // 支持从 AI 导购 /studio?productId=xxx 深链自动选中对应商品
@@ -49,7 +69,7 @@ export function CopyGenerator() {
     <div className="grid gap-6 lg:grid-cols-[380px_1fr]">
       <Card className="space-y-4 p-5">
         <div>
-          <Label>Product / SKU</Label>
+          <Label>{t("Product / SKU", "商品 / SKU")}</Label>
           <Select value={productId} onChange={(e) => setProductId(e.target.value)}>
             {PRODUCTS.map((p) => (
               <option key={p.id} value={p.id}>
@@ -60,7 +80,7 @@ export function CopyGenerator() {
           </Select>
         </div>
         <div>
-          <Label>Platform</Label>
+          <Label>{t("Platform", "投放平台")}</Label>
           <div className="grid grid-cols-2 gap-2">
             {PLATFORMS.map((p) => (
               <button
@@ -72,13 +92,13 @@ export function CopyGenerator() {
                     : "border-ink/15 bg-white hover:border-ink/40"
                 }`}
               >
-                {PLATFORM_LABELS[p]}
+                {t(PLATFORM_DISPLAY[p][0], PLATFORM_DISPLAY[p][1])}
               </button>
             ))}
           </div>
         </div>
         <div>
-          <Label>Marketing Angle</Label>
+          <Label>{t("Marketing Angle", "营销角度")}</Label>
           <div className="grid grid-cols-2 gap-2">
             {ANGLES.map((a) => (
               <button
@@ -90,14 +110,14 @@ export function CopyGenerator() {
                     : "border-ink/15 bg-white hover:border-ink/40"
                 }`}
               >
-                {ANGLE_LABELS[a]}
+                {t(ANGLE_DISPLAY[a][0], ANGLE_DISPLAY[a][1])}
               </button>
             ))}
           </div>
         </div>
         <Button className="w-full" onClick={generate} disabled={loading}>
           {loading ? <Loader2 size={17} className="animate-spin" /> : <Wand2 size={17} />}
-          {loading ? "Writing..." : "Generate Ad Copy"}
+          {loading ? t("Writing...", "生成中…") : t("Generate Ad Copy", "生成广告文案")}
         </Button>
       </Card>
 
@@ -107,29 +127,31 @@ export function CopyGenerator() {
             <div>
               <Wand2 size={36} className="mx-auto mb-3 opacity-40" />
               <p className="text-sm">
-                Pick a SKU, platform and angle — get Hook / Primary Copy / Headline / CTA +
-                hashtags in one shot.
+                {t(
+                  "Pick a SKU, platform and angle — get Hook / Primary Copy / Headline / CTA + hashtags in one shot.",
+                  "选好 SKU、平台和营销角度 — 一次生成钩子 / 正文 / 标题 / CTA + 话题标签。"
+                )}
               </p>
             </div>
           </div>
         )}
         {loading && (
           <div className="flex h-full min-h-64 items-center justify-center text-sm font-semibold text-ink/50">
-            <Loader2 size={18} className="mr-2 animate-spin" /> Generating copy...
+            <Loader2 size={18} className="mr-2 animate-spin" /> {t("Generating copy...", "正在生成文案…")}
           </div>
         )}
         {result && product && (
           <div className="animate-fade-up space-y-5">
             {result.hook && (
-              <CopyBlock label="Hook" text={result.hook} big accent />
+              <CopyBlock label={t("Hook", "开场钩子")} text={result.hook} big accent />
             )}
             {result.primaryCopy && (
-              <CopyBlock label="Primary Copy" text={result.primaryCopy} />
+              <CopyBlock label={t("Primary Copy", "正文文案")} text={result.primaryCopy} />
             )}
-            <CopyBlock label="Headline" text={result.headline} />
+            <CopyBlock label={t("Headline", "标题")} text={result.headline} />
             <div className="rounded-xl border border-ink/10 p-4">
               <div className="mb-2 text-xs font-bold uppercase tracking-wider text-ink/50">
-                CTA + variants
+                {t("CTA + variants", "CTA 及变体")}
               </div>
               <span className="rounded-full bg-accent px-4 py-1.5 text-sm font-bold text-white">
                 {result.cta}
@@ -157,7 +179,7 @@ export function CopyGenerator() {
             </div>
             <CopyAllBlock
               text={copyToText(product.name, platform, angle, result)}
-              label="Copy all copy"
+              label={t("Copy all copy", "复制全部文案")}
             />
           </div>
         )}
@@ -224,6 +246,7 @@ function CopyBlock({
 }
 
 function CopyAllBlock({ text, label }: { text: string; label: string }) {
+  const { t } = useLang();
   const [copied, setCopied] = useState(false);
   return (
     <button
@@ -235,7 +258,7 @@ function CopyAllBlock({ text, label }: { text: string; label: string }) {
       className="flex w-full items-center justify-center gap-2 rounded-full bg-ink py-2.5 text-xs font-bold text-paper transition hover:bg-black"
     >
       {copied ? <Check size={14} /> : <Copy size={14} />}
-      {copied ? "Copied!" : label}
+      {copied ? t("Copied!", "已复制！") : label}
     </button>
   );
 }

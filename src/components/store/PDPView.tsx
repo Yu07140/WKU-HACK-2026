@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/store/cart";
 import { cn, ph, PLACEHOLDER_MODE, parseMaterial } from "@/lib/utils";
 import { useCurrency } from "@/lib/store/currency";
+import { useLang } from "@/lib/store/lang";
 import {
   displayName,
   displayTagline,
@@ -76,6 +77,7 @@ function getSizeStock(
 export function PDPView({ product, initialColorIdx = 0 }: { product: Product; initialColorIdx?: number }) {
   const { add } = useCart();
   const { formatPrice } = useCurrency();
+  const { t } = useLang();
   const [colorIdx, setColorIdx] = useState(initialColorIdx);
   const [media, setMedia] = useState<"image" | "video">("image");
   const [size, setSize] = useState<number | null>(null);
@@ -224,18 +226,18 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
             <TrendBadge trend={product.trend} />
           ) : (
             <span className="rounded-full bg-ink/70 px-2.5 py-1 text-xs font-bold text-white">
-              CREATIVE LAB · NOT FOR ORDER
+              {t("CREATIVE LAB · NOT FOR ORDER", "概念研究 · 不可下单")}
             </span>
           )}
           {isHero && product.reviews > 0 && (
             <span className="flex items-center gap-1 text-sm text-ink/60">
               <Star size={14} className="text-amber-500" fill="currentColor" />
-              {product.rating} · {product.reviews} reviews
+              {product.rating} · {product.reviews} {t("reviews", "条评价")}
             </span>
           )}
           {product.stock === 0 && (
             <span className="rounded-full bg-accent/15 px-2.5 py-0.5 text-xs font-black uppercase tracking-wider text-accent-dark">
-              Sold Out
+              {t("Sold Out", "已售罄")}
             </span>
           )}
         </div>
@@ -251,7 +253,7 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
             )}
             {product.demoPricing && (
               <span className="rounded-full bg-ink/10 px-2.5 py-0.5 text-xs font-bold text-ink/55">
-                Demo pricing
+                {t("Demo pricing", "演示价格")}
               </span>
             )}
           </div>
@@ -262,7 +264,7 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
             {/* 配色 */}
             <div className="mt-7">
               <div className="mb-2 text-sm font-bold">
-                Color: <span className="font-normal text-ink/60">{color.name}</span>
+                {t("Color", "颜色")}: <span className="font-normal text-ink/60">{color.name}</span>
               </div>
               <div className="flex gap-2.5">
                 {product.colors.map((c, i) => (
@@ -284,13 +286,13 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
             <div className="mt-6">
               <div className="mb-2 flex justify-between text-sm font-bold">
                 <span>
-                  Size: {sizeLabel} {size ?? "—"}
+                  {t("Size", "尺码")}: {sizeLabel} {size ?? "—"}
                 </span>
                 <Link
                   href="/size-guide"
                   className="font-normal text-ink/50 hover:text-accent hover:underline"
                 >
-                  Not sure? See size guide →
+                  {t("Not sure? See size guide →", "不确定？查看尺码指南 →")}
                 </Link>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -353,11 +355,11 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
               <Button size="lg" className="flex-1" onClick={handleAdd} disabled={!size}>
                 {added ? (
                   <>
-                    <Check size={18} /> Added to cart
+                    <Check size={18} /> {t("Added to cart", "已加入购物袋")}
                   </>
                 ) : (
                   <>
-                    <ShoppingBag size={18} /> {size ? "Add to cart" : "Select a size"}
+                    <ShoppingBag size={18} /> {size ? t("Add to cart", "加入购物袋") : t("Select a size", "请选择尺码")}
                   </>
                 )}
               </Button>
@@ -367,7 +369,7 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
                 href="/cart"
                 className="mt-3 inline-block text-sm font-bold text-ink underline underline-offset-2"
               >
-                View bag &amp; checkout →
+                {t("View bag & checkout →", "查看购物袋并结账 →")}
               </Link>
             )}
           </>
@@ -375,17 +377,19 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
           /* 赛题口径：非主推款仅为 Creative Lab 概念展示，不可下单，不形成第二转化路径 */
           <div className="mt-8 rounded-2xl border border-ink/15 bg-cream p-6">
             <div className="text-xs font-bold tracking-[0.25em] text-ink/50">
-              CREATIVE LAB · EXPLORATION
+              {t("CREATIVE LAB · EXPLORATION", "创意实验室 · 概念研究")}
             </div>
             <p className="mt-3 text-sm leading-relaxed text-ink/70">
-              This style is a creative concept explored during the sprint. It is not part of the
-              official 14534-H supply chain and is not available for order in this market test.
+              {t(
+                "This style is a creative concept explored during the sprint. It is not part of the official 14534-H supply chain and is not available for order in this market test.",
+                "该款式为冲刺期间探索的创意概念，不属于 14534-H 正式供应链，在本次市场测试中不可下单。"
+              )}
             </p>
             <Link
               href="/products/mono-boot"
               className="mt-4 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-bold text-paper transition hover:bg-ink/85"
             >
-              <ShoppingBag size={16} /> SHOP THE 14534-H
+              <ShoppingBag size={16} /> {t("SHOP THE 14534-H", "选购 14534-H")}
             </Link>
           </div>
         )}
@@ -394,36 +398,36 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
           <>
             {/* 服务：SIZE GUIDE / SHIPPING & DUTIES / RETURNS / CARE */}
             <div className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-ink/10 bg-ink/10 sm:grid-cols-4">
-              <ServiceLink href="/size-guide" icon={Ruler} label="Size Guide" />
-              <ServiceLink href="/shipping" icon={Truck} label="Shipping &amp; Duties" />
-              <ServiceLink href="/returns" icon={RotateCcw} label="Returns" />
-              <ServiceLink href="/faq" icon={Shield} label="Care" />
+              <ServiceLink href="/size-guide" icon={Ruler} label={t("Size Guide", "尺码指南")} />
+              <ServiceLink href="/shipping" icon={Truck} label={t("Shipping & Duties", "配送与关税")} />
+              <ServiceLink href="/returns" icon={RotateCcw} label={t("Returns", "退换货")} />
+              <ServiceLink href="/faq" icon={Shield} label={t("Care", "护理")} />
             </div>
 
             {/* 赛题第 8 节要求：详情页必须出现 交期拆分 / 尺码测量 / 试穿退货 / 关税口径 */}
             <div className="mt-4 rounded-2xl border border-ink/10 bg-white p-5 text-sm">
               <div className="mb-3 text-xs font-bold tracking-[0.2em] text-ink/40">
-                SHIPPING &amp; RETURNS
+                {t("SHIPPING & RETURNS", "配送与退货")}
               </div>
               <dl className="space-y-2 text-ink/70">
                 <div className="flex gap-2">
-                  <dt className="w-36 shrink-0 text-ink/50">Lead time</dt>
-                  <dd>Production 3–5 business days + international transit 8–15 days (estimate, pending supplier confirmation)</dd>
+                  <dt className="w-36 shrink-0 text-ink/50">{t("Lead time", "生产周期")}</dt>
+                  <dd>{t("Production 3–5 business days + international transit 8–15 days (estimate, pending supplier confirmation)", "生产 3–5 个工作日 + 国际运输 8–15 天（预估，以供应商确认为准）")}</dd>
                 </div>
                 <div className="flex gap-2">
-                  <dt className="w-36 shrink-0 text-ink/50">Duties</dt>
-                  <dd>DDU — import duties / taxes not included, paid by customer on delivery</dd>
+                  <dt className="w-36 shrink-0 text-ink/50">{t("Duties", "关税")}</dt>
+                  <dd>{t("DDU — import duties / taxes not included, paid by customer on delivery", "DDU——进口关税/税费不含在售价内，由客户签收时支付")}</dd>
                 </div>
                 <div className="flex gap-2">
-                  <dt className="w-36 shrink-0 text-ink/50">Returns</dt>
-                  <dd>30-day try-on guarantee — indoor try-on accepted, outdoor-worn not returnable</dd>
+                  <dt className="w-36 shrink-0 text-ink/50">{t("Returns", "退货")}</dt>
+                  <dd>{t("30-day try-on guarantee — indoor try-on accepted, outdoor-worn not returnable", "30 天试穿保障——室内试穿可退，户外穿着后不可退")}</dd>
                 </div>
                 <div className="flex gap-2">
-                  <dt className="w-36 shrink-0 text-ink/50">Sizing</dt>
+                  <dt className="w-36 shrink-0 text-ink/50">{t("Sizing", "尺码")}</dt>
                   <dd>
-                    EU {product.sizes[0]}–{product.sizes[product.sizes.length - 1]}. Measure your foot before ordering —{" "}
+                    EU {product.sizes[0]}–{product.sizes[product.sizes.length - 1]}. {t("Measure your foot before ordering —", "下单前请先测量脚长——")}{" "}
                     <Link href="/size-guide" className="font-bold text-accent-dark underline underline-offset-2">
-                      size guide &amp; measuring method
+                      {t("size guide & measuring method", "尺码指南与测量方法")}
                     </Link>
                   </dd>
                 </div>
@@ -446,21 +450,21 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
         {/* 产品规格 —— 供应链已验证信息：成本 / 交期 / 尺码 / 材质 / 产能 */}
         <div className="mt-8 border-t border-ink/10 pt-6 text-sm">
           <div className="mb-3 text-xs font-bold tracking-[0.2em] text-ink/40">
-            PRODUCT DETAILS
+            {t("PRODUCT DETAILS", "商品详情")}
           </div>
           <dl className="grid grid-cols-2 gap-y-2.5 text-ink/70">
             <Spec
-              label="Size range"
+              label={t("Size range", "尺码范围")}
               value={`${sizeLabel} ${product.sizes[0]}–${product.sizes[product.sizes.length - 1]}`}
             />
             {product.construction && (
-              <Spec label="Construction" value={product.construction} />
+              <Spec label={t("Construction", "工艺")} value={product.construction} />
             )}
-            <Spec label="Upper" value={parseMaterial(product.material, "upper")} />
-            <Spec label="Lining" value={parseMaterial(product.material, "lining")} />
-            <Spec label="Outsole" value={parseMaterial(product.material, "outsole")} />
-            {product.weight && <Spec label="Weight" value={displayWeight(product.weight)} />}
-            {product.sku && <Spec label="Product code" value={product.sku} />}
+            <Spec label={t("Upper", "鞋面")} value={parseMaterial(product.material, "upper")} />
+            <Spec label={t("Lining", "内里")} value={parseMaterial(product.material, "lining")} />
+            <Spec label={t("Outsole", "鞋底")} value={parseMaterial(product.material, "outsole")} />
+            {product.weight && <Spec label={t("Weight", "重量")} value={displayWeight(product.weight)} />}
+            {product.sku && <Spec label={t("Product code", "商品编号")} value={product.sku} />}
           </dl>
         </div>
       </div>

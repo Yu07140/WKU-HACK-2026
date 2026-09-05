@@ -21,6 +21,7 @@ import { getProductById } from "@/lib/data/catalog";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { cn } from "@/lib/utils";
 import { Label, Select } from "@/components/ui/input";
+import { useLang } from "@/lib/store/lang";
 
 const TABS = [
   { id: "scene", label: "Product Creative", icon: ImageIcon },
@@ -31,6 +32,15 @@ const TABS = [
   { id: "history", label: "Creative History", icon: History },
 ] as const;
 
+const TAB_LABEL_CN: Record<(typeof TABS)[number]["id"], string> = {
+  scene: "产品创意",
+  copy: "广告文案",
+  matrix: "创意矩阵",
+  video: "视频脚本",
+  brand: "品牌套件",
+  history: "创意历史",
+};
+
 type TabId = (typeof TABS)[number]["id"];
 
 /** Campaign objectives (spec §17). CLIPS / CARE are concept-stage — never BUY NOW. */
@@ -38,6 +48,7 @@ const OBJECTIVES = [
   {
     id: "core",
     label: "Core Product",
+    labelCn: "核心单品",
     cta: "SHOP NOW",
     type: "TRANSACTION",
     hooks: ["STAND UP. STAND OUT.", "ONE BOOT. THREE ROUTINES."],
@@ -45,6 +56,7 @@ const OBJECTIVES = [
   {
     id: "duo",
     label: "Duo",
+    labelCn: "双鞋组合",
     cta: "BUILD YOUR DUO",
     type: "BUNDLE / AOV",
     hooks: ["TWO PAIRS. ONE ROTATION."],
@@ -52,6 +64,7 @@ const OBJECTIVES = [
   {
     id: "clips",
     label: "STRYDE CLIPS",
+    labelCn: "STRYDE CLIPS",
     cta: "EXPLORE STRYDE CLIPS",
     type: "DESIGN PREVIEW",
     hooks: ["MAKE IT YOURS.", "SAME BOOT. YOUR DETAIL.", "SMALL DETAIL. BIG SIGNATURE."],
@@ -59,13 +72,21 @@ const OBJECTIVES = [
   {
     id: "care",
     label: "Care 01",
+    labelCn: "Care 01",
     cta: "COMING NEXT",
     type: "DESIGN PREVIEW",
     hooks: ["KEEP THE ROUTE GOING."],
   },
 ] as const;
 
+const OBJECTIVE_TYPE_CN: Record<string, string> = {
+  TRANSACTION: "交易转化",
+  "BUNDLE / AOV": "套装客单",
+  "DESIGN PREVIEW": "设计预览",
+};
+
 export default function StudioPage() {
+  const { t } = useLang();
   const [tab, setTab] = useState<TabId>("scene");
   const [draftPrompt, setDraftPrompt] = useState<string | undefined>(undefined);
   const [objective, setObjective] = useState<string>("core");
@@ -84,9 +105,9 @@ export default function StudioPage() {
           <Sparkles size={22} />
         </span>
         <div>
-          <h1 className="text-3xl font-black">Creative Studio</h1>
+          <h1 className="text-3xl font-black">{t("Creative Studio", "创意工作室")}</h1>
           <p className="text-sm font-semibold tracking-wider text-ink/50">
-            REAL PRODUCT. FASTER CREATIVE.
+            {t("REAL PRODUCT. FASTER CREATIVE.", "真实产品 · 更快出创意")}
           </p>
         </div>
       </div>
@@ -95,11 +116,11 @@ export default function StudioPage() {
       <div className="mt-8 rounded-2xl border border-ink/10 bg-white p-5">
         <div className="flex flex-wrap items-end gap-4">
           <div className="min-w-56 flex-1">
-            <Label>Campaign Objective</Label>
+            <Label>{t("Campaign Objective", "营销目标")}</Label>
             <Select value={objective} onChange={(e) => setObjective(e.target.value)}>
               {OBJECTIVES.map((o) => (
                 <option key={o.id} value={o.id}>
-                  {o.label}
+                  {t(o.label, o.labelCn)}
                 </option>
               ))}
             </Select>
@@ -117,30 +138,33 @@ export default function StudioPage() {
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-3 text-xs">
           <span className="rounded-full bg-ink/90 px-3 py-1 font-black tracking-wider text-paper">
-            {obj.type}
+            {t(obj.type, OBJECTIVE_TYPE_CN[obj.type] ?? obj.type)}
           </span>
           <span className="font-bold text-ink/60">
             CTA: <span className="text-ink">{obj.cta}</span>
           </span>
           {obj.type === "DESIGN PREVIEW" && (
             <span className="text-amber-600 font-semibold">
-              Concept-stage — no BUY NOW / Add to Cart allowed.
+              {t(
+                "Concept-stage — no BUY NOW / Add to Cart allowed.",
+                "概念阶段 — 不可出现 BUY NOW / 加购引导。"
+              )}
             </span>
           )}
         </div>
       </div>
 
       <div className="mt-8 inline-flex max-w-full flex-wrap rounded-full border border-ink/15 bg-white p-1">
-        {TABS.map((t) => (
+        {TABS.map((tb) => (
           <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
+            key={tb.id}
+            onClick={() => setTab(tb.id)}
             className={cn(
               "flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-bold transition",
-              tab === t.id ? "bg-ink text-paper" : "text-ink/60 hover:text-ink"
+              tab === tb.id ? "bg-ink text-paper" : "text-ink/60 hover:text-ink"
             )}
           >
-            <t.icon size={16} /> {t.label}
+            <tb.icon size={16} /> {t(tb.label, TAB_LABEL_CN[tb.id])}
           </button>
         ))}
       </div>
@@ -170,14 +194,20 @@ export default function StudioPage() {
 
 /** REFERENCE LOCK: 工厂实拍 vs AI 创意，产品参考锁定 */
 function ReferenceLock() {
+  const { t } = useLang();
   const hero = getProductById("boot-14534-h");
   return (
     <div className="mt-8 rounded-3xl border border-ink/10 bg-white p-6">
       <div className="mb-4 flex items-center gap-2">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-green-500/15 px-3 py-1 text-xs font-bold text-green-700">
-          <Lock size={12} /> REFERENCE LOCK: ON
+          <Lock size={12} /> {t("REFERENCE LOCK: ON", "参考锁定：开启")}
         </span>
-        <span className="text-xs text-ink/50">SKU 14534-H — product reference locked to factory photography</span>
+        <span className="text-xs text-ink/50">
+          {t(
+            "SKU 14534-H — product reference locked to factory photography",
+            "SKU 14534-H — 产品参考已锁定为工厂实拍"
+          )}
+        </span>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
         <div>
@@ -186,13 +216,15 @@ function ReferenceLock() {
               <ProductImage
                 src={hero.heroImage ?? hero.image}
                 prompt={hero.imagePrompt}
-                alt="Factory reference"
+                alt={t("Factory reference", "工厂实拍参考")}
                 size="landscape_4_3"
                 className="h-full w-full"
               />
             )}
           </div>
-          <div className="mt-2 text-center text-xs font-bold">FACTORY REFERENCE IMAGE</div>
+          <div className="mt-2 text-center text-xs font-bold">
+            {t("FACTORY REFERENCE IMAGE", "工厂实拍参考图")}
+          </div>
         </div>
         <div>
           <div className="aspect-[4/3] overflow-hidden rounded-2xl border border-accent/30 bg-cream">
@@ -200,18 +232,22 @@ function ReferenceLock() {
               <ProductImage
                 src={hero.heroImage ?? hero.image}
                 prompt={hero.creativePresets?.ad ?? hero.imagePrompt}
-                alt="AI creative"
+                alt={t("AI creative", "AI 创意")}
                 size="landscape_4_3"
                 className="h-full w-full"
               />
             )}
           </div>
-          <div className="mt-2 text-center text-xs font-bold text-accent-dark">AI-GENERATED CREATIVE</div>
+          <div className="mt-2 text-center text-xs font-bold text-accent-dark">
+            {t("AI-GENERATED CREATIVE", "AI 生成创意")}
+          </div>
         </div>
       </div>
       <p className="mt-4 text-center text-sm text-ink/55">
-        The factory product remains the source of truth. AI generates the campaign direction —
-        not a fictional sellable SKU.
+        {t(
+          "The factory product remains the source of truth. AI generates the campaign direction — not a fictional sellable SKU.",
+          "工厂实拍产品始终是唯一事实来源。AI 只生成营销创意方向 — 不虚构可售 SKU。"
+        )}
       </p>
     </div>
   );

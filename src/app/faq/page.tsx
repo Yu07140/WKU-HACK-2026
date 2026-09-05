@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   Truck,
@@ -9,131 +11,171 @@ import {
   ArrowRight,
   Layers,
 } from "lucide-react";
-import { BRAND } from "@/lib/data/brand";
 import { Button } from "@/components/ui/button";
-
-export const metadata = {
-  title: `FAQ — ${BRAND.name} Help Center`,
-  description:
-    "Shipping, returns, sizing, material, duties, and payment — honest answers for the STRYDE 14534-H demo store.",
-};
+import { useLang } from "@/lib/store/lang";
 
 type QA = { q: string; a: string };
 
-const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
-  {
-    cat: "Shipping & Delivery",
-    icon: Truck,
-    items: [
-      {
-        q: "How long does shipping take?",
-        a: "Orders are produced in 3–5 business days, then international transit takes 8–15 days (estimate). See the full timeline on our Shipping page.",
-      },
-      {
-        q: "Do you ship internationally?",
-        a: "Yes — we ship worldwide from our factory, except a small number of restricted regions. Rates are flat by zone: $7.90 US, $12.50 UK/EU, $14.90 Canada/Australia.",
-      },
-      {
-        q: "Is there free shipping?",
-        a: "Shipping is free on US orders over $75; otherwise a $7.90 flat rate applies at checkout.",
-      },
-    ],
-  },
-  {
-    cat: "Returns & Exchanges",
-    icon: RotateCcw,
-    items: [
-      {
-        q: "What's your return policy?",
-        a: "30-day try-on guarantee: indoor try-on is accepted, outdoor-worn pairs are not returnable. Full details on our Returns page.",
-      },
-      {
-        q: "The shoes don't fit. Can I exchange them?",
-        a: "Start a return for the pair that doesn't fit, then place a new order for the right size. Use the Size Guide to measure your foot before ordering.",
-      },
-    ],
-  },
-  {
-    cat: "Sizing & Fit",
-    icon: Ruler,
-    items: [
-      {
-        q: "What size should I get?",
-        a: "14534-H is supplied in EU sizes 38–46. Use the measurement guide and confirm your size before ordering.",
-      },
-      {
-        q: "How do I care for the boots?",
-        a: "Product-specific care guidance is pending supplier confirmation. Avoid publishing product-specific cleaning instructions until the supplier provides an approved care method.",
-      },
-    ],
-  },
-  {
-    cat: "Material",
-    icon: Layers,
-    items: [
-      {
-        q: "What is 14534-H made of?",
-        a: "The official supplier specification lists a microfiber upper and microfiber lining with a rubber outsole. It is not genuine leather.",
-      },
-      {
-        q: "Is this genuine leather?",
-        a: "No. The official supplier specification lists a microfiber upper.",
-      },
-    ],
-  },
-  {
-    cat: "Duties, Taxes & Customs",
-    icon: Globe2,
-    items: [
-      {
-        q: "Will I have to pay customs or import duties?",
-        a: "All orders ship DDU (Delivered Duty Unpaid): import duties and taxes are not included in your order total and are the customer's responsibility on delivery. See our Shipping page for details.",
-      },
-    ],
-  },
-  {
-    cat: "Payment",
-    icon: CreditCard,
-    items: [
-      {
-        q: "What payment methods do you accept?",
-        a: "Payment methods accepted at checkout are determined by the payment gateway. This is a demo store — supported methods have not been verified for production.",
-      },
-      {
-        q: "Is it safe to enter my card info here?",
-        a: "This is a demo prototype. Please do not enter real payment information. In production, payments would be processed by a secure payment provider.",
-      },
-    ],
-  },
-];
-
 export default function FAQPage() {
+  const { t } = useLang();
+
+  const FAQS: Array<{ cat: string; slug: string; icon: any; items: QA[] }> = [
+    {
+      cat: t("Shipping & Delivery", "配送与物流"),
+      slug: "shipping-delivery",
+      icon: Truck,
+      items: [
+        {
+          q: t("How long does shipping take?", "配送需要多久？"),
+          a: t(
+            "Orders are produced in 3–5 business days, then international transit takes 8–15 days (estimate). See the full timeline on our Shipping page.",
+            "订单生产需 3–5 个工作日，国际运输另需约 8–15 天（预估）。完整时效请查看配送页面。"
+          ),
+        },
+        {
+          q: t("Do you ship internationally?", "是否支持国际配送？"),
+          a: t(
+            "Yes — we ship worldwide from our factory, except a small number of restricted regions. Rates are flat by zone: $7.90 US, $12.50 UK/EU, $14.90 Canada/Australia.",
+            "支持——我们从工厂直发全球，仅少数受限地区除外。分区统一运费：美国 $7.90，英国/欧盟 $12.50，加拿大/澳大利亚 $14.90。"
+          ),
+        },
+        {
+          q: t("Is there free shipping?", "有免运费吗？"),
+          a: t(
+            "Shipping is free on US orders over $75; otherwise a $7.90 flat rate applies at checkout.",
+            "美国订单满 $75 免运费；否则结算时收取 $7.90 统一运费。"
+          ),
+        },
+      ],
+    },
+    {
+      cat: t("Returns & Exchanges", "退货与换货"),
+      slug: "returns-exchanges",
+      icon: RotateCcw,
+      items: [
+        {
+          q: t("What's your return policy?", "退货政策是什么？"),
+          a: t(
+            "30-day try-on guarantee: indoor try-on is accepted, outdoor-worn pairs are not returnable. Full details on our Returns page.",
+            "30 天试穿保障：室内试穿可退，户外穿着后不可退。详情请查看退货页面。"
+          ),
+        },
+        {
+          q: t("The shoes don't fit. Can I exchange them?", "尺码不合适，可以换货吗？"),
+          a: t(
+            "Start a return for the pair that doesn't fit, then place a new order for the right size. Use the Size Guide to measure your foot before ordering.",
+            "为不合适的鞋发起退货，再重新下单正确尺码。下单前请使用尺码指南测量脚长。"
+          ),
+        },
+      ],
+    },
+    {
+      cat: t("Sizing & Fit", "尺码与合脚"),
+      slug: "sizing-fit",
+      icon: Ruler,
+      items: [
+        {
+          q: t("What size should I get?", "我该选什么尺码？"),
+          a: t(
+            "14534-H is supplied in EU sizes 38–46. Use the measurement guide and confirm your size before ordering.",
+            "14534-H 提供 EU 38–46 码。请使用测量指南，下单前确认你的尺码。"
+          ),
+        },
+        {
+          q: t("How do I care for the boots?", "如何保养这双靴子？"),
+          a: t(
+            "Product-specific care guidance is pending supplier confirmation. Avoid publishing product-specific cleaning instructions until the supplier provides an approved care method.",
+            "产品专属保养指引待供应商确认。在供应商提供经核准的保养方法之前，请勿发布产品专属清洁说明。"
+          ),
+        },
+      ],
+    },
+    {
+      cat: t("Material", "材质"),
+      slug: "material",
+      icon: Layers,
+      items: [
+        {
+          q: t("What is 14534-H made of?", "14534-H 由什么材质制成？"),
+          a: t(
+            "The official supplier specification lists a microfiber upper and microfiber lining with a rubber outsole. It is not genuine leather.",
+            "官方供应商规格为超纤革鞋面与超纤革内里，搭配橡胶外底。并非真皮。"
+          ),
+        },
+        {
+          q: t("Is this genuine leather?", "这是真皮吗？"),
+          a: t("No. The official supplier specification lists a microfiber upper.", "不是。官方供应商规格为超纤革鞋面。"),
+        },
+      ],
+    },
+    {
+      cat: t("Duties, Taxes & Customs", "关税、税费与清关"),
+      slug: "duties-taxes-customs",
+      icon: Globe2,
+      items: [
+        {
+          q: t("Will I have to pay customs or import duties?", "需要支付关税或进口税费吗？"),
+          a: t(
+            "All orders ship DDU (Delivered Duty Unpaid): import duties and taxes are not included in your order total and are the customer's responsibility on delivery. See our Shipping page for details.",
+            "所有订单均以 DDU（未完税交货）方式发出：进口关税与税费不包含在订单总额中，配送时由客户自行承担。详情请查看配送页面。"
+          ),
+        },
+      ],
+    },
+    {
+      cat: t("Payment", "支付"),
+      slug: "payment",
+      icon: CreditCard,
+      items: [
+        {
+          q: t("What payment methods do you accept?", "支持哪些支付方式？"),
+          a: t(
+            "Payment methods accepted at checkout are determined by the payment gateway. This is a demo store — supported methods have not been verified for production.",
+            "结算时支持的支付方式由支付网关决定。这是一个演示商店——支持的支付方式尚未在生产环境中核实。"
+          ),
+        },
+        {
+          q: t("Is it safe to enter my card info here?", "在这里输入银行卡信息安全吗？"),
+          a: t(
+            "This is a demo prototype. Please do not enter real payment information. In production, payments would be processed by a secure payment provider.",
+            "这是一个演示原型。请勿输入真实支付信息。生产环境中，支付将由安全的支付服务商处理。"
+          ),
+        },
+      ],
+    },
+  ];
+
   return (
     <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
       {/* ---------- HERO ---------- */}
       <div className="mb-14 text-center">
         <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-3 py-1.5 text-xs font-bold tracking-wider text-ink/70">
           <MessageCircle size={13} className="text-accent" />
-          HELP CENTER
+          {t("HELP CENTER", "帮助中心")}
         </div>
         <h1 className="text-5xl font-black leading-[1.05] tracking-tight md:text-6xl">
-          Questions?
+          {t("Questions?", "有疑问？")}
           <br />
-          <span className="text-accent">Honest answers.</span>
+          <span className="text-accent">{t("Honest answers.", "坦诚作答。")}</span>
         </h1>
         <p className="mx-auto mt-5 max-w-xl text-ink/55">
-          Can't find what you need? Ping the chat bubble in the bottom right.
+          {t(
+            "Can't find what you need? Ping the chat bubble in the bottom right.",
+            "找不到想要的答案？点击右下角的聊天气泡。"
+          )}
         </p>
         <p className="mx-auto mt-3 max-w-xl text-xs text-ink/40">
-          This is a demo store. Shipping, return, and payment terms are not
-          verified operational commitments.
+          {t(
+            "This is a demo store. Shipping, return, and payment terms are not verified operational commitments.",
+            "这是一个演示商店。配送、退货与支付条款尚未核实为实际运营承诺。"
+          )}
         </p>
       </div>
 
       {/* ---------- 分类 ---------- */}
       <div className="space-y-14">
-        {FAQS.map(({ cat, icon: Icon, items }) => (
-          <section key={cat} id={cat.toLowerCase().replace(/[^a-z]+/g, "-")}>
+        {FAQS.map(({ cat, slug, icon: Icon, items }) => (
+          <section key={slug} id={slug}>
             <div className="mb-5 flex items-center gap-3">
               <div className="inline-flex rounded-xl bg-accent/10 p-2 text-accent">
                 <Icon size={20} />
@@ -162,19 +204,22 @@ export default function FAQPage() {
 
       {/* ---------- CTA ---------- */}
       <section className="mt-20 rounded-3xl bg-ink p-10 text-center text-paper md:p-14">
-        <h2 className="text-3xl font-black md:text-4xl">Still not sure?</h2>
+        <h2 className="text-3xl font-black md:text-4xl">{t("Still not sure?", "还有疑问？")}</h2>
         <p className="mx-auto mt-3 max-w-lg text-paper/60">
-          Read the size guide or check the proof mode before you buy.
+          {t(
+            "Read the size guide or check the proof mode before you buy.",
+            "购买前请阅读尺码指南或查看证明模式。"
+          )}
         </p>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <Link href="/size-guide">
             <Button size="lg" variant="primary">
-              Size Guide <ArrowRight size={18} />
+              {t("Size Guide", "尺码指南")} <ArrowRight size={18} />
             </Button>
           </Link>
           <Link href="/proof">
             <Button size="lg" variant="outline">
-              Proof Mode
+              {t("Proof Mode", "证明模式")}
             </Button>
           </Link>
         </div>
