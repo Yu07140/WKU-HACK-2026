@@ -44,27 +44,45 @@ export const ECOSYSTEM = {
 export const CLIP_COLLECTIONS = [
   {
     no: "01",
+    slug: "signature",
     name: "SIGNATURE",
     desc: "STRYDE-branded marks designed around the brand wordmark.",
     samples: ["S", "STRYDE", "STAND OUT"],
+    images: {
+      STRYDE: "/clips/collections/signature/STRYDE.jpg",
+      "STAND OUT": "/clips/collections/signature/STAND-OUT.jpg",
+    },
   },
   {
     no: "02",
+    slug: "mono",
     name: "MONO",
     desc: "Minimal graphic symbols in black, graphite and silver-tone.",
     samples: [">", "≡", "◯", "▭"],
+    images: {
+      ">": "/clips/collections/mono/greater.png",
+      "≡": "/clips/collections/mono/equal.png",
+    },
   },
   {
     no: "03",
+    slug: "personal",
     name: "PERSONAL",
     desc: "Choose your initial — a quiet, personal signature.",
     samples: ["A", "F", "M", "S"],
+    images: {},
   },
   {
     no: "04",
+    slug: "city",
     name: "CITY",
     desc: "City-inspired text identity. No official logos or trademarks.",
     samples: ["NYC", "LDN", "TYO"],
+    images: {
+      LDN: "/clips/collections/city/LDN.jpg",
+      NYC: "/clips/collections/city/NYC.png",
+      TYO: "/clips/collections/city/TYO.jpg",
+    },
   },
 ] as const;
 

@@ -62,7 +62,7 @@ export function LetterSelector() {
   }, [letter]);
 
   return (
-    <section className="mb-20">
+    <section id="letter-selector" className="mb-20">
       <div className="mb-8">
         <div className="mb-3 text-xs font-bold tracking-[0.3em] text-ink/40">
           {t("A–Z LETTER CLIPS", "A–Z 字母扣")}

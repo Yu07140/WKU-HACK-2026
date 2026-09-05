@@ -186,15 +186,15 @@ export default function HomePage() {
       {/* ---------- STRYDE CARE 01 ---------- */}
       <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
         <div className="grid gap-10 md:grid-cols-2 md:items-center">
-          <div className="relative overflow-hidden rounded-3xl bg-cream">
+          <Link href="/care" className="group relative block overflow-hidden rounded-3xl bg-cream">
             <ProductImage
               src={hero.heroImage ?? hero.image}
               prompt={hero.imagePrompt}
               alt="STRYDE 14534-H — care system base"
               size="portrait_4_3"
-              className="aspect-[4/5] w-full"
+              className="aspect-[4/5] w-full transition duration-500 group-hover:scale-[1.02]"
             />
-          </div>
+          </Link>
           <div>
             <div className="mb-3 flex items-center gap-2 text-xs font-bold tracking-[0.3em] text-ink/40">
               <ShieldCheck size={14} /> {t("FUTURE EXTENSION", "未来延伸")}

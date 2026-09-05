@@ -139,11 +139,18 @@ export default function ClipsPage() {
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {CLIP_COLLECTIONS.map((c) => (
-            <div
+            <Link
               key={c.no}
-              className="flex flex-col rounded-3xl border border-ink/10 bg-white p-6"
+              href={c.slug === "personal" ? "/clips#letter-selector" : `/clips/${c.slug}`}
+              className="group flex flex-col rounded-3xl border border-ink/10 bg-white p-6 transition duration-200 hover:border-ink/40 hover:shadow-md"
             >
-              <div className="text-xs font-black tracking-[0.25em] text-ink/40">{c.no}</div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black tracking-[0.25em] text-ink/40">{c.no}</span>
+                <ArrowRight
+                  size={16}
+                  className="text-ink/30 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-ink"
+                />
+              </div>
               <h3 className="mt-2 text-xl font-black tracking-wide">
                 {t(c.name, COLLECTION_NAME_CN[c.name] ?? c.name)}
               </h3>
@@ -162,7 +169,7 @@ export default function ClipsPage() {
                   ))}
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
         <p className="mt-4 text-xs text-ink/40">
