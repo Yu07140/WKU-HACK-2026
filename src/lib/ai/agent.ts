@@ -166,17 +166,40 @@ function pickFromPool(pool: Product[], keywords: string[]): Product[] {
   return onlyHero(matched);
 }
 
-/**
- * 泛风格场景（约会/旅行等）推荐位保底：若属性命中结果里没有货盘 D 主货号
- * 14534-H（mono-boot 黑色极简通勤靴，本身就契合通勤/约会/旅行），用它补满末位。
- */
-function ensureHero(picks: Product[], n: number): Product[] {
-  const hero = PRODUCTS.find((p) => p.sku === "14534-H" || p.slug === "mono-boot");
-  const list = picks.slice(0, n);
-  if (!hero || list.some((p) => p.slug === hero.slug)) return list;
-  if (list.length < n) list.push(hero);
-  else list[list.length - 1] = hero;
-  return list.slice(0, n);
+/* =================================================================
+ * 推荐数量策略（货盘 D）：
+ * - 明确购买场景（通勤/约会/旅行/出差/礼物/牛仔裤/西裤/脚型等）→ 只推 1 款最匹配，
+ *   风格类场景一律主推 14534-H（mono-boot），不让用户在 3 张相似卡片里自己挑
+ * - 功能/脚型约束（宽脚/窄脚/户外/雨天购买意图）存在明显备选 → 最多 2
+ * - 用户明确要"多看几双"（some / options / a few / 几双 / 有哪些）→ 最多 3
+ * - 咨询类（尺码/物流/退换/护理/防水能力）→ 默认 0 卡，上下文需要才附
+ * - 多轮指代（that one / the black one）→ 围绕上一轮商品聚焦回答，不重铺 3 双
+ * ================================================================= */
+
+function heroBoot(): Product | undefined {
+  return PRODUCTS.find((p) => p.sku === "14534-H" || p.slug === "mono-boot");
+}
+
+/** 用户是否想"多看几双"（浏览意图）→ 允许 3 张卡 */
+function wantsMany(q: string): boolean {
+  return /\bsome\b|\boptions?\b|\ba few\b|several|\bideas\b|show me|more pairs|几双|多(推荐|看|来|发)|都(推荐|看看|发来)|有哪些|还有什么|别的(款|选择)?|随便(推荐|看看)|再(推荐|看)/.test(
+    q
+  );
+}
+
+/** 风格/场景类需求的主推位：永远以 14534-H 领衔；withAlt=true 时最多补 1 个明显备选 */
+function heroPick(alts: Product[], withAlt: boolean): Product[] {
+  const hero = heroBoot();
+  if (!hero) return alts.slice(0, withAlt ? 2 : 1);
+  if (!withAlt) return [hero];
+  const alt = alts.find((p) => p.slug !== hero.slug);
+  return alt ? [hero, alt] : [hero];
+}
+
+/** 功能/脚型约束场景：有几个明显匹配给几张（1-2），绝不 3 张 */
+function pickFocused(cands: Product[]): Product[] {
+  const uniq = cands.filter((p, i, arr) => arr.findIndex((x) => x.slug === p.slug) === i);
+  return uniq.slice(0, Math.min(2, uniq.length));
 }
 
 /**
@@ -300,8 +323,8 @@ function returnBilingual(lang: Lang): string {
  * ================================================================= */
 
 function isReferenceQuery(q: string): boolean {
-  const en = /\b(which one|which ones|which (of )?(these|those|them)|the (ones|pairs|shoes) (you|you'?ve) (recommend|suggest|showed)|from those|from the recs|from your recs)\b/i;
-  const zh = /(那(双|些|几双|个|三双)|这(双|几双|些)|刚才|刚刚|之前|你(推荐|说|挑)|选的|挑出来|你给的)/;
+  const en = /\b(which one|which ones|which (of )?(these|those|them)|that one|this one|that pair|this pair|the ([a-z]+ )?one(s)?\b|one of (these|those|them)|the (ones|pairs|shoes) (you|you'?ve) (recommend|suggest|showed)|is it|are they|does it|will it|would it|from those|from the recs|from your recs)\b/i;
+  const zh = /(那(双|些|几双|个|三双|款)|这(双|几双|些|款)|刚才|刚刚|之前|你(推荐|说|挑)|选的|挑出来|你给的)/;
   return en.test(q) || zh.test(q);
 }
 
@@ -325,6 +348,19 @@ function filterProductsByCriterion(
     ]).slice(0, 3);
   } else if (NARROW.test(low)) {
     matched = pickFromPool(pool, ["窄楦", "收口", "包裹", "利落", "slim"]).slice(0, 3);
+  } else if (/\bblack\b|黑色|全黑|黑的|黑款/.test(low)) {
+    // "the black one" → 在上轮推荐里挑黑色款（含 colors 色卡名）
+    const colorHay = (p: Product) =>
+      `${p.features.join(" ")} ${p.description} ${p.material} ${(p.colors ?? [])
+        .map((c) => c.name)
+        .join(" ")}`.toLowerCase();
+    matched = pool.filter((p) => /黑|black/.test(colorHay(p))).slice(0, 3);
+  } else if (/\bwhite\b|白色|米白/.test(low)) {
+    const colorHay = (p: Product) =>
+      `${p.features.join(" ")} ${p.description} ${p.material} ${(p.colors ?? [])
+        .map((c) => c.name)
+        .join(" ")}`.toLowerCase();
+    matched = pool.filter((p) => /白|white/.test(colorHay(p))).slice(0, 3);
   } else if (/waterproof|防水|防雨|防泼|rain|雨/.test(low)) {
     matched = pickFromPool(pool, ["亮面", "贴膜", "glossy", "patent", "金属感", "漆皮"]).slice(0, 3);
   } else if (/wash|clean|清洗|洗|机洗/.test(low)) {
@@ -333,10 +369,10 @@ function filterProductsByCriterion(
   } else if (/running|run|跑鞋|跑步|碳板|jog|walk|通勤|久走|舒服/.test(low)) {
     // 全靴子货盘：久走/跑步意图 → 直接在推荐池里按热度给最舒服的款
     matched = pool.slice(0, 3);
-  } else if (/casual|everyday|休闲|日常|通勤|百搭/.test(low)) {
+  } else if (/casual|everyday|commut|\bwork\b|休闲|日常|通勤|百搭/.test(low)) {
     // 高帮靴本就是休闲百搭款 → 整个池子都符合
     matched = pool.slice(0, 3);
-  } else if (/outdoor|hik(e|ing)|trail|户外|登山|越野|徒步|防滑/.test(low)) {
+  } else if (/outdoor|hik(e|ing)|trail|户外|登山|爬山|越野|徒步|防滑/.test(low)) {
     matched = pickFromPool(pool, ["厚底", "橡胶", "lug", "platform", "发泡", "大底"]).slice(0, 3);
   } else {
     const m = low.match(/\$?\s*(\d{2,3})\b/);
@@ -361,15 +397,23 @@ function tryContextReply(
   ctx: AgentContext
 ): AgentReply | null {
   if (!ctx.lastProducts?.length || !isReferenceQuery(q)) return null;
+  // 信息类问题（材质/护理/物流/退换）有专门场景回答，不要当成"在推荐池里筛款"
+  if (
+    /leather|genuine|真皮|材质|面料|material|wash|clean|清洗|怎么洗|护理|ship|delivery|shipping|tracking|物流|快递|到货|发货|订单|return|refund|exchange|退|换货/i.test(
+      q
+    )
+  )
+    return null;
 
   let ordered: Product[] = [];
   let criterionWasEmpty = false;
 
   const sortTest = q.toLowerCase();
   if (/cheapest|least expensive|便宜|最便宜|最划算/.test(sortTest)) {
-    ordered = [...ctx.lastProducts].sort((a, b) => a.price - b.price).slice(0, 3);
+    // 超级指代（"which is cheapest"）→ 只给那一双
+    ordered = [...ctx.lastProducts].sort((a, b) => a.price - b.price).slice(0, 1);
   } else if (/most expensive|priciest|最贵/.test(sortTest)) {
-    ordered = [...ctx.lastProducts].sort((a, b) => b.price - a.price).slice(0, 3);
+    ordered = [...ctx.lastProducts].sort((a, b) => b.price - a.price).slice(0, 1);
   } else if (
     /best rated|top rated|highest rated|most reviews|好评|评分|评价最高/.test(sortTest)
   ) {
@@ -378,12 +422,18 @@ function tryContextReply(
         (a, b) =>
           b.rating * Math.log10(b.reviews + 1) - a.rating * Math.log10(a.reviews + 1)
       )
-      .slice(0, 3);
+      .slice(0, 1);
   } else {
     const result = filterProductsByCriterion([...ctx.lastProducts], q);
-    const criterionApplied = result.criterionApplied;
-    ordered = result.filtered;
-    if (criterionApplied && ordered.length === 0) criterionWasEmpty = true;
+    if (result.criterionApplied) {
+      // 条件筛选（颜色/脚型/场景）→ 聚焦上一轮池内，最多 2 双
+      ordered = result.filtered.slice(0, 2);
+      if (ordered.length === 0) criterionWasEmpty = true;
+    } else {
+      // 纯指代（"that one / this pair"）→ 围绕上一轮主推款（客户端展示顺序的第 1 张）回答，
+      // 不按热度重排、不重铺 3 双
+      ordered = [ctx.lastProducts[0]];
+    }
   }
 
   if (criterionWasEmpty) {
@@ -406,8 +456,12 @@ function tryContextReply(
   }
   const intro = L(
     lang,
-    `Out of the pairs I just showed you, these ${ordered.length} fit best 👇`,
-    `我刚刚推荐的那几双里，这 ${ordered.length} 双最符合你的要求 👇`
+    ordered.length === 1
+      ? "Out of the pairs I just showed you, this one fits best 👇"
+      : `Out of the pairs I just showed you, these ${ordered.length} fit best 👇`,
+    ordered.length === 1
+      ? "我刚刚推荐的那几双里，这双最符合你的要求 👇"
+      : `我刚刚推荐的那几双里，这 ${ordered.length} 双最符合你的要求 👇`
   );
   const outro = L(
     lang,
@@ -425,25 +479,29 @@ function tryContextReply(
  * ================================================================= */
 
 function sceneRunning(lang: Lang): AgentReply {
-  // 货盘为全靴子：诚实 pivot 到"久走通勤也舒服"的高评价靴款，不冷场
-  const picks = topRatedBoots(3);
+  // 货盘为全靴子：诚实 pivot 到"久走通勤也舒服"，主推 1 款不铺卡片
+  const picks = heroPick(topRatedBoots(3), false);
   return {
     text: L(
       lang,
-      `Honest note: we specialize in street-ready high-top boots rather than performance running shoes 👟 But if you're after all-day comfort for walking, commuting and travel, these are the pairs we'd actually pack for a full day on our feet:\n${productList(picks, lang)}\n\nWant the lightest pair or the most cushioned sole? I can narrow it down.`,
-      `实话实说：我们家主打街头高帮靴，没有专业竞速跑鞋 👟 但如果你要的是日常走路、通勤、旅行一整天都舒服的款，这几双是最适合久走的：\n${productList(picks, lang)}\n\n想要最轻的还是鞋底最软的？我可以再帮你缩一下范围。`
+      `Honest note: we specialize in street-ready high-top boots rather than performance running shoes 👟 But for all-day comfort walking, commuting and travel, this is the pair we'd actually pack:\n${productList(picks, lang)}\n\nWant a couple more comfortable options? Just ask!`,
+      `实话实说：我们家主打街头高帮靴，没有专业竞速跑鞋 👟 但如果是日常走路、通勤、旅行要一整天舒服，我们最推荐这一双：\n${productList(picks, lang)}\n\n想多看几双舒服的款，随时说一声～`
     ),
     products: picks,
   };
 }
 
-function sceneCasual(lang: Lang): AgentReply {
-  const picks = topRatedBoots(3);
+function sceneCasual(lang: Lang, many = false): AgentReply {
+  const picks = many ? topRatedBoots(3) : heroPick(topRatedBoots(3), false);
   return {
     text: L(
       lang,
-      `Everyday comfort with a clean street look ✌️ Our high-top boots are built to go with everything — jeans, cargos, tailored pants. Here are the most versatile picks:\n${productList(picks, lang)}`,
-      `日常通勤、逛街都百搭 ✌️ 我们的高帮靴本来就是不挑穿搭的款，牛仔裤、工装裤、西裤都能配。给你挑了最百搭的几双：\n${productList(picks, lang)}`
+      many
+        ? `Everyday comfort with a clean street look ✌️ Our high-top boots go with everything — jeans, cargos, tailored pants. Here are the most versatile picks:\n${productList(picks, lang)}`
+        : `Everyday comfort with a clean street look ✌️ For commuting and everyday wear, this is the pair I'd bet on — it goes with jeans, cargos and tailored pants alike:\n${productList(picks, lang)}`,
+      many
+        ? `日常通勤、逛街都百搭 ✌️ 我们的高帮靴本来就是不挑穿搭的款，牛仔裤、工装裤、西裤都能配。给你挑了最百搭的几双：\n${productList(picks, lang)}`
+        : `日常通勤、逛街都百搭 ✌️ 通勤和日常穿，我首推这一双——牛仔裤、工装裤、西裤都能配：\n${productList(picks, lang)}`
     ),
     products: picks,
   };
@@ -464,46 +522,42 @@ function sceneOutdoor(lang: Lang): AgentReply {
 }
 
 function sceneWideFeet(lang: Lang): AgentReply {
-  // 靴款里挑圆头/鞋带可调/不挤脚的
-  const picks = pickByAttr(["圆头", "rounded", "cap toe", "鞋带", "jumbo", "lace", "气眼", "加宽"], 3);
-  const list = picks.length
-    ? L(lang, "\nRoomier, lace-adjustable picks:\n", "\n鞋头宽松、鞋带可调的款：\n") + productList(picks, lang) + "\n"
-    : "\n";
+  // 靴款里挑圆头/鞋带可调/不挤脚的；有第二个明显匹配才给 2
+  const attr = pickByAttr(["圆头", "rounded", "cap toe", "鞋带", "jumbo", "lace", "气眼", "加宽"], 3);
+  const picks = pickFocused(attr.length ? attr : topRatedBoots(3));
   return {
     text: L(
       lang,
-      `For wide feet, go half a size up and pick lace-up styles with a rounded toe — you can loosen the laces across the instep, and the side zip means they're still easy to slip on.${list}Tell me your usual US size and I'll fine-tune it.`,
-      `脚宽建议选大半码，挑圆头+系带款——脚背那几格鞋带可以放松，侧面还有拉链，穿脱也方便。${list}告诉我你平时穿 US 几码，我帮你再精准筛一下～`
+      `For wide feet, go half a size up and pick lace-up styles with a rounded toe — you can loosen the laces across the instep, and the side zip keeps them easy to slip on. ${picks.length > 1 ? "Two roomiest picks" : "My pick"}:\n${productList(picks, lang)}\n\nTell me your usual US size and I'll fine-tune it.`,
+      `脚宽建议选大半码，挑圆头+系带款——脚背那几格鞋带可以放松，侧面还有拉链，穿脱也方便。最合适${picks.length > 1 ? "的两双" : "的一双"}：\n${productList(picks, lang)}\n\n告诉我你平时穿 US 几码，我帮你再精准筛一下～`
     ),
-    products: picks.length ? picks : topRatedBoots(2),
+    products: picks,
   };
 }
 
 function sceneNarrowFeet(lang: Lang): AgentReply {
-  // 窄楦/收口/包裹感靴款
-  const picks = pickByAttr(["窄楦", "收口", "包裹", "利落", "slim", "高帮"], 3);
-  const list = picks.length
-    ? L(lang, "\nSlim-fitting picks for narrow feet:\n", "\n楦型偏窄、包裹感好的款：\n") + productList(picks, lang) + "\n"
-    : "\n";
+  // 窄楦/收口/包裹感靴款；有第二个明显匹配才给 2
+  const attr = pickByAttr(["窄楦", "收口", "包裹", "利落", "slim", "高帮"], 3);
+  const picks = pickFocused(attr.length ? attr : topRatedBoots(3));
   return {
     text: L(
       lang,
-      `Narrow feet? Look for our slim-last, higher-shaft pairs — they hug the ankle and heel so there's no slippage, and lacing them one eyelet tighter dials in the fit.${list}Free size exchange within 30 days if the fit feels off.`,
-      `瘦脚推荐挑窄楦收口、靴筒略高的款——脚踝和后跟包裹住走路不掉跟，鞋带最上面一格系紧一点更贴合。${list}不合适的话 30 天内免费换码，放心～`
+      `Narrow feet? Look for slim-last, higher-shaft pairs — they hug the ankle and heel so there's no slippage, and lacing one eyelet tighter dials in the fit. ${picks.length > 1 ? "Two best fits" : "My pick"}:\n${productList(picks, lang)}\n\nFree size exchange within 30 days if the fit feels off.`,
+      `瘦脚推荐挑窄楦收口、靴筒略高的款——脚踝和后跟包裹住走路不掉跟，鞋带最上面一格系紧一点更贴合。最合适${picks.length > 1 ? "的两双" : "的一双"}：\n${productList(picks, lang)}\n\n不合适的话 30 天内免费换码，放心～`
     ),
-    products: picks.length ? picks : topRatedBoots(2),
+    products: picks,
   };
 }
 
-function sceneWaterproof(lang: Lang): AgentReply {
+function sceneWaterproof(lang: Lang, withCard = true): AgentReply {
   // 合规：不承诺压胶防水；主推 14534-H 为黑色超纤极简靴，护理方式待供应商确认
   return {
     text: L(
       lang,
-      `Quick honesty — the 14534-H isn't a seam-sealed rain boot. The microfiber upper may handle light drizzle, but heavy downpours aren't its stage, and care guidance is pending supplier confirmation. For wet commutes, keep a protective spray (once we publish an approved care method) and a spare pair handy:\n${HERO ? productList([HERO], lang) : ""}`,
-      `说实话哈 — 14534-H 不是压胶雨靴，超纤鞋面可能应付小雨，但大雨天不是它的主场，具体护理方式待供应商确认。雨季通勤建议后续按官方护理说明做防护、备一双换穿：\n${HERO ? productList([HERO], lang) : ""}`
+      `Quick honesty — the 14534-H isn't a seam-sealed rain boot. The microfiber upper may handle light drizzle, but heavy downpours aren't its stage, and care guidance is pending supplier confirmation. For wet commutes, keep a protective spray (once we publish an approved care method) and a spare pair handy:\n${withCard && HERO ? productList([HERO], lang) : ""}`,
+      `说实话哈 — 14534-H 不是压胶雨靴，超纤鞋面可能应付小雨，但大雨天不是它的主场，具体护理方式待供应商确认。雨季通勤建议后续按官方护理说明做防护、备一双换穿：\n${withCard && HERO ? productList([HERO], lang) : ""}`
     ),
-    products: HERO ? [HERO] : undefined,
+    products: withCard && HERO ? [HERO] : undefined,
   };
 }
 
@@ -520,8 +574,9 @@ function sceneWashable(lang: Lang): AgentReply {
 }
 
 function sceneMaterial(lang: Lang): AgentReply {
-  // 合规专线（赛题红线）：超纤/PU 不是真皮，被问"是不是皮/什么材质"必须正面诚实回答
-  const hero = PRODUCTS.find((p) => p.sku === "14534-H" || p.slug === "mono-boot");
+  // 合规专线（赛题红线）：超纤/PU 不是真皮，被问"是不是皮/什么材质"必须正面诚实回答；
+  // 材质是购买信任时刻 → 附 1 张主推款卡片
+  const hero = heroBoot();
   return {
     text: L(
       lang,
@@ -545,7 +600,7 @@ function sceneGift(lang: Lang): AgentReply {
   };
 }
 
-function sceneUnder100(q: string, lang: Lang): AgentReply {
+function sceneUnder100(q: string, lang: Lang, many = false): AgentReply {
   const m = q.match(/\$?\s*(\d{2,3})\b/);
   const budget = m ? parseInt(m[1], 10) : 100;
   const picks = pickByMaxPrice(budget);
@@ -652,6 +707,8 @@ function sceneGenericDiscount(lang: Lang): AgentReply {
 export function agentReply(userMessage: string, context: AgentContext = {}): AgentReply {
   const q = userMessage.toLowerCase();
   const lang = detectLang(userMessage);
+  // 数量策略：明确"多看几双"（some / options / a few / 几双）才给 3 张，默认聚焦主推
+  const many = wantsMany(q);
 
   /* 指代问句（基于上轮推荐过滤/排序）优先 */
   const contextual = tryContextReply(q, lang, context);
@@ -663,16 +720,21 @@ export function agentReply(userMessage: string, context: AgentContext = {}): Age
     /(under|below|less\s*than|cheap|budget|低于|预算|以内|以下|不超过).*\$?\s*\d{2,3}|\$\s*\d{2,3}\s*(or\s*less|max|and\s*under|以下|以内)/.test(
       q
     ) ||
-    /不超过?\s*\d{2,3}\s*(美?元|刀)/.test(q)
+    /不超过?\s*\d{2,3}\s*(美?元|刀)/.test(q) ||
+    /\d{2,3}\s*(美?元|刀|块)?\s*(以内|以下|左右|预算内)/.test(q)
   )
-    return sceneUnder100(q, lang);
+    return sceneUnder100(q, lang, many);
 
   if (/wide\s*feet?|宽脚|肥脚|脚.{0,3}(宽|胖|肥)|(宽|胖|肥).{0,3}脚|脚掌宽|脚背宽|脚面宽|脚型宽/.test(q))
     return sceneWideFeet(lang);
   if (/narrow\s*feet?|thin\s*feet?|瘦脚|脚.{0,3}瘦|窄脚|脚型瘦|脚窄|偏瘦|小脚/.test(q))
     return sceneNarrowFeet(lang);
   if (/waterproof|water\s*proof|water\s*resistant|防水|防雨|防泼/.test(q))
-    return sceneWaterproof(lang);
+    // 纯咨询不附卡；明确购买意图（need / looking for / 想买…）才推
+    return sceneWaterproof(
+      lang,
+      /need|look(?:ing)?\s*for|recommend|want|buy|\bget\b|帮我|推荐|想(买|要)|找(一)?双/.test(q)
+    );
   if (/wash|clean|清洗|洗|cleanable|machine\s*wash/.test(q)) return sceneWashable(lang);
   // 材质/真皮专线：超纤不是真皮，必须正面诚实回答（赛题合规红线）
   if (/leather|genuine|真皮|皮的|是不是皮|什么皮|material|材质|面料|什么料|upper|lining|outsole|大底|鞋面/.test(q))
@@ -686,8 +748,17 @@ export function agentReply(userMessage: string, context: AgentContext = {}): Age
   if (/travel|\btrip\b|旅行|出差|短途|旅游|机场|walking\s*all\s*day|久走|走路多/.test(q))
     return sceneTravel(lang);
   if (/running|run\s*shoes?|跑鞋|跑步鞋|马拉松|碳板|jogging/.test(q)) return sceneRunning(lang);
-  if (/casual|everyday|日常|休闲|百搭|通勤/.test(q)) return sceneCasual(lang);
-  if (/outdoor|hik(e|ing)|trail|户外|登山|越野|徒步/.test(q)) return sceneOutdoor(lang);
+  if (/casual|everyday|commut|\bwork\b|日常|休闲|百搭|通勤/.test(q)) return sceneCasual(lang, many);
+  if (/outdoor|hik(e|ing)|trail|户外|登山|爬山|越野|徒步/.test(q)) return sceneOutdoor(lang);
+
+  // 泛推荐意图（"recommend a pair" / "help me pick" / "推荐一双"）→ 主推 1 款；
+  // 用户要"多看几双"（recommend some / show me options）→ 3 款
+  if (
+    /\brecommend\b|\bpick\b|bestseller|best\s*seller|popular|show me|something for|looking for|推荐|挑一|挑双|来一双|想买|有什么(好|值得)|热门|爆款/.test(
+      q
+    )
+  )
+    return sceneCasual(lang, many);
 
   /* 保留原有 4 个逻辑（未删除，regex 已扩中文关键词） */
   if (/size|尺码|码数|fit|large|small|多大码|选码/.test(q)) return { text: sizingBilingual(lang) };
@@ -697,13 +768,13 @@ export function agentReply(userMessage: string, context: AgentContext = {}): Age
   if (/deal|discount|sale|便宜|优惠|code|coupon|promo|省钱|首单/.test(q))
     return sceneGenericDiscount(lang);
 
-  const hits = searchProducts(q);
+  const hits = searchProducts(q).slice(0, many ? 3 : 1);
   if (hits.length > 0) {
     return {
       text: L(
         lang,
-        `Based on what you said, these are my top ${hits.length} picks 🤙\n${productList(hits, lang)}\n\nTap the card for full details — need me to narrow by price or size?`,
-        `根据你说的，我挑了这 ${hits.length} 双最合适的 🤙\n${productList(hits, lang)}\n\n点卡片可以看详情，要不要我再按价格或者尺码帮你缩一下？`
+        `Based on what you said, ${hits.length > 1 ? `these are my top ${hits.length} picks` : "this is my top pick"} 🤙\n${productList(hits, lang)}\n\nTap the card for full details — need me to narrow by price or size?`,
+        `根据你说的，我挑了${hits.length > 1 ? `这 ${hits.length} 双最合适的` : "这双最合适的"} 🤙\n${productList(hits, lang)}\n\n点卡片可以看详情，要不要我再按价格或者尺码帮你缩一下？`
       ),
       products: hits,
     };

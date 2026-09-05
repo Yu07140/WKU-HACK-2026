@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import {
   ImageIcon,
   PenLine,
@@ -74,19 +74,22 @@ export default function StudioPage() {
       {/* ---------- REFERENCE LOCK ---------- */}
       <ReferenceLock />
 
-      <div className="mt-8">
-        {tab === "scene" && (
-          <SceneGenerator
-            draftPrompt={draftPrompt}
-            onDraftConsumed={() => setDraftPrompt(undefined)}
-          />
-        )}
-        {tab === "copy" && <CopyGenerator />}
-        {tab === "matrix" && <CreativeMatrix />}
-        {tab === "video" && <VideoScriptGenerator />}
-        {tab === "brand" && <BrandKitCard />}
-        {tab === "history" && <CreativeHistory onReusePrompt={reusePrompt} />}
-      </div>
+      {/* useSearchParams() 需要 Suspense 边界（Next.js App Router 静态渲染要求） */}
+      <Suspense fallback={null}>
+        <div className="mt-8">
+          {tab === "scene" && (
+            <SceneGenerator
+              draftPrompt={draftPrompt}
+              onDraftConsumed={() => setDraftPrompt(undefined)}
+            />
+          )}
+          {tab === "copy" && <CopyGenerator />}
+          {tab === "matrix" && <CreativeMatrix />}
+          {tab === "video" && <VideoScriptGenerator />}
+          {tab === "brand" && <BrandKitCard />}
+          {tab === "history" && <CreativeHistory onReusePrompt={reusePrompt} />}
+        </div>
+      </Suspense>
     </div>
   );
 }
