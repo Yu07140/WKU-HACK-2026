@@ -26,6 +26,7 @@ import {
   displayWeight,
 } from "@/lib/store/display";
 import { TrendBadge } from "@/components/ui/badge";
+import { ClipCustomizerModal } from "@/components/store/StrydeClips";
 import { STOCK_LIST, EU_SIZES } from "@/lib/data/stock";
 
 // 主推款 14534-H 商品视频 —— 真实视频放入 public/products/14534-h/video.mp4
@@ -464,6 +465,8 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
         </div>
       </div>
 
+      {/* STRYDE CLIPS customizer modal — "Click here to get personalized" */}
+      <ClipCustomizerModal open={clipOpen} onClose={() => setClipOpen(false)} />
     </div>
   );
 }
