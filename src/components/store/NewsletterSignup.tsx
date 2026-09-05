@@ -1,29 +1,35 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { useLang } from "@/lib/store/lang";
 
+/** Homepage email capture — launch updates only. No discount claims. */
 export function NewsletterSignup() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const router = useRouter();
-  const { t } = useLang();
+  const [joined, setJoined] = useState(false);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const trimmed = email.trim();
     if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
-      setError(t("Enter a valid email to unlock 15% off.", "请输入有效邮箱以解锁 85 折优惠。"));
+      setError("Enter a valid email to join the list.");
       return;
     }
     setError("");
-    router.push("/products?discount=STRYDE15");
+    setJoined(true);
+  }
+
+  if (joined) {
+    return (
+      <p className="mx-auto mt-5 max-w-md text-sm font-bold tracking-wider text-paper">
+        YOU&apos;RE ON THE LIST — WATCH YOUR INBOX.
+      </p>
+    );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto mt-8 flex max-w-md flex-col gap-2 sm:flex-row">
+    <form onSubmit={handleSubmit} className="mx-auto mt-5 flex max-w-md flex-col gap-2 sm:flex-row">
       <input
         type="email"
         value={email}
@@ -32,10 +38,11 @@ export function NewsletterSignup() {
           if (error) setError("");
         }}
         placeholder="you@email.com"
+        aria-label="Email address"
         className="h-12 flex-1 rounded-full border border-paper/20 bg-paper/10 px-5 text-sm text-paper placeholder:text-paper/40 outline-none focus:border-paper/50"
       />
       <Button type="submit" size="lg">
-        {t("GET 15% OFF", "立享 85 折")}
+        JOIN THE LIST
       </Button>
       {error && <p className="w-full text-left text-xs text-amber-300">{error}</p>}
     </form>

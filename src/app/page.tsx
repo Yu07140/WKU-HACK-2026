@@ -6,8 +6,9 @@ import { getProductById } from "@/lib/data/catalog";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
 import { NewsletterSignup } from "@/components/store/NewsletterSignup";
+import { StrydeClips } from "@/components/store/StrydeClips";
 import { useLang } from "@/lib/store/lang";
-import { CLIP_COLLECTIONS, ECOSYSTEM, STATUS } from "@/lib/data/brand";
+import { ECOSYSTEM, STATUS } from "@/lib/data/brand";
 
 export default function HomePage() {
   const { t } = useLang();
@@ -126,56 +127,7 @@ export default function HomePage() {
       </section>
 
       {/* ---------- MAKE IT YOURS. — STRYDE CLIPS ---------- */}
-      <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-        <div className="mb-12 grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
-          <div>
-            <div className="mb-3 text-xs font-bold tracking-[0.3em] text-ink/40">
-              {t("PERSONALIZE YOUR STRYDE", "个性化你的 STRYDE")}
-            </div>
-            <h2 className="text-4xl font-black leading-tight md:text-5xl">{ECOSYSTEM.clips}</h2>
-            <p className="mt-4 text-2xl font-bold tracking-wide text-ink/70">
-              {t("STRYDE CLIPS", "STRYDE CLIPS")}
-            </p>
-            <p className="mt-3 max-w-xl text-ink/60">
-              {t(
-                "Small details. Your signature. A new way to personalize the 14534-H with removable STRYDE-designed clips.",
-                "小细节，大标记。用可拆装的 STRYDE 设计 clip 个性化 14534-H。"
-              )}
-            </p>
-          </div>
-          <span className="inline-flex w-fit rounded-full bg-ink/90 px-4 py-1.5 text-xs font-black tracking-wider text-paper">
-            {STATUS.comingSoon}
-          </span>
-        </div>
-
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {CLIP_COLLECTIONS.map((c) => (
-            <div key={c.no} className="rounded-3xl border border-ink/10 bg-white p-6">
-              <div className="text-xs font-black tracking-[0.25em] text-ink/40">{c.no}</div>
-              <h3 className="mt-2 text-xl font-black tracking-wide">{t(c.name, c.name)}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink/55">{c.desc}</p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {c.samples.slice(0, 3).map((s) => (
-                  <span
-                    key={s}
-                    className="flex h-9 min-w-9 items-center justify-center rounded-lg border border-ink/15 bg-cream px-2 text-xs font-black tracking-wider text-ink/70"
-                  >
-                    {s}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-8">
-          <Link href="/clips">
-            <Button size="lg" variant="outline">
-              {t("EXPLORE STRYDE CLIPS", "探索 STRYDE CLIPS")} <ArrowRight size={17} />
-            </Button>
-          </Link>
-        </div>
-      </section>
+      <StrydeClips />
 
       {/* ---------- STRYDE DUO ---------- */}
       <section className="bg-ink text-paper">
@@ -291,8 +243,8 @@ export default function HomePage() {
             </div>
             <p className="mx-auto mt-2 max-w-md text-sm text-paper/40">
               {t(
-                "Get 15% off your first pair, plus launch updates and early access.",
-                "首双立享 15% 折扣，抢先获取发售动态与早鸟权益。"
+                "Get launch updates, product drops and early access.",
+                "获取发售动态、新品信息与早鸟权益。"
               )}
             </p>
             <NewsletterSignup />
