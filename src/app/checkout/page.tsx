@@ -6,10 +6,13 @@ import { CheckCircle2, Loader2, Lock, Shield, RotateCcw, Truck } from "lucide-re
 import { useCart } from "@/lib/store/cart";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
-import { formatUSD, ph } from "@/lib/utils";
+import { ph } from "@/lib/utils";
+import { displayNameString } from "@/lib/store/display";
+import { useCurrency } from "@/lib/store/currency";
 
 export default function CheckoutPage() {
   const { items, subtotal, discount, promoCode, clear } = useCart();
+  const { formatPrice } = useCurrency();
   const [loading, setLoading] = useState(false);
   const [orderId, setOrderId] = useState<string | null>(null);
   const [form, setForm] = useState({
@@ -20,8 +23,12 @@ export default function CheckoutPage() {
     card: "4242 4242 4242 4242",
   });
 
-  // $75 免运费 —— 按优惠前 subtotal 判断（保持原有业务规则不变）
-  const shipping = subtotal >= 75 ? 0 : 7.9;
+  // 运费 —— 与 /shipping 政策页一致：US 满 $75 免运费；UK/EU $12.50；CA/AU $14.90；其余 $14.90
+  const c = form.country.toLowerCase();
+  const isUS = c.includes("united states") || c.includes("usa");
+  const isUkEu = /united kingdom|uk|germany|france|netherlands|italy|spain|europe|eu\b/.test(c);
+  const zoneRate = isUS ? 7.9 : isUkEu ? 12.5 : 14.9;
+  const shipping = subtotal >= 75 ? 0 : zoneRate;
   const total = Math.max(0, subtotal - discount + shipping);
 
   async function submit(e: React.FormEvent) {
@@ -151,38 +158,38 @@ export default function CheckoutPage() {
             {items.map((i) => (
               <div key={`${i.productId}-${i.size}`} className="flex justify-between text-sm">
                 <span className="text-ink/70">
-                  {ph(i.productName)} × {i.qty}
+                  {ph(displayNameString(i.productName))} × {i.qty}
                   <span className="block text-xs text-ink/45">
                     {i.color} · {i.sizeSystem ?? "US"} {i.size}
                   </span>
                 </span>
-                <span className="font-semibold">{formatUSD(i.price * i.qty)}</span>
+                <span className="font-semibold">{formatPrice(i.price * i.qty)}</span>
               </div>
             ))}
           </div>
           <div className="mt-5 space-y-2 border-t border-ink/10 pt-4 text-sm">
             <div className="flex justify-between text-ink/65">
               <span>Subtotal</span>
-              <span>{formatUSD(subtotal)}</span>
+              <span>{formatPrice(subtotal)}</span>
             </div>
             {discount > 0 && promoCode && (
               <div className="flex justify-between text-accent font-bold">
                 <span>Discount ({promoCode})</span>
-                <span>-{formatUSD(discount)}</span>
+                <span>-{formatPrice(discount)}</span>
               </div>
             )}
             <div className="flex justify-between text-ink/65">
               <span>Shipping</span>
-              <span>{shipping === 0 ? "FREE" : formatUSD(shipping)}</span>
+              <span>{shipping === 0 ? "FREE" : formatPrice(shipping)}</span>
             </div>
             <div className="flex justify-between pt-1 text-base font-black">
               <span>Total</span>
-              <span>{formatUSD(total)}</span>
+              <span>{formatPrice(total)}</span>
             </div>
           </div>
           <Button size="lg" className="mt-6 w-full" disabled={loading}>
             {loading ? <Loader2 className="animate-spin" size={18} /> : <Lock size={16} />}
-            {loading ? "Processing..." : `Securely pay ${formatUSD(total)}`}
+            {loading ? "Processing..." : `Securely pay ${formatPrice(total)}`}
           </Button>
 
           {/* 信任元素 */}

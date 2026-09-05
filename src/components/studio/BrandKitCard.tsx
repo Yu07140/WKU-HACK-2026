@@ -38,12 +38,12 @@ export function BrandKitCard() {
           <div className="text-3xl font-black tracking-[0.14em]">
             STRYDE<span className="text-accent">.</span>
           </div>
-          <div className="mt-1 text-sm font-bold text-accent-dark">Step Beyond.</div>
+          <div className="mt-1 text-sm font-bold text-accent-dark">STAND UP. STAND OUT.</div>
         </div>
         <div>
           <SectionTitle icon={<Mic2 size={13} />}>Brand Positioning</SectionTitle>
           <p className="text-sm leading-relaxed text-ink/70">
-            Factory-direct footwear accelerated by AI-powered DTC workflows.
+            A footwear brand built for the way your day moves. One real product, a faster path to market.
           </p>
         </div>
         <div>

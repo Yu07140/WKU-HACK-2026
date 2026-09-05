@@ -96,6 +96,12 @@ export default function OrdersPage() {
                     <div className="text-xs text-slate-500">
                       {o.color} · US {o.size} × {o.qty}
                     </div>
+                    {o.factory_sku && (
+                      <div className="mt-0.5 font-mono text-[10px] text-slate-500">
+                        factory_sku: {o.factory_sku}
+                        {o.size_eu != null && ` · EU ${o.size_eu}`}
+                      </div>
+                    )}
                   </td>
                   <td className="py-3 pr-4 text-slate-300">{CHANNEL_LABEL[o.channel]}</td>
                   <td className="py-3 pr-4 font-black text-white">{formatUSD(o.amount)}</td>
@@ -118,6 +124,18 @@ export default function OrdersPage() {
       >
         <ExternalLink size={13} /> 打开独立站结账页，下一单试试实时回流
       </a>
+
+      {/* 履约单说明 —— 推单字段符合赛题最小数据模型，可直发供应商 */}
+      <Panel>
+        <div className="text-xs font-bold tracking-wider text-slate-400">
+          FACTORY FULFILLMENT RECORD · 推单字段
+        </div>
+        <p className="mt-2 text-xs leading-relaxed text-slate-500">
+          每笔订单携带可直发供应商的接单结构：order_id · brand_sku (productId) · factory_sku ·
+          size_eu · qty · color · ship_to_country (country) · shipping_method · promised_sla ·
+          customer_note。结账下单即自动填充，无需人工整理。
+        </p>
+      </Panel>
     </div>
   );
 }

@@ -27,15 +27,15 @@ const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
     items: [
       {
         q: "How long does shipping take?",
-        a: "International shipping cost and delivery estimate depend on the destination and logistics method. Final terms will be confirmed before live commercial launch.",
+        a: "Orders are produced in 3–5 business days, then international transit takes 8–15 days (estimate). See the full timeline on our Shipping page.",
       },
       {
         q: "Do you ship internationally?",
-        a: "International shipping options will be shown at checkout where available. Final shipping cost and delivery estimate depend on the destination and logistics method.",
+        a: "Yes — we ship worldwide from our factory, except a small number of restricted regions. Rates are flat by zone: $7.90 US, $12.50 UK/EU, $14.90 Canada/Australia.",
       },
       {
         q: "Is there free shipping?",
-        a: "Any free-shipping threshold (if offered) would be displayed at checkout. Final terms will be confirmed before live commercial launch.",
+        a: "Shipping is free on US orders over $75; otherwise a $7.90 flat rate applies at checkout.",
       },
     ],
   },
@@ -45,11 +45,11 @@ const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
     items: [
       {
         q: "What's your return policy?",
-        a: "Return and exchange terms are part of the competition fulfillment plan and must be confirmed before live commercial launch.",
+        a: "30-day try-on guarantee: indoor try-on is accepted, outdoor-worn pairs are not returnable. Full details on our Returns page.",
       },
       {
         q: "The shoes don't fit. Can I exchange them?",
-        a: "Exchange availability and process must be confirmed before live commercial launch. Please use the Size Guide to find your size before ordering.",
+        a: "Start a return for the pair that doesn't fit, then place a new order for the right size. Use the Size Guide to measure your foot before ordering.",
       },
     ],
   },
@@ -87,7 +87,7 @@ const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
     items: [
       {
         q: "Will I have to pay customs or import duties?",
-        a: "Import duties and taxes may depend on the destination country's rules. Final charges are determined by customs authorities. Customs handling for live sales has not yet been verified.",
+        a: "All orders ship DDU (Delivered Duty Unpaid): import duties and taxes are not included in your order total and are the customer's responsibility on delivery. See our Shipping page for details.",
       },
     ],
   },

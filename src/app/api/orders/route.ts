@@ -41,6 +41,11 @@ export async function POST(req: Request) {
         qty: it.qty ?? 1,
         amount: it.amount ?? p?.price ?? 0,
         channel,
+        // 履约单字段 —— 可直发供应商接单（赛题推单最小数据模型）
+        factory_sku: p?.sku,
+        size_eu: it.size ?? p?.sizes[0],
+        shipping_method: "standard",
+        promised_sla: "Production 3–5 business days + international transit 8–15 days",
       });
     }
   );

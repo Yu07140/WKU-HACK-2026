@@ -18,7 +18,7 @@ export const BRAND: BrandKit = {
 };
 
 export const BRAND_STORY = [
-  "STRYDE is a hackathon demo of a factory-direct footwear brand.",
+  "STRYDE is a footwear brand built for the way your day moves.",
   "Our featured product is factory SKU 14534-H — a black minimalist ankle boot with microfiber upper & lining, rear zipper and rubber outsole.",
   "We use AI to compress the design, creative, media and retail workflow into a single demo timeline.",
   "Pricing, shipping and policies shown on this site are demo data, not verified operational commitments.",
