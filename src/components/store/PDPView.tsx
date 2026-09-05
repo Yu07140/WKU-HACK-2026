@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -344,11 +344,11 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
               <Button size="lg" className="flex-1" onClick={handleAdd} disabled={!size}>
                 {added ? (
                   <>
-                    <Check size={18} /> Added to bag
+                    <Check size={18} /> Added to cart
                   </>
                 ) : (
                   <>
-                    <ShoppingBag size={18} /> {size ? "Add to bag" : "Select a size"}
+                    <ShoppingBag size={18} /> {size ? "Add to cart" : "Select a size"}
                   </>
                 )}
               </Button>

@@ -1,19 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingBag, Sparkles } from "lucide-react";
+import { ShoppingBag, Sparkles, Globe } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/lib/store/currency";
+import { useLang } from "@/lib/store/lang";
 import { BRAND } from "@/lib/data/brand";
-
-const NAV = [
-  { href: "/products", label: "Collection" },
-  { href: "/studio", label: "Studio", icon: Sparkles },
-];
 
 export function SiteHeader() {
   const { count } = useCart();
   const { currency, setCurrency } = useCurrency();
+  const { lang, setLang, t } = useLang();
+
+  const NAV = [
+    { href: "/products", label: t("Collection", "产品") },
+    { href: "/studio", label: t("Studio", "工坊"), icon: Sparkles },
+  ];
+
   return (
     <header className="sticky top-0 z-40 border-b border-ink/10 bg-paper/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
@@ -49,6 +52,15 @@ export function SiteHeader() {
               </option>
             ))}
           </select>
+          {/* 语言切换 */}
+          <button
+            onClick={() => setLang(lang === "EN" ? "CN" : "EN")}
+            className="flex items-center gap-1 rounded-md border border-ink/10 bg-white px-2 py-1 text-xs font-semibold text-ink/70 transition hover:border-ink/30 focus:outline-none focus:ring-1 focus:ring-accent"
+            aria-label="Switch language"
+          >
+            <Globe size={13} className="text-accent" />
+            {lang === "EN" ? "EN" : "中文"}
+          </button>
           <Link
             href="/cart"
             className="relative rounded-full p-2 text-ink transition hover:bg-ink/5"
