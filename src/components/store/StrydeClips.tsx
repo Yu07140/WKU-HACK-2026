@@ -39,6 +39,12 @@ export function ClipCustomizerModal({
   const [letters, setLetters] = useState<ClipLetter[]>(["A"]);
   const [size, setSize] = useState(42);
   const [saved, setSaved] = useState(false);
+  const [previewFailed, setPreviewFailed] = useState(false);
+
+  /* Reset the placeholder/error state whenever the selected letter changes. */
+  useEffect(() => {
+    setPreviewFailed(false);
+  }, [letters[0]]);
 
   /* Modal: ESC to close + body scroll lock */
   useEffect(() => {
@@ -148,11 +154,16 @@ export function ClipCustomizerModal({
             <div className="grid gap-6 md:grid-cols-2">
               {/* live letter preview — same studio asset as the homepage picker */}
               <div className="relative aspect-square overflow-hidden rounded-2xl border border-ink/10 bg-white">
-                {letters.length > 0 ? (
+                {letters.length > 0 && previewFailed ? (
+                  <span className="absolute inset-0 flex items-center justify-center px-6 text-center text-xs font-bold text-ink/40">
+                    Letter preview coming soon.
+                  </span>
+                ) : letters.length > 0 ? (
                   <img
                     key={letters[0]}
                     src={clipLetterImage(letters[0])}
                     alt={`14534-H boot with silver ${letters[0]} STRYDE Clip preview`}
+                    onError={() => setPreviewFailed(true)}
                     className="h-full w-full object-contain"
                     style={{ animation: "clipFade 180ms ease" }}
                   />
@@ -268,6 +279,14 @@ export function ClipCustomizerModal({
 
 export function StrydeClips() {
   const [selectedLetter, setSelectedLetter] = useState<ClipLetter>("A");
+  const [previewFailed, setPreviewFailed] = useState(false);
+
+  const previewImage = clipLetterImage(selectedLetter);
+
+  /* Reset the error state whenever the selected letter changes. */
+  useEffect(() => {
+    setPreviewFailed(false);
+  }, [selectedLetter]);
 
   /* Preload previous + next letter so switching feels instant. */
   useEffect(() => {
@@ -300,18 +319,30 @@ export function StrydeClips() {
 
       {/* ---------- HERO — live preview (60%) + letter picker (40%) ---------- */}
       <div className="grid gap-8 lg:grid-cols-5 lg:gap-10">
-        {/* live preview — the boot IS the interaction */}
+        {/* live preview — the whole image swaps on click (no letter overlay) */}
         <div className="lg:col-span-3">
           <div className="overflow-hidden rounded-3xl border border-ink/10 bg-white">
-            <img
-              key={selectedLetter}
-              src={clipLetterImage(selectedLetter)}
-              alt={`14534-H boot with silver ${selectedLetter} STRYDE Clip preview`}
-              width={960}
-              height={1200}
-              className="h-auto w-full object-contain"
-              style={{ animation: "clipFade 180ms ease" }}
-            />
+            {previewFailed ? (
+              <div className="flex aspect-[4/5] w-full flex-col items-center justify-center bg-white px-6 text-center">
+                <p className="text-xs font-black tracking-[0.2em] text-ink/45">
+                  LETTER PREVIEW COMING SOON
+                </p>
+                <p className="mt-1 text-[11px] text-ink/35">
+                  We&apos;re adding this letter&apos;s final image.
+                </p>
+              </div>
+            ) : (
+              <img
+                key={selectedLetter}
+                src={previewImage}
+                alt={`STRYDE 14534-H with silver ${selectedLetter} letter clip preview`}
+                width={960}
+                height={1200}
+                onError={() => setPreviewFailed(true)}
+                className="h-auto w-full object-contain"
+                style={{ animation: "clipFade 180ms ease" }}
+              />
+            )}
           </div>
         </div>
 
@@ -343,7 +374,10 @@ export function StrydeClips() {
                   <button
                     key={letter}
                     type="button"
-                    onClick={() => setSelectedLetter(letter)}
+                    onClick={() => {
+                      setPreviewFailed(false);
+                      setSelectedLetter(letter);
+                    }}
                     aria-pressed={active}
                     aria-label={`Preview STRYDE Clip letter ${letter}`}
                     className={`flex h-9 items-center justify-center rounded-md border text-xs font-bold transition ${

@@ -20,6 +20,7 @@ const STORAGE_KEY = "stryde-clip-letter";
 export function LetterSelector() {
   const [letter, setLetter] = useState<ClipLetter>("A");
   const [saved, setSaved] = useState(false);
+  const [previewFailed, setPreviewFailed] = useState(false);
 
   // Restore a previously saved letter; fresh visitors default to "A".
   useEffect(() => {
@@ -30,6 +31,11 @@ export function LetterSelector() {
       /* storage unavailable — keep default "A" */
     }
   }, []);
+
+  // Reset the placeholder/error state whenever the selected letter changes.
+  useEffect(() => {
+    setPreviewFailed(false);
+  }, [letter]);
 
   // Preload the neighboring letters so switching feels instant.
   useEffect(() => {
@@ -70,13 +76,25 @@ export function LetterSelector() {
           </div>
           <div className="relative overflow-hidden rounded-3xl bg-cream">
             <div className="aspect-[4/5] w-full">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                key={letter}
-                src={clipLetterImage(letter)}
-                alt={`STRYDE 14534-H with silver letter ${letter} clip — full boot preview`}
-                className="h-full w-full object-contain"
-              />
+              {previewFailed ? (
+                <div className="flex h-full w-full flex-col items-center justify-center px-6 text-center">
+                  <p className="text-xs font-black tracking-[0.2em] text-ink/45">
+                    LETTER PREVIEW COMING SOON
+                  </p>
+                  <p className="mt-1 text-[11px] text-ink/35">
+                    We&apos;re adding this letter&apos;s final image.
+                  </p>
+                </div>
+              ) : (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  key={letter}
+                  src={clipLetterImage(letter)}
+                  alt={`STRYDE 14534-H with silver letter ${letter} clip — full boot preview`}
+                  onError={() => setPreviewFailed(true)}
+                  className="h-full w-full object-contain"
+                />
+              )}
             </div>
             <div className="absolute left-4 top-4 rounded-full bg-ink/80 px-3 py-1 text-xs font-black tracking-wider text-paper">
               SILVER LETTER {letter}
@@ -97,7 +115,10 @@ export function LetterSelector() {
               <button
                 key={l}
                 type="button"
-                onClick={() => setLetter(l)}
+                onClick={() => {
+                  setPreviewFailed(false);
+                  setLetter(l);
+                }}
                 aria-pressed={l === letter}
                 aria-label={`Select letter ${l}`}
                 className={
