@@ -39,9 +39,9 @@ export default function HomePage() {
               STRYDE
             </div>
             <h1 className="text-5xl font-black leading-[1.02] tracking-tight md:text-7xl">
-              {t("STAND UP.", "站起来。")}
+              {t("STAND UP", "站起来")}
               <br />
-              <span className="text-ink/80">{t("STAND OUT.", "出众。")}</span>
+              <span className="text-ink/80">{t("STAND OUT", "出众")}</span>
             </h1>
             <p className="mt-7 max-w-md text-lg leading-relaxed text-ink/65">
               {t(
@@ -110,9 +110,9 @@ export default function HomePage() {
             {t("THE DAILY ROUTE", "日常路线")}
           </div>
           <h2 className="text-4xl font-black leading-tight md:text-5xl">
-            {t("ONE PAIR.", "一双鞋。")}
+            {t("ONE PAIR", "一双鞋")}
             <br />
-            {t("MORE PLANS.", "更多可能。")}
+            {t("MORE PLANS", "更多可能")}
           </h2>
         </div>
         <div className="grid gap-8 md:grid-cols-3">
@@ -134,9 +134,9 @@ export default function HomePage() {
               {t("EDITORIAL", "编辑精选")}
             </div>
             <h2 className="text-4xl font-black leading-tight md:text-5xl">
-              {t("ONE BOOT.", "一双靴。")}
+              {t("ONE BOOT", "一双靴")}
               <br />
-              {t("THREE ROUTINES.", "三种场景。")}
+              {t("THREE ROUTINES", "三种场景")}
             </h2>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
@@ -191,7 +191,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-5xl px-6 pb-20">
         <div className="rounded-3xl bg-ink p-10 text-center text-paper md:p-14">
           <h2 className="text-3xl font-black leading-tight md:text-4xl">
-            {t("STAND UP. STAND OUT.", "站起来。出众。")}
+            {t("STAND UP STAND OUT", "站起来 出众")}
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-paper/60">
             {t("The 14534-H — a clean black boot for the way your day moves.", "14534-H——为你一天的每个时刻而生的黑色靴。")}
