@@ -60,11 +60,7 @@ export function ReviewsSection({ product }: { product: Product }) {
   const { t } = useLang();
   return (
     <section id="reviews" className="mt-24">
-<<<<<<< Updated upstream
-      <h2 className="text-3xl font-black">Customer Reviews</h2>
-=======
       <h2 className="text-3xl font-black">{t("Customer Reviews", "顾客评价")}</h2>
->>>>>>> Stashed changes
 
       {/* ---------- PRE-LAUNCH REVIEW PREVIEW (demo content) ---------- */}
       <div className="mt-6 rounded-3xl border border-ink/10 bg-cream/60 p-6 md:p-8">

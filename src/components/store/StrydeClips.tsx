@@ -2,17 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-<<<<<<< Updated upstream
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { CLIP_LETTERS, clipLetterImage, type ClipLetter } from "@/lib/data/strydeClips";
-
-/**
- * STRYDE CLIPS — brand personalization module (homepage).
- * Single-letter selection: click a letter and the 14534-H preview updates
- * instantly (static /clips/letters/{A–Z}.png assets — no runtime generation).
- * Coming soon: no price / stock / cart / shipping anywhere in this module.
-=======
 import { ArrowRight, Check, RotateCcw, ShoppingBag, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,13 +19,10 @@ import { useCart } from "@/lib/store/cart";
  * - PDP (ClipCustomizerModal): same letter preview, plus EU size and
  *   SAVE MY CONCEPT — ADD TO CART (adds the real 14534-H boot to the cart
  *   with the letter attached as a personalization note).
->>>>>>> Stashed changes
  */
 
 const STRYDE_LETTERS = ["S", "T", "R", "Y", "D", "E"];
 
-<<<<<<< Updated upstream
-=======
 /**
  * Concept-preview / customizer modal — self-contained and reusable.
  * Used on the homepage (CUSTOMIZE YOUR INITIALS) and on the PDP
@@ -280,7 +266,6 @@ export function ClipCustomizerModal({
   );
 }
 
->>>>>>> Stashed changes
 export function StrydeClips() {
   const [selectedLetter, setSelectedLetter] = useState<ClipLetter>("A");
 
