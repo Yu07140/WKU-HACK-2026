@@ -7,7 +7,6 @@ import { PromoBanner } from "@/components/store/PromoBanner";
 
 export default function ProductsPage() {
   const hero = getProductById("boot-14534-h");
-  const concepts = PRODUCTS.filter((p) => p.id !== hero?.id);
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12 md:py-16">
@@ -75,20 +74,25 @@ export default function ProductsPage() {
         )}
       </section>
 
-      {/* CREATIVE LAB — secondary concepts */}
+      {/* STRYDE CLIPS — concept teaser (full module on homepage) */}
       <section>
-        <div className="mb-6">
-          <div className="text-xs font-bold tracking-[0.3em] text-ink/40">
-            CREATIVE LAB
+        <div className="flex flex-col items-start justify-between gap-4 rounded-3xl border border-ink/10 bg-white p-8 sm:flex-row sm:items-center">
+          <div>
+            <div className="mb-1 text-xs font-bold tracking-[0.3em] text-ink/40">
+              MAKE IT YOURS.
+            </div>
+            <h2 className="text-2xl font-black">STRYDE CLIPS</h2>
+            <p className="mt-1 max-w-xl text-sm text-ink/55">
+              Clip-on letter details designed around the front loop of the 14534-H —
+              concept only, coming next.
+            </p>
           </div>
-          <p className="mt-2 max-w-xl text-ink/55">
-            Secondary footwear concepts explored during the sprint.
-          </p>
-        </div>
-        <div className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
-          {concepts.map((p) => (
-            <ProductCard key={p.id} product={p} concept />
-          ))}
+          <Link
+            href="/#stryde-clips"
+            className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-bold text-paper transition hover:bg-ink/85"
+          >
+            EXPLORE THE IDEA <ArrowRight size={16} />
+          </Link>
         </div>
       </section>
     </div>
