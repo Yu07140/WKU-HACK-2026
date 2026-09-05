@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, ShoppingBag } from "lucide-react";
 import { PRODUCTS, getProductById } from "@/lib/data/catalog";
+import { ProductCard } from "@/components/store/ProductCard";
 import { StrydeClips } from "@/components/store/StrydeClips";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
@@ -12,13 +13,10 @@ import { useLang } from "@/lib/store/lang";
 export default function HomePage() {
   const { t } = useLang();
   const hero = getProductById("boot-14534-h") ?? PRODUCTS[0];
-<<<<<<< Updated upstream
   const others = [...PRODUCTS]
     .filter((p) => p.id !== hero.id)
     .sort((a, b) => b.heatScore - a.heatScore)
     .slice(0, 3);
-=======
->>>>>>> Stashed changes
 
   const PLANS = [
     { no: "01", title: t("WORKDAY", "工作日"), desc: t("A clean black silhouette that fits easily into a sharper everyday wardrobe.", "利落的黑色轮廓，轻松融入日常穿搭。") },
@@ -59,7 +57,7 @@ export default function HomePage() {
                 </Button>
               </Link>
               <Link href="/find-your-stryde">
-                <Button size="lg" variant="outline">
+                <Button size="lg" variant="outline" className="text-ink border-ink hover:bg-ink hover:text-paper">
                   {t("FIND MY PAIR", "找到我的鞋")} <ArrowRight size={18} />
                 </Button>
               </Link>
@@ -99,7 +97,7 @@ export default function HomePage() {
             </p>
           </div>
           <Link href="/find-your-stryde">
-            <Button size="lg" variant="dark" className="bg-paper text-ink hover:bg-paper/90">
+            <Button size="lg" className="!bg-paper !text-ink hover:!bg-white">
               {t("FIND MY PAIR", "找到我的鞋")} <ArrowRight size={18} />
             </Button>
           </Link>
@@ -166,7 +164,9 @@ export default function HomePage() {
         </div>
       </section>
 
-<<<<<<< Updated upstream
+      {/* ---------- STRYDE CLIPS — brand personalization concept around 14534-H ---------- */}
+      <StrydeClips />
+
       {/* ---------- CREATIVE LAB — secondary concepts ---------- */}
       <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
         <div className="mb-10">
@@ -190,10 +190,6 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-=======
-      {/* ---------- STRYDE CLIPS — brand personalization concept around 14534-H ---------- */}
-      <StrydeClips />
->>>>>>> Stashed changes
 
       {/* ---------- CTA ---------- */}
       <section className="mx-auto max-w-5xl px-6 pb-20">
