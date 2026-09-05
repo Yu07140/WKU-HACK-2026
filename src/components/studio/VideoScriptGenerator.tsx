@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Clapperboard, Loader2, Copy, Check, RotateCcw } from "lucide-react";
 import { PRODUCTS, getProductById } from "@/lib/data/catalog";
 import { Button } from "@/components/ui/button";
@@ -9,9 +10,13 @@ import { Label, Select } from "@/components/ui/input";
 import { generateVideoScript, scriptToText, type VideoScript } from "@/lib/ai/videoScript";
 
 export function VideoScriptGenerator() {
-  const [productId, setProductId] = useState(
-    getProductById("boot-14534-h")?.id ?? PRODUCTS[0].id
-  );
+  const searchParams = useSearchParams();
+  const [productId, setProductId] = useState(() => {
+    // 支持从 AI 导购 /studio?productId=xxx 深链自动选中对应商品
+    const fromUrl = searchParams.get("productId");
+    if (fromUrl && PRODUCTS.some((p) => p.id === fromUrl)) return fromUrl;
+    return getProductById("boot-14534-h")?.id ?? PRODUCTS[0].id;
+  });
   const [variant, setVariant] = useState(0);
   const [loading, setLoading] = useState(false);
   const [script, setScript] = useState<VideoScript | null>(null);

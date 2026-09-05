@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Wand2, Loader2, Copy, Check, Download, ExternalLink, RotateCcw } from "lucide-react";
 import { PRODUCTS, getProductById } from "@/lib/data/catalog";
 import { IMAGE_STYLES, aiImageUrl, type ImageSize } from "@/lib/ai/image";
@@ -24,9 +25,13 @@ export function SceneGenerator({
   draftPrompt?: string;
   onDraftConsumed?: () => void;
 }) {
-  const [productId, setProductId] = useState(
-    getProductById("boot-14534-h")?.id ?? PRODUCTS[0].id
-  );
+  const searchParams = useSearchParams();
+  const [productId, setProductId] = useState(() => {
+    // 支持从 AI 导购 /studio?productId=xxx 深链自动选中对应商品
+    const fromUrl = searchParams.get("productId");
+    if (fromUrl && PRODUCTS.some((p) => p.id === fromUrl)) return fromUrl;
+    return getProductById("boot-14534-h")?.id ?? PRODUCTS[0].id;
+  });
   const [styleId, setStyleId] = useState(IMAGE_STYLES[0].id);
   const [size, setSize] = useState<ImageSize>("square");
   const [extra, setExtra] = useState("");

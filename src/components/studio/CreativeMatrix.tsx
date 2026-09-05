@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { LayoutGrid, Loader2, Copy, Check, Download, ExternalLink } from "lucide-react";
 import { PRODUCTS, getProductById } from "@/lib/data/catalog";
 import { aiImageUrl } from "@/lib/ai/image";
@@ -43,9 +44,13 @@ const PLATFORMS: {
 const ANGLES: Angle[] = ["style", "versatility", "value", "detail"];
 
 export function CreativeMatrix() {
-  const [productId, setProductId] = useState(
-    getProductById("boot-14534-h")?.id ?? PRODUCTS[0].id
-  );
+  const searchParams = useSearchParams();
+  const [productId, setProductId] = useState(() => {
+    // 支持从 AI 导购 /studio?productId=xxx 深链自动选中对应商品
+    const fromUrl = searchParams.get("productId");
+    if (fromUrl && PRODUCTS.some((p) => p.id === fromUrl)) return fromUrl;
+    return getProductById("boot-14534-h")?.id ?? PRODUCTS[0].id;
+  });
   const [angle, setAngle] = useState<Angle>("style");
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
