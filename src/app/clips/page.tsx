@@ -9,6 +9,25 @@ import { CLIP_COLLECTIONS, STATUS } from "@/lib/data/brand";
 import { LetterSelector } from "@/components/clips/LetterSelector";
 import { useLang } from "@/lib/store/lang";
 
+// Render-site translations for CLIP_COLLECTIONS data (data file stays untouched).
+const COLLECTION_NAME_CN: Record<string, string> = {
+  SIGNATURE: "品牌签名",
+  MONO: "极简符号",
+  PERSONAL: "专属字母",
+  CITY: "城市代码",
+};
+
+const COLLECTION_DESC_CN: Record<string, string> = {
+  "STRYDE-branded marks designed around the brand wordmark.":
+    "以 STRYDE 品牌字标为灵感的标志性字母扣。",
+  "Minimal graphic symbols in black, graphite and silver-tone.":
+    "黑色、石墨与银色调的极简图形符号。",
+  "Choose your initial — a quiet, personal signature.":
+    "选择你的首字母——低调的个人签名。",
+  "City-inspired text identity. No official logos or trademarks.":
+    "城市灵感的文字标识，不含官方标志或商标。",
+};
+
 export default function ClipsPage() {
   const { t } = useLang();
   const hero = getProductById("boot-14534-h");
@@ -125,8 +144,12 @@ export default function ClipsPage() {
               className="group flex flex-col rounded-3xl border border-ink/10 bg-white p-6 transition hover:border-ink/30"
             >
               <div className="text-xs font-black tracking-[0.25em] text-ink/40">{c.no}</div>
-              <h3 className="mt-2 text-xl font-black tracking-wide">{c.name}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink/55">{c.desc}</p>
+              <h3 className="mt-2 text-xl font-black tracking-wide">
+                {t(c.name, COLLECTION_NAME_CN[c.name] ?? c.name)}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink/55">
+                {t(c.desc, COLLECTION_DESC_CN[c.desc] ?? c.desc)}
+              </p>
               <div className="mt-auto pt-5">
                 <div className="flex flex-wrap gap-2">
                   {c.samples.map((s) => (
