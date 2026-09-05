@@ -4,11 +4,25 @@ import Link from "next/link";
 import type { Product } from "@/lib/types";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { TrendBadge } from "@/components/ui/badge";
+<<<<<<< Updated upstream
 import { ph, PLACEHOLDER_MODE, cn } from "@/lib/utils";
 import { useCurrency } from "@/lib/store/currency";
 import { displayName, displayTagline } from "@/lib/store/display";
 
 export function ProductCard({ product, concept = false }: { product: Product; concept?: boolean }) {
+=======
+import { ph, formatUSD, PLACEHOLDER_MODE, cn } from "@/lib/utils";
+import { useCurrency } from "@/lib/store/currency";
+import { displayName, displayTagline } from "@/lib/store/display";
+
+export function ProductCard({
+  product,
+  concept = false,
+}: {
+  product: Product;
+  concept?: boolean;
+}) {
+>>>>>>> Stashed changes
   const name = displayName(product);
   const tagline = displayTagline(product);
   const { formatPrice } = useCurrency();
@@ -20,8 +34,16 @@ export function ProductCard({ product, concept = false }: { product: Product; co
     >
       <div className="relative overflow-hidden rounded-2xl bg-cream">
         <ProductImage
-          src={product.heroImage ?? product.image ?? product.colors.find((c) => c.realImage)?.realImage ?? product.colors.find((c) => c.image)?.image}
-          prompt={product.imagePrompt + ", professional e-commerce product photography, soft cream studio background, soft lighting"}
+          src={
+            product.heroImage ??
+            product.image ??
+            product.colors.find((c) => c.realImage)?.realImage ??
+            product.colors.find((c) => c.image)?.image
+          }
+          prompt={
+            product.imagePrompt +
+            ", professional e-commerce product photography, soft cream studio background, soft lighting"
+          }
           alt={name}
           className="aspect-square transition duration-500 group-hover:scale-[1.03]"
         />
@@ -72,7 +94,13 @@ export function ProductCard({ product, concept = false }: { product: Product; co
               <div className="text-[11px] text-ink/40">TBC</div>
             )}
             {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
+<<<<<<< Updated upstream
               <div className="text-xs text-ink/40 line-through">{formatPrice(product.compareAt)}</div>
+=======
+              <div className="text-xs text-ink/40 line-through">
+                {formatPrice(product.compareAt)}
+              </div>
+>>>>>>> Stashed changes
             )}
           </div>
         )}

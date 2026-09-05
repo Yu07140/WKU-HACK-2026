@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Trash2, ArrowRight, ShoppingBag, Check, X } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
@@ -25,6 +25,19 @@ export default function CartPage() {
   const { formatPrice } = useCurrency();
   const [promoInput, setPromoInput] = useState("");
   const [promoMsg, setPromoMsg] = useState<{ ok: boolean; text: string } | null>(null);
+
+  // 邮件订阅引流：若 localStorage 有待应用的优惠码，自动应用
+  useEffect(() => {
+    const pending = localStorage.getItem("stryde-pending-promo");
+    if (pending && !promoCode) {
+      const res = applyPromo(pending);
+      if (res.ok) {
+        localStorage.removeItem("stryde-pending-promo");
+        setPromoMsg({ ok: true, text: `${pending} applied — 15% off your order` });
+        setTimeout(() => setPromoMsg(null), 3000);
+      }
+    }
+  }, [promoCode, applyPromo]);
 
   // $75 免运费 —— 按优惠前 subtotal 判断（保持原有业务规则不变）
   const shipping = subtotal >= 75 || subtotal === 0 ? 0 : 7.9;

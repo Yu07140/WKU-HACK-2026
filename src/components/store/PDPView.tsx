@@ -27,15 +27,56 @@ import {
   displayWeight,
 } from "@/lib/store/display";
 import { TrendBadge } from "@/components/ui/badge";
+import { STOCK_LIST, EU_SIZES } from "@/lib/data/stock";
 
 // 主推款 14534-H 商品视频 —— 真实视频放入 public/products/14534-h/video.mp4
 const HERO_VIDEO = "/products/14534-h/video.mp4";
 const HERO_PRODUCT_ID = "boot-14534-h";
 
-export function PDPView({ product }: { product: Product }) {
+/** catalog model → 温州仓库存表 itemNo 映射（5910-5 货盘号实为 5919-5） */
+const MODEL_TO_STOCK: Record<string, string> = {
+  "5910-5": "5919-5",
+};
+
+/** 颜色名归一化用于匹配库存表 */
+function normColor(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z]/g, "")
+    .replace("pattern", "")
+    .replace("leather", "");
+}
+
+/** 标准 US→EU 男码转换（用于温州仓 EU 库存匹配） */
+const US_TO_EU: Record<number, number> = {
+  5: 37, 6: 39, 7: 40, 8: 41, 9: 42, 10: 43, 11: 44, 12: 45,
+};
+
+/** 取某商品某配色某尺码的温州仓现货双数；无匹配返回 null */
+function getSizeStock(
+  product: Product,
+  colorName: string,
+  displaySize: number
+): number | null {
+  if (!product.model) return null;
+  const itemNo = MODEL_TO_STOCK[product.model] ?? product.model;
+  const row = STOCK_LIST.find(
+    (r) =>
+      r.itemNo === itemNo && normColor(r.color) === normColor(colorName)
+  );
+  if (!row) return null;
+  const euSize =
+    product.sizeSystem === "EU" ? displaySize : US_TO_EU[displaySize];
+  if (euSize == null) return null;
+  const idx = EU_SIZES.indexOf(euSize as (typeof EU_SIZES)[number]);
+  if (idx === -1) return null;
+  return row.sizes[idx];
+}
+
+export function PDPView({ product, initialColorIdx = 0 }: { product: Product; initialColorIdx?: number }) {
   const { add } = useCart();
   const { formatPrice } = useCurrency();
-  const [colorIdx, setColorIdx] = useState(0);
+  const [colorIdx, setColorIdx] = useState(initialColorIdx);
   const [media, setMedia] = useState<"image" | "video">("image");
   const [size, setSize] = useState<number | null>(null);
   const [qty, setQty] = useState(1);
@@ -201,11 +242,119 @@ export function PDPView({ product }: { product: Product }) {
         <h1 className="mt-3 text-4xl font-black">{ph(name)}</h1>
         <p className="mt-1 text-lg text-ink/55">{tagline}</p>
 
+<<<<<<< Updated upstream
         {isHero && (
           <div className="mt-4 flex items-baseline gap-3">
             <span className="text-3xl font-black">{formatPrice(product.price)}</span>
             {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
               <span className="text-lg text-ink/40 line-through">{formatPrice(product.compareAt)}</span>
+=======
+        <div className="mt-4 flex items-baseline gap-3">
+          <span className="text-3xl font-black">{formatPrice(product.price)}</span>
+          {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
+            <span className="text-lg text-ink/40 line-through">{formatPrice(product.compareAt)}</span>
+          )}
+          {!product.demoPricing && (
+            <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-bold text-accent-dark">
+              Factory Direct · Save {formatPrice(product.compareAt ? product.compareAt - product.price : Math.round(product.price * 0.5))}
+            </span>
+          )}
+        </div>
+
+        {/* 配色 */}
+        <div className="mt-7">
+          <div className="mb-2 text-sm font-bold">
+            Color: <span className="font-normal text-ink/60">{color.name}</span>
+          </div>
+          <div className="flex gap-2.5">
+            {product.colors.map((c, i) => (
+              <button
+                key={c.name}
+                onClick={() => setColorIdx(i)}
+                className={cn(
+                  "h-9 w-9 rounded-full border-2 transition",
+                  i === colorIdx ? "border-ink scale-110" : "border-ink/15"
+                )}
+                style={{ background: c.hex }}
+                title={c.name}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* 尺码 */}
+        <div className="mt-6">
+          <div className="mb-2 flex justify-between text-sm font-bold">
+            <span>
+              Size: {sizeLabel} {size ?? "—"}
+            </span>
+            <Link
+              href="/size-guide"
+              className="font-normal text-ink/50 hover:text-accent hover:underline"
+            >
+              Not sure? See size guide →
+            </Link>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {product.sizes.map((s) => {
+              const stk = getSizeStock(product, color.name, s);
+              const soldOut = stk !== null && stk === 0;
+              return (
+                <button
+                  key={s}
+                  onClick={() => !soldOut && setSize(s)}
+                  disabled={soldOut}
+                  className={cn(
+                    "relative flex h-11 w-14 flex-col items-center justify-center rounded-xl border text-sm font-bold transition",
+                    soldOut
+                      ? "cursor-not-allowed border-ink/10 bg-ink/5 text-ink/30"
+                      : size === s
+                        ? "border-ink bg-ink text-paper"
+                        : "border-ink/20 bg-white hover:border-ink/60"
+                  )}
+                >
+                  <span>{s}</span>
+                  {stk !== null && !soldOut && (
+                    <span className="text-[9px] font-normal opacity-60">
+                      {stk}
+                    </span>
+                  )}
+                  {soldOut && (
+                    <span className="text-[9px] font-normal">SOLD</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 数量 + 加购 */}
+        <div className="mt-8 flex gap-3">
+          <div className="flex h-[52px] items-center rounded-full border border-ink/20 bg-white">
+            <button
+              className="h-full w-11 text-xl font-bold"
+              onClick={() => setQty((q) => Math.max(1, q - 1))}
+            >
+              −
+            </button>
+            <span className="w-8 text-center font-bold">{qty}</span>
+            <button
+              className="h-full w-11 text-xl font-bold"
+              onClick={() => setQty((q) => q + 1)}
+            >
+              +
+            </button>
+          </div>
+          <Button size="lg" className="flex-1" onClick={handleAdd} disabled={!size}>
+            {added ? (
+              <>
+                <Check size={18} /> Added to bag
+              </>
+            ) : (
+              <>
+                <ShoppingBag size={18} /> {size ? "Add to bag" : "Select a size"}
+              </>
+>>>>>>> Stashed changes
             )}
             {product.demoPricing && (
               <span className="rounded-full bg-ink/10 px-2.5 py-0.5 text-xs font-bold text-ink/55">
@@ -389,6 +538,9 @@ export function PDPView({ product }: { product: Product }) {
               label="Size range"
               value={`${sizeLabel} ${product.sizes[0]}–${product.sizes[product.sizes.length - 1]}`}
             />
+            {product.construction && (
+              <Spec label="Construction" value={product.construction} />
+            )}
             <Spec label="Upper" value={parseMaterial(product.material, "upper")} />
             <Spec label="Lining" value={parseMaterial(product.material, "lining")} />
             <Spec label="Outsole" value={parseMaterial(product.material, "outsole")} />
@@ -396,6 +548,28 @@ export function PDPView({ product }: { product: Product }) {
             {product.sku && <Spec label="Product code" value={product.sku} />}
           </dl>
         </div>
+<<<<<<< Updated upstream
+=======
+
+        {/* 服务承诺 — 4 项：免运费 + 30 天退货 + 真实交期 + 关税 */}
+        <div className="mt-8 grid grid-cols-2 gap-3 rounded-2xl border border-ink/10 bg-white p-4 text-center text-xs font-semibold text-ink/70 sm:grid-cols-4">
+          <div className="flex flex-col items-center gap-1.5">
+            <Truck size={18} className="text-accent" /> Free ship over $75
+          </div>
+          <div className="flex flex-col items-center gap-1.5">
+            <RotateCcw size={18} className="text-accent" /> 30-day returns
+          </div>
+          <div className="flex flex-col items-center gap-1.5">
+            <Factory size={18} className="text-accent" />
+            {product.leadTimeDays != null
+              ? `${product.leadTimeDays}-day production`
+              : "Production TBC"}
+          </div>
+          <div className="flex flex-col items-center gap-1.5">
+            <ShoppingBag size={18} className="text-accent" /> DDU — duties may apply
+          </div>
+        </div>
+>>>>>>> Stashed changes
       </div>
     </div>
   );

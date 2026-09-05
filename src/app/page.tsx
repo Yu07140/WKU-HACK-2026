@@ -4,6 +4,7 @@ import { PRODUCTS, getProductById } from "@/lib/data/catalog";
 import { ProductCard } from "@/components/store/ProductCard";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
+import { NewsletterSignup } from "@/components/store/NewsletterSignup";
 
 const PLANS = [
   {
@@ -73,6 +74,11 @@ export default function HomePage() {
                   SHOP THE BOOT <ArrowRight size={18} />
                 </Button>
               </Link>
+              <Link href="/find-your-stryde">
+                <Button size="lg" variant="outline">
+                  FIND MY PAIR <ArrowRight size={18} />
+                </Button>
+              </Link>
               <Link href="/about" className="text-sm font-bold text-ink/70 underline underline-offset-4 decoration-ink/30">
                 EXPLORE STRYDE
               </Link>
@@ -95,6 +101,24 @@ export default function HomePage() {
               className="aspect-[4/5] rounded-3xl shadow-2xl"
             />
           </div>
+        </div>
+      </section>
+
+      {/* ---------- FIND YOUR STRYDE — Style Quiz 入口 ---------- */}
+      <section className="bg-ink text-paper">
+        <div className="mx-auto flex max-w-7xl flex-col items-start gap-6 px-6 py-16 md:py-20 md:flex-row md:items-center md:justify-between">
+          <div>
+            <div className="text-xs font-bold tracking-[0.3em] text-paper/45">STYLE QUIZ</div>
+            <h2 className="mt-3 text-4xl font-black leading-tight md:text-5xl">FIND YOUR STRYDE</h2>
+            <p className="mt-4 max-w-md text-paper/60">
+              Three questions. Find the pair that matches your style.
+            </p>
+          </div>
+          <Link href="/find-your-stryde">
+            <Button size="lg" variant="dark" className="bg-paper text-ink hover:bg-paper/90">
+              FIND MY PAIR <ArrowRight size={18} />
+            </Button>
+          </Link>
         </div>
       </section>
 
@@ -189,6 +213,10 @@ export default function HomePage() {
           <p className="mx-auto mt-4 max-w-xl text-paper/60">
             The 14534-H — a clean black boot for the way your day moves.
           </p>
+          <p className="mx-auto mt-2 max-w-md text-sm text-paper/40">
+            Drop your email for 15% off your first pair.
+          </p>
+          <NewsletterSignup />
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link href={`/products/${hero.slug}`}>
               <Button size="lg">
