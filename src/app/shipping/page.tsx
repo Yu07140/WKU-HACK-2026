@@ -35,7 +35,7 @@ export default function ShippingPage() {
             <div>
               <div className="font-bold">International transit: 8–15 days</div>
               <p className="text-sm text-ink/55">
-                We ship via tracked sea freight for sustainability. Express air is available at checkout.
+                Tracked international line-haul from our Wenzhou facility to major destinations in the US, UK/EU, Canada and Australia.
               </p>
             </div>
           </div>
@@ -75,7 +75,9 @@ export default function ShippingPage() {
           </div>
         </div>
         <p className="mt-4 text-xs text-ink/45">
-          International shipping rates are estimates based on dimensional weight. Final rate shown at checkout.
+          Flat rates shown above apply at checkout. Rates are estimates based on dimensional weight of the
+          boxed product (approx. 1.2 kg/pair incl. shoe box) shipped by standard line-haul. Final carrier
+          terms will be confirmed with the supplier before live commercial launch.
         </p>
       </section>
 

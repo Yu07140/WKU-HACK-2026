@@ -45,7 +45,6 @@ export default function ReturnsPage() {
         <div className="space-y-3">
           {[
             "Shoes worn outdoors — once soles touch pavement, we can't resell them",
-            "Custom POD printed shoes (unless defective)",
             "Clearance / final sale items",
             "Shoes with visible scuffs, dirt, or damage from wear",
           ].map((item) => (

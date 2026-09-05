@@ -19,12 +19,23 @@ import { Button } from "@/components/ui/button";
 const JUDGE_SUMMARY = `STRYDE — WKU HACK 2026
 ONE REAL SKU. 24 HOURS. ONE GLOBAL TEST.
 
-PRIMARY PRODUCT
+PRIMARY PRODUCT (Cargo Pool D: Traditional Men's Boots)
 Factory SKU: 14534-H
 Factory price: RMB 98 / pair
 Domestic control-price reference: RMB 148 / pair
 Upper: Microfiber | Lining: Microfiber | Outsole: Rubber
 Sizes: EU 38–46
+Sandbox retail: $119 (landed cost x brand multiplier ~3.0, guide 2.0-3.5)
+
+POLICIES (demo assumptions, finalize before live sales)
+- Lead time: production 3-5 business days + international transit 8-15 days
+- Duties: DDU (customer pays import duties on delivery)
+- Returns: 30-day try-on guarantee, indoor try-on accepted
+- Shipping: free over $75 (US), else $7.90 flat; UK/EU $12.50, CA/AU $14.90
+
+COLD-START PLAN (Proposed)
+Channels: Meta + TikTok | Budget: $150 | Audience: US men 25-45 business-casual
+Creatives: 3 hooks from Studio Creative Matrix | KPI: CTR >=1.5%, ATC >=8%, first order in 24h
 
 PROOF
 - Supply chain: real factory SKU, supplier-verified material & size
@@ -33,8 +44,7 @@ PROOF
 - Data: simulated demo data labeled; actual results start from zero
 
 TBC (not yet verified)
-- MOQ, production lead time, international shipping, US/UK/CM size conversion,
-  final overseas retail price, real return policy, real campaign results`;
+- MOQ, US/UK/CM size conversion, final retail price, real campaign results`;
 
 export default function ProofPage() {
   const hero = getProductById("boot-14534-h");
@@ -97,6 +107,13 @@ export default function ProofPage() {
             <Row label="Lining" value="Microfiber" />
             <Row label="Outsole" value="Rubber" />
           </dl>
+          <div className="mt-4 rounded-xl bg-cream p-4 text-xs leading-relaxed text-ink/65">
+            <div className="mb-1.5 font-bold tracking-wide text-ink/50">PRICING LOGIC (sandbox)</div>
+            Landed cost = factory ¥98 (≈$13.6) + international freight + packaging + payment fee +
+            returns reserve ≈ <strong>$38–42</strong>. Sandbox retail{" "}
+            <strong>$119</strong> = landed cost × brand multiplier{" "}
+            <strong>~3.0</strong> (category guide: 2.0–3.5). Final price confirmed with carrier quotes.
+          </div>
         </div>
 
         {/* B. ASSET PROVENANCE */}
@@ -178,7 +195,7 @@ export default function ProofPage() {
           </div>
           <div className="space-y-2">
             {[
-              { label: "PLAN", desc: "Planned campaign budget, audience, KPI targets." },
+              { label: "PLAN · COLD-START (Proposed)", desc: "Channels: Meta + TikTok. Budget: $150 ($100 Meta / $50 TikTok). Audience: US men 25–45, business-casual & commute interests. Creatives: 3 hooks from Studio Creative Matrix (TIKTOK / INSTAGRAM / META). KPI: CTR ≥1.5%, add-to-cart ≥8%, first paid order within 24h." },
               { label: "SIMULATED DEMO DATA", desc: "Dashboard workflow demonstration — not real campaign results." },
               { label: "ACTUAL RESULT", desc: "Starts from actual recorded data only. No live campaign data yet." },
             ].map((d) => (
@@ -197,11 +214,11 @@ export default function ProofPage() {
         <div className="mt-4 grid gap-2 text-sm text-ink/65 md:grid-cols-2">
           {[
             "MOQ — supplier confirmation required",
-            "Production / fulfillment lead time — organizer/supplier confirmation required",
-            "International shipping cost & delivery time — destination & logistics method required",
+            "Production lead time — demo assumption 3–5 business days, pending supplier confirmation",
+            "International shipping rates & transit — demo flat rates, pending carrier quotes",
             "US / UK / CM size conversion — pending supplier confirmation",
-            "Real return policy — to be confirmed before live sales",
-            "Final overseas retail price — TBC after logistics / payment / return reserve",
+            "Returns policy — demo 30-day try-on policy, finalize before live sales",
+            "Final overseas retail price — sandbox $119, final after landed-cost confirmation",
             "Real campaign results — no live campaigns yet",
           ].map((t) => (
             <div key={t} className="flex gap-2">

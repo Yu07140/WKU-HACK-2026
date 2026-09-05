@@ -303,6 +303,36 @@ export function PDPView({ product }: { product: Product }) {
           <ServiceLink href="/faq" icon={Shield} label="Care" />
         </div>
 
+        {/* 赛题第 8 节要求：详情页必须出现 交期拆分 / 尺码测量 / 试穿退货 / 关税口径 */}
+        <div className="mt-4 rounded-2xl border border-ink/10 bg-white p-5 text-sm">
+          <div className="mb-3 text-xs font-bold tracking-[0.2em] text-ink/40">
+            SHIPPING &amp; RETURNS
+          </div>
+          <dl className="space-y-2 text-ink/70">
+            <div className="flex gap-2">
+              <dt className="w-36 shrink-0 text-ink/50">Lead time</dt>
+              <dd>Production 3–5 business days + international transit 8–15 days (estimate, pending supplier confirmation)</dd>
+            </div>
+            <div className="flex gap-2">
+              <dt className="w-36 shrink-0 text-ink/50">Duties</dt>
+              <dd>DDU — import duties / taxes not included, paid by customer on delivery</dd>
+            </div>
+            <div className="flex gap-2">
+              <dt className="w-36 shrink-0 text-ink/50">Returns</dt>
+              <dd>30-day try-on guarantee — indoor try-on accepted, outdoor-worn not returnable</dd>
+            </div>
+            <div className="flex gap-2">
+              <dt className="w-36 shrink-0 text-ink/50">Sizing</dt>
+              <dd>
+                EU {product.sizes[0]}–{product.sizes[product.sizes.length - 1]}. Measure your foot before ordering —{" "}
+                <Link href="/size-guide" className="font-bold text-accent-dark underline underline-offset-2">
+                  size guide &amp; measuring method
+                </Link>
+              </dd>
+            </div>
+          </dl>
+        </div>
+
         {/* 卖点列表 */}
         {features.length > 0 && (
           <ul className="mt-8 space-y-2.5">

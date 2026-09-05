@@ -23,8 +23,12 @@ export default function CheckoutPage() {
     card: "4242 4242 4242 4242",
   });
 
-  // $75 免运费 —— 按优惠前 subtotal 判断（保持原有业务规则不变）
-  const shipping = subtotal >= 75 ? 0 : 7.9;
+  // 运费 —— 与 /shipping 政策页一致：US 满 $75 免运费；UK/EU $12.50；CA/AU $14.90；其余 $14.90
+  const c = form.country.toLowerCase();
+  const isUS = c.includes("united states") || c.includes("usa");
+  const isUkEu = /united kingdom|uk|germany|france|netherlands|italy|spain|europe|eu\b/.test(c);
+  const zoneRate = isUS ? 7.9 : isUkEu ? 12.5 : 14.9;
+  const shipping = subtotal >= 75 ? 0 : zoneRate;
   const total = Math.max(0, subtotal - discount + shipping);
 
   async function submit(e: React.FormEvent) {
