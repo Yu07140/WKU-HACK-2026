@@ -10,7 +10,6 @@ import {
   Star,
   Play,
   Volume2,
-  Factory,
   Ruler,
   Shield,
 } from "lucide-react";
@@ -247,14 +246,6 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
             <span className="text-3xl font-black">{formatPrice(product.price)}</span>
             {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
               <span className="text-lg text-ink/40 line-through">{formatPrice(product.compareAt)}</span>
-<<<<<<< HEAD
-            )}
-            {!product.demoPricing && (
-              <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-bold text-accent-dark">
-                Factory Direct · Save {formatPrice(product.compareAt ? product.compareAt - product.price : Math.round(product.price * 0.5))}
-              </span>
-=======
->>>>>>> 7336a67d6077df7f9329ec1026bb259907208716
             )}
             {product.demoPricing && (
               <span className="rounded-full bg-ink/10 px-2.5 py-0.5 text-xs font-bold text-ink/55">
@@ -463,28 +454,6 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
             {product.sku && <Spec label="Product code" value={product.sku} />}
           </dl>
         </div>
-<<<<<<< HEAD
-
-        {/* 服务承诺 — 4 项：免运费 + 30 天退货 + 真实交期 + 关税 */}
-        <div className="mt-8 grid grid-cols-2 gap-3 rounded-2xl border border-ink/10 bg-white p-4 text-center text-xs font-semibold text-ink/70 sm:grid-cols-4">
-          <div className="flex flex-col items-center gap-1.5">
-            <Truck size={18} className="text-accent" /> Free ship over $75
-          </div>
-          <div className="flex flex-col items-center gap-1.5">
-            <RotateCcw size={18} className="text-accent" /> 30-day returns
-          </div>
-          <div className="flex flex-col items-center gap-1.5">
-            <Factory size={18} className="text-accent" />
-            {product.leadTimeDays != null
-              ? `${product.leadTimeDays}-day production`
-              : "Production TBC"}
-          </div>
-          <div className="flex flex-col items-center gap-1.5">
-            <ShoppingBag size={18} className="text-accent" /> DDU — duties may apply
-          </div>
-        </div>
-=======
->>>>>>> 7336a67d6077df7f9329ec1026bb259907208716
       </div>
     </div>
   );

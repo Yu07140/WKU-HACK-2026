@@ -24,12 +24,9 @@ export default function ProductsPage() {
         <p className="mt-5 max-w-xl text-lg text-ink/60">
           One real hero product. One focused market test.
         </p>
-<<<<<<< HEAD
-=======
         <Suspense fallback={null}>
           <PromoBanner />
         </Suspense>
->>>>>>> 7336a67d6077df7f9329ec1026bb259907208716
       </div>
 
       {/* PRIMARY PRODUCT — 14534-H */}
