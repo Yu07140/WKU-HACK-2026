@@ -13,13 +13,6 @@ import { useLang } from "@/lib/store/lang";
 export default function HomePage() {
   const { t } = useLang();
   const hero = getProductById("boot-14534-h") ?? PRODUCTS[0];
-<<<<<<< HEAD
-  const others = [...PRODUCTS]
-    .filter((p) => p.id !== hero.id)
-    .sort((a, b) => b.heatScore - a.heatScore)
-    .slice(0, 3);
-=======
->>>>>>> e9886b303ce890c073aface5639ce63ec9627b76
 
   const PLANS = [
     { no: "01", title: t("WORKDAY", "工作日"), desc: t("A clean black silhouette that fits easily into a sharper everyday wardrobe.", "利落的黑色轮廓，轻松融入日常穿搭。") },
@@ -169,33 +162,6 @@ export default function HomePage() {
 
       {/* ---------- STRYDE CLIPS — brand personalization concept around 14534-H ---------- */}
       <StrydeClips />
-<<<<<<< HEAD
-
-      {/* ---------- CREATIVE LAB — secondary concepts ---------- */}
-      <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-        <div className="mb-10">
-          <div className="mb-3 text-xs font-bold tracking-[0.3em] text-ink/40">
-            {t("CREATIVE LAB", "创意实验室")}
-          </div>
-          <h2 className="text-3xl font-black md:text-4xl">{t("Other Concepts", "其他概念")}</h2>
-          <p className="mt-2 max-w-xl text-ink/55">
-            {t(
-              "Secondary footwear concepts explored during the sprint. These are separate directions and are not part of the official 14534-H men's boot supply chain.",
-              "冲刺期间探索的次要鞋款概念。这些是独立方向，不属于 14534-H 男靴的正式供应链。"
-            )}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-3">
-          {others.map((p) => (
-            <div key={p.id} className="relative">
-              <ProductCard product={p} concept />
-            </div>
-          ))}
-        </div>
-      </section>
-=======
->>>>>>> e9886b303ce890c073aface5639ce63ec9627b76
 
       {/* ---------- CTA ---------- */}
       <section className="mx-auto max-w-5xl px-6 pb-20">
