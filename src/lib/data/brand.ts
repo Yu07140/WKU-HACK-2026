@@ -49,6 +49,7 @@ export const CLIP_COLLECTIONS = [
     desc: "STRYDE-branded marks designed around the brand wordmark.",
     samples: ["S", "STRYDE", "STAND OUT"],
     images: {
+      S: "/clips/collections/signature/S.jpg",
       STRYDE: "/clips/collections/signature/STRYDE.jpg",
       "STAND OUT": "/clips/collections/signature/STAND-OUT.jpg",
     },
