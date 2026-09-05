@@ -13,24 +13,17 @@ import { ProductImage } from "@/components/ui/ProductImage";
 
 const STRYDE_LETTERS = ["S", "T", "R", "Y", "D", "E"];
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-const MAX_LETTERS = 3;
 
 export function StrydeClips() {
-  const [letters, setLetters] = useState<string[]>(["A", "M", "L"]);
+  const [letters, setLetters] = useState<string[]>(["A"]);
   const [open, setOpen] = useState(false);
   const [saved, setSaved] = useState(false);
   const [confirmPulse, setConfirmPulse] = useState(false);
 
-  /** Max 3 letters; a 4th click is ignored. Click a selected letter to remove it. */
+  /** Single-letter selection: click a letter to select it, click again to deselect, click another to switch. */
   function toggle(letter: string) {
     setSaved(false);
-    setLetters((cur) =>
-      cur.includes(letter)
-        ? cur.filter((x) => x !== letter)
-        : cur.length >= MAX_LETTERS
-          ? cur
-          : [...cur, letter]
-    );
+    setLetters((cur) => (cur.includes(letter) ? [] : [letter]));
   }
 
   function confirmPreview() {
@@ -135,7 +128,7 @@ export function StrydeClips() {
                 ))
               ) : (
                 <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-ink/50">
-                  Your letters will appear here
+                  Your letter will appear here
                 </span>
               )}
             </div>
@@ -151,7 +144,7 @@ export function StrydeClips() {
             <div className="mt-5">
               <div className="mb-2 flex items-center justify-between">
                 <span className="text-xs font-black tracking-[0.2em] text-ink/50">
-                  YOUR LETTERS · UP TO 3
+                  YOUR LETTERS · PICK ONE
                 </span>
                 {letters.length > 0 && (
                   <button
@@ -168,19 +161,15 @@ export function StrydeClips() {
               <div className="grid grid-cols-7 gap-1.5">
                 {ALPHA.map((ch) => {
                   const active = letters.includes(ch);
-                  const full = !active && letters.length >= MAX_LETTERS;
                   return (
                     <button
                       key={ch}
                       onClick={() => toggle(ch)}
-                      disabled={full}
                       aria-pressed={active}
                       className={`flex h-9 items-center justify-center rounded-md border text-xs font-bold transition ${
                         active
                           ? "border-ink bg-ink text-paper"
-                          : full
-                            ? "cursor-not-allowed border-ink/10 bg-white text-ink/25"
-                            : "border-ink/15 bg-white text-ink/70 hover:border-ink/50"
+                          : "border-ink/15 bg-white text-ink/70 hover:border-ink/50"
                       }`}
                     >
                       {ch}
@@ -189,7 +178,7 @@ export function StrydeClips() {
                 })}
               </div>
               <p className="mt-3 text-xs text-ink/45">
-                Selected letters:{" "}
+                Selected letter:{" "}
                 <span className="font-black tracking-widest text-ink">
                   {letters.length > 0 ? letters.join(" ") : "—"}
                 </span>
@@ -300,58 +289,58 @@ export function StrydeClips() {
                     MAKE IT YOURS.
                   </div>
                   <h3 className="mt-1 text-2xl font-black">
-                    Preview your initials on the 14534-H.
+                    Preview your initial clip on the 14534-H.
                   </h3>
                 </div>
 
                 <div className="grid gap-6 md:grid-cols-2">
-                  {/* boot preview — real 14534-H photo with live letter chips */}
+                  {/* single-letter clip visual — concept accessory, updates live */}
                   <div
-                    className={`relative aspect-[4/5] overflow-hidden rounded-2xl border bg-white transition ${
+                    className={`relative aspect-square overflow-hidden rounded-2xl border transition ${
                       confirmPulse ? "border-accent ring-2 ring-accent" : "border-ink/10"
                     }`}
                   >
-                    <ProductImage
-                      src="/products/14534-h/hero.jpg"
-                      prompt="black minimalist ankle boot, clean editorial photography"
-                      alt="14534-H boot with your initials clip preview"
-                      size="portrait_4_3"
-                      className="h-full w-full"
-                    />
+                    {/* dark studio backdrop */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#2b2b30] via-[#17171a] to-[#0b0b0d]" />
+                    <div className="absolute -top-1/4 left-1/2 h-[70%] w-[70%] -translate-x-1/2 rounded-full bg-white/10 blur-3xl" />
+
+                    {/* white elastic loop band */}
+                    <div className="absolute left-1/2 top-1/2 w-[86%] -translate-x-1/2 -translate-y-[62%]">
+                      <div className="h-14 rounded-full bg-gradient-to-b from-white via-[#f2f0ea] to-[#d8d5ce] shadow-[0_12px_28px_rgba(0,0,0,0.55)]" />
+                    </div>
+
+                    {/* clip: silver clamp bars + chrome letter */}
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                      {letters.length > 0 ? (
+                        <div className="relative flex items-center justify-center px-10">
+                          <span className="absolute left-0 h-16 w-6 rounded-lg bg-gradient-to-b from-[#f6f7f9] via-[#babdc3] to-[#7b7e85] shadow-[0_6px_14px_rgba(0,0,0,0.5)]" />
+                          <span className="absolute right-0 h-16 w-6 rounded-lg bg-gradient-to-b from-[#f6f7f9] via-[#babdc3] to-[#7b7e85] shadow-[0_6px_14px_rgba(0,0,0,0.5)]" />
+                          <span className="bg-gradient-to-b from-white via-[#e0e3e9] to-[#8d9199] bg-clip-text text-[120px] font-black leading-none text-transparent drop-shadow-[0_8px_12px_rgba(0,0,0,0.6)]">
+                            {letters[0]}
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold text-white/70 backdrop-blur">
+                          Pick one letter
+                        </span>
+                      )}
+                    </div>
+
                     {confirmPulse && (
                       <span className="absolute right-3 top-3 rounded-full bg-accent px-2.5 py-1 text-[10px] font-black tracking-widest text-paper">
                         LIVE PREVIEW
                       </span>
                     )}
-                    {/* clip-on overlay updates in real time with the selection */}
-                    <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1.5">
-                      {letters.length > 0 ? (
-                        <>
-                          <span className="h-4 w-px bg-ink/40" />
-                          <div className="flex gap-1.5">
-                            {letters.map((ch) => (
-                              <span
-                                key={ch}
-                                className="flex h-9 w-9 items-center justify-center rounded-md bg-ink text-base font-black text-paper shadow-lg"
-                              >
-                                {ch}
-                              </span>
-                            ))}
-                          </div>
-                        </>
-                      ) : (
-                        <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-ink/50 shadow-sm">
-                          Pick up to 3 letters
-                        </span>
-                      )}
-                    </div>
+                    <span className="absolute bottom-3 left-1/2 -translate-x-1/2 text-[10px] font-bold tracking-[0.3em] text-white/40">
+                      STRYDE CLIP — CONCEPT VISUAL
+                    </span>
                   </div>
 
                   {/* picker + actions */}
                   <div>
                     <div className="mb-2 flex items-center justify-between">
                       <span className="text-xs font-black tracking-[0.2em] text-ink/50">
-                        YOUR INITIALS
+                        YOUR INITIAL
                       </span>
                       {letters.length > 0 && (
                         <button
@@ -368,19 +357,15 @@ export function StrydeClips() {
                     <div className="grid grid-cols-7 gap-1.5">
                       {ALPHA.map((ch) => {
                         const active = letters.includes(ch);
-                        const full = !active && letters.length >= MAX_LETTERS;
                         return (
                           <button
                             key={ch}
                             onClick={() => toggle(ch)}
-                            disabled={full}
                             aria-pressed={active}
                             className={`flex h-9 items-center justify-center rounded-md border text-xs font-bold transition ${
                               active
                                 ? "border-ink bg-ink text-paper"
-                                : full
-                                  ? "cursor-not-allowed border-ink/10 bg-white text-ink/25"
-                                  : "border-ink/15 bg-white text-ink/70 hover:border-ink/50"
+                                : "border-ink/15 bg-white text-ink/70 hover:border-ink/50"
                             }`}
                           >
                             {ch}
@@ -389,7 +374,7 @@ export function StrydeClips() {
                       })}
                     </div>
                     <p className="mt-3 text-xs text-ink/45">
-                      Selected letters:{" "}
+                      Selected letter:{" "}
                       <span className="font-black tracking-widest text-ink">
                         {letters.length > 0 ? letters.join(" ") : "—"}
                       </span>
