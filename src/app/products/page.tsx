@@ -1,7 +1,9 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { PRODUCTS, getProductById } from "@/lib/data/catalog";
 import { ProductCard } from "@/components/store/ProductCard";
+import { PromoBanner } from "@/components/store/PromoBanner";
 
 export default function ProductsPage() {
   const hero = getProductById("boot-14534-h");
@@ -22,6 +24,12 @@ export default function ProductsPage() {
         <p className="mt-5 max-w-xl text-lg text-ink/60">
           One real hero product. One focused market test.
         </p>
+<<<<<<< HEAD
+=======
+        <Suspense fallback={null}>
+          <PromoBanner />
+        </Suspense>
+>>>>>>> 7336a67d6077df7f9329ec1026bb259907208716
       </div>
 
       {/* PRIMARY PRODUCT — 14534-H */}
