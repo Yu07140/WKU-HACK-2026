@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ShoppingBag, Sparkles, Globe } from "lucide-react";
+import { ShoppingBag, Sparkles, Globe, User } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/lib/store/currency";
 import { useLang } from "@/lib/store/lang";
@@ -11,6 +12,15 @@ export function SiteHeader() {
   const { count } = useCart();
   const { currency, setCurrency } = useCurrency();
   const { lang, setLang, t } = useLang();
+  const [username, setUsername] = useState<string | null>(null);
+
+  // 登录态由服务端会话判定（httpOnly Cookie），刷新/跨浏览器均有效
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((r) => (r.ok ? r.json() : { user: null }))
+      .then((d) => setUsername(d.user?.username ?? null))
+      .catch(() => setUsername(null));
+  }, []);
 
   const NAV = [
     { href: "/products/mono-boot", label: t("The Boot", "主打靴款") },
@@ -63,6 +73,18 @@ export function SiteHeader() {
             <Globe size={13} className="text-accent" />
             {lang === "EN" ? "EN" : "中文"}
           </button>
+          <Link
+            href={username ? "/account" : "/account/login"}
+            className="flex items-center gap-1.5 rounded-full p-2 text-ink transition hover:bg-ink/5"
+            title={username ? t("My account", "我的账户") : t("Sign in / Register", "登录 / 注册")}
+          >
+            <User size={20} />
+            {username && (
+              <span className="hidden max-w-24 truncate text-xs font-bold text-ink/70 lg:inline">
+                {username}
+              </span>
+            )}
+          </Link>
           <Link
             href="/cart"
             className="relative rounded-full p-2 text-ink transition hover:bg-ink/5"
