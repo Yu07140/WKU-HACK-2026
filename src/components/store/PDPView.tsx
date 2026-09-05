@@ -223,7 +223,7 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
             <TrendBadge trend={product.trend} />
           ) : (
             <span className="rounded-full bg-ink/70 px-2.5 py-1 text-xs font-bold text-white">
-              CONCEPT STUDY · NOT FOR ORDER
+              CREATIVE LAB · NOT FOR ORDER
             </span>
           )}
           {isHero && product.reviews > 0 && (
@@ -247,6 +247,11 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
             <span className="text-3xl font-black">{formatPrice(product.price)}</span>
             {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
               <span className="text-lg text-ink/40 line-through">{formatPrice(product.compareAt)}</span>
+            )}
+            {!product.demoPricing && (
+              <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-bold text-accent-dark">
+                Factory Direct · Save {formatPrice(product.compareAt ? product.compareAt - product.price : Math.round(product.price * 0.5))}
+              </span>
             )}
             {product.demoPricing && (
               <span className="rounded-full bg-ink/10 px-2.5 py-0.5 text-xs font-bold text-ink/55">
@@ -293,20 +298,35 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
                 </Link>
               </div>
               <div className="flex flex-wrap gap-2">
-                {product.sizes.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => setSize(s)}
-                    className={cn(
-                      "h-11 w-14 rounded-xl border text-sm font-bold transition",
-                      size === s
-                        ? "border-ink bg-ink text-paper"
-                        : "border-ink/20 bg-white hover:border-ink/60"
-                    )}
-                  >
-                    {s}
-                  </button>
-                ))}
+                {product.sizes.map((s) => {
+                  const stk = getSizeStock(product, color.name, s);
+                  const soldOut = stk !== null && stk === 0;
+                  return (
+                    <button
+                      key={s}
+                      onClick={() => !soldOut && setSize(s)}
+                      disabled={soldOut}
+                      className={cn(
+                        "relative flex h-11 w-14 flex-col items-center justify-center rounded-xl border text-sm font-bold transition",
+                        soldOut
+                          ? "cursor-not-allowed border-ink/10 bg-ink/5 text-ink/30"
+                          : size === s
+                            ? "border-ink bg-ink text-paper"
+                            : "border-ink/20 bg-white hover:border-ink/60"
+                      )}
+                    >
+                      <span>{s}</span>
+                      {stk !== null && !soldOut && (
+                        <span className="text-[9px] font-normal opacity-60">
+                          {stk}
+                        </span>
+                      )}
+                      {soldOut && (
+                        <span className="text-[9px] font-normal">SOLD</span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -330,11 +350,11 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
               <Button size="lg" className="flex-1" onClick={handleAdd} disabled={!size}>
                 {added ? (
                   <>
-                    <Check size={18} /> Added to bag
+                    <Check size={18} /> Added to cart
                   </>
                 ) : (
                   <>
-                    <ShoppingBag size={18} /> {size ? "Add to bag" : "Select a size"}
+                    <ShoppingBag size={18} /> {size ? "Add to cart" : "Select a size"}
                   </>
                 )}
               </Button>
@@ -439,6 +459,25 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
             {product.weight && <Spec label="Weight" value={displayWeight(product.weight)} />}
             {product.sku && <Spec label="Product code" value={product.sku} />}
           </dl>
+        </div>
+
+        {/* 服务承诺 — 4 项：免运费 + 30 天退货 + 真实交期 + 关税 */}
+        <div className="mt-8 grid grid-cols-2 gap-3 rounded-2xl border border-ink/10 bg-white p-4 text-center text-xs font-semibold text-ink/70 sm:grid-cols-4">
+          <div className="flex flex-col items-center gap-1.5">
+            <Truck size={18} className="text-accent" /> Free ship over $75
+          </div>
+          <div className="flex flex-col items-center gap-1.5">
+            <RotateCcw size={18} className="text-accent" /> 30-day returns
+          </div>
+          <div className="flex flex-col items-center gap-1.5">
+            <Factory size={18} className="text-accent" />
+            {product.leadTimeDays != null
+              ? `${product.leadTimeDays}-day production`
+              : "Production TBC"}
+          </div>
+          <div className="flex flex-col items-center gap-1.5">
+            <ShoppingBag size={18} className="text-accent" /> DDU — duties may apply
+          </div>
         </div>
       </div>
     </div>

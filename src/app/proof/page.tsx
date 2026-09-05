@@ -241,7 +241,7 @@ export default function ProofPage() {
 
         <p className="mt-5 text-xs leading-relaxed text-ink/55">
           Only SKU 14534-H is currently transaction-ready. STRYDE CLIPS and CARE 01 remain
-          concept-stage extensions under sourcing validation. STRYDE CLIPS extend one real
+          extensions with supplier validation pending. STRYDE CLIPS extend one real
           footwear SKU into a personalization system without introducing another footwear
           inventory line.
         </p>

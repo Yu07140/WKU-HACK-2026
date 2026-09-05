@@ -1,37 +1,51 @@
+"use client";
+
 import Link from "next/link";
-import { ArrowRight, ShoppingBag, Layers, ShieldCheck } from "lucide-react";
+import { ArrowRight, ShoppingBag, Sparkles, Layers, ShieldCheck } from "lucide-react";
 import { getProductById } from "@/lib/data/catalog";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
 import { NewsletterSignup } from "@/components/store/NewsletterSignup";
+import { useLang } from "@/lib/store/lang";
 import { CLIP_COLLECTIONS, ECOSYSTEM, STATUS } from "@/lib/data/brand";
 
-const PLANS = [
-  {
-    no: "01",
-    title: "WORKDAY",
-    desc: "A clean black silhouette that fits easily into a sharper everyday wardrobe.",
-  },
-  {
-    no: "02",
-    title: "AFTER HOURS",
-    desc: "Simple enough for dinner, dates and city nights without changing the whole look.",
-  },
-  {
-    no: "03",
-    title: "WEEKEND",
-    desc: "Easy styling for short trips, walks and casual plans.",
-  },
-];
-
-const ROUTINES = [
-  { no: "01", title: "COMMUTE", img: "/products/14534-h/hero.jpg" },
-  { no: "02", title: "AFTER HOURS", img: "/products/14534-h/black.jpg" },
-  { no: "03", title: "WEEKEND", img: "/products/14534-h/lifestyle-01.jpg" },
-];
-
 export default function HomePage() {
+  const { t } = useLang();
   const hero = getProductById("boot-14534-h");
+
+  const PLANS = [
+    {
+      no: "01",
+      title: t("WORKDAY", "工作日"),
+      desc: t(
+        "A clean black silhouette that fits easily into a sharper everyday wardrobe.",
+        "利落的黑色轮廓，轻松融入日常穿搭。"
+      ),
+    },
+    {
+      no: "02",
+      title: t("AFTER HOURS", "下班后"),
+      desc: t(
+        "Simple enough for dinner, dates and city nights without changing the whole look.",
+        "足够简约，晚餐、约会、城市夜景无需换装。"
+      ),
+    },
+    {
+      no: "03",
+      title: t("WEEKEND", "周末"),
+      desc: t(
+        "Easy styling for short trips, walks and casual plans.",
+        "短途出行、散步和休闲计划的百搭之选。"
+      ),
+    },
+  ];
+
+  const ROUTINES = [
+    { no: "01", title: t("COMMUTE", "通勤"), img: "/products/14534-h/hero.jpg" },
+    { no: "02", title: t("AFTER HOURS", "夜场"), img: "/products/14534-h/black.jpg" },
+    { no: "03", title: t("WEEKEND", "周末"), img: "/products/14534-h/lifestyle-01.jpg" },
+  ];
+
   if (!hero) return null;
 
   return (
@@ -42,30 +56,32 @@ export default function HomePage() {
           <div className="animate-fade-up">
             <div className="mb-6 text-xs font-bold tracking-[0.3em] text-ink/45">STRYDE</div>
             <h1 className="text-5xl font-black leading-[1.02] tracking-tight md:text-7xl">
-              STAND UP.
+              {t("STAND UP.", "站起来。")}
               <br />
-              <span className="text-ink/80">STAND OUT.</span>
+              <span className="text-ink/80">{t("STAND OUT.", "出众。")}</span>
             </h1>
             <p className="mt-7 max-w-md text-lg leading-relaxed text-ink/65">
-              A clean black boot built for the way your day actually moves —
-              from work hours to everything after.
+              {t(
+                "A clean black boot built for the way your day actually moves — from work hours to everything after.",
+                "一双干净的黑色靴，为你一天的每个时刻而生——从工作到下班后的所有场景。"
+              )}
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-4">
               <Link href={`/products/${hero.slug}`}>
                 <Button size="lg">
-                  SHOP THE BOOT <ArrowRight size={18} />
+                  {t("SHOP THE BOOT", "立即购买")} <ArrowRight size={18} />
                 </Button>
               </Link>
               <Link href="/products" className="text-sm font-bold text-ink/70 underline underline-offset-4 decoration-ink/30">
-                THE STRYDE SYSTEM
+                {t("THE STRYDE SYSTEM", "STRYDE 系统")}
               </Link>
             </div>
             <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-medium tracking-wider text-ink/45">
               <span>EU 38–46</span>
               <span className="h-1 w-1 rounded-full bg-ink/30" />
-              <span>Microfiber upper</span>
+              <span>{t("Microfiber upper", "超纤鞋面")}</span>
               <span className="h-1 w-1 rounded-full bg-ink/30" />
-              <span>Rubber outsole</span>
+              <span>{t("Rubber outsole", "橡胶大底")}</span>
             </div>
           </div>
 
@@ -84,11 +100,13 @@ export default function HomePage() {
       {/* ---------- ONE PAIR. MORE PLANS. ---------- */}
       <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
         <div className="mb-12">
-          <div className="mb-3 text-xs font-bold tracking-[0.3em] text-ink/40">THE DAILY ROUTE</div>
+          <div className="mb-3 text-xs font-bold tracking-[0.3em] text-ink/40">
+            {t("THE DAILY ROUTE", "日常路线")}
+          </div>
           <h2 className="text-4xl font-black leading-tight md:text-5xl">
-            ONE PAIR.
+            {t("ONE PAIR.", "一双鞋。")}
             <br />
-            MORE PLANS.
+            {t("MORE PLANS.", "更多可能。")}
           </h2>
         </div>
         <div className="grid gap-8 md:grid-cols-3">
@@ -106,11 +124,13 @@ export default function HomePage() {
       <section className="bg-cream">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
           <div className="mb-12">
-            <div className="mb-3 text-xs font-bold tracking-[0.3em] text-ink/40">EDITORIAL</div>
+            <div className="mb-3 text-xs font-bold tracking-[0.3em] text-ink/40">
+              {t("EDITORIAL", "编辑精选")}
+            </div>
             <h2 className="text-4xl font-black leading-tight md:text-5xl">
-              ONE BOOT.
+              {t("ONE BOOT.", "一双靴。")}
               <br />
-              THREE ROUTINES.
+              {t("THREE ROUTINES.", "三种场景。")}
             </h2>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
@@ -132,7 +152,7 @@ export default function HomePage() {
             ))}
           </div>
           <p className="mt-6 text-center text-xs text-ink/40">
-            AI Campaign Concept — the real 14534-H remains the product reference.
+            {t("AI Campaign Concept — the real 14534-H remains the product reference.", "AI 营销概念图——实际商品以 14534-H 为准。")}
           </p>
         </div>
       </section>
@@ -142,13 +162,17 @@ export default function HomePage() {
         <div className="mb-12 grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
           <div>
             <div className="mb-3 text-xs font-bold tracking-[0.3em] text-ink/40">
-              PERSONALIZE YOUR STRYDE
+              {t("PERSONALIZE YOUR STRYDE", "个性化你的 STRYDE")}
             </div>
             <h2 className="text-4xl font-black leading-tight md:text-5xl">{ECOSYSTEM.clips}</h2>
-            <p className="mt-4 text-2xl font-bold tracking-wide text-ink/70">STRYDE CLIPS</p>
+            <p className="mt-4 text-2xl font-bold tracking-wide text-ink/70">
+              {t("STRYDE CLIPS", "STRYDE CLIPS")}
+            </p>
             <p className="mt-3 max-w-xl text-ink/60">
-              Small details. Your signature. A new way to personalize the 14534-H with removable
-              STRYDE-designed clips.
+              {t(
+                "Small details. Your signature. A new way to personalize the 14534-H with removable STRYDE-designed clips.",
+                "小细节，大标记。用可拆装的 STRYDE 设计 clip 个性化 14534-H。"
+              )}
             </p>
           </div>
           <span className="inline-flex w-fit rounded-full bg-ink/90 px-4 py-1.5 text-xs font-black tracking-wider text-paper">
@@ -158,12 +182,9 @@ export default function HomePage() {
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {CLIP_COLLECTIONS.map((c) => (
-            <div
-              key={c.no}
-              className="rounded-3xl border border-ink/10 bg-white p-6"
-            >
+            <div key={c.no} className="rounded-3xl border border-ink/10 bg-white p-6">
               <div className="text-xs font-black tracking-[0.25em] text-ink/40">{c.no}</div>
-              <h3 className="mt-2 text-xl font-black tracking-wide">{c.name}</h3>
+              <h3 className="mt-2 text-xl font-black tracking-wide">{t(c.name, c.name)}</h3>
               <p className="mt-2 text-sm leading-relaxed text-ink/55">{c.desc}</p>
               <div className="mt-5 flex flex-wrap gap-2">
                 {c.samples.slice(0, 3).map((s) => (
@@ -182,7 +203,7 @@ export default function HomePage() {
         <div className="mt-8">
           <Link href="/clips">
             <Button size="lg" variant="outline">
-              EXPLORE STRYDE CLIPS <ArrowRight size={17} />
+              {t("EXPLORE STRYDE CLIPS", "探索 STRYDE CLIPS")} <ArrowRight size={17} />
             </Button>
           </Link>
         </div>
@@ -193,7 +214,7 @@ export default function HomePage() {
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 md:grid-cols-2 md:py-24">
           <div>
             <div className="mb-3 flex items-center gap-2 text-xs font-bold tracking-[0.3em] text-paper/45">
-              <Layers size={14} /> BUNDLE
+              <Layers size={14} /> {t("BUNDLE", "组合")}
             </div>
             <h2 className="text-4xl font-black leading-tight md:text-5xl">
               {ECOSYSTEM.duo.split("\n").map((l, i) => (
@@ -204,18 +225,23 @@ export default function HomePage() {
               ))}
             </h2>
             <p className="mt-5 max-w-md text-paper/60">
-              One for the workweek. One for everything after. Build a two-pair rotation using the
-              same real 14534-H — choose each EU size separately.
+              {t(
+                "One for the workweek. One for everything after. Build a two-pair rotation using the same real 14534-H — choose each EU size separately.",
+                "一双工作日，一双其余时间。用同一双真实 14534-H 组合两双轮换，每双欧码可分开选。"
+              )}
             </p>
             <div className="mt-8">
               <Link href="/duo">
                 <Button size="lg" className="bg-paper text-ink hover:bg-paper/90">
-                  BUILD YOUR DUO <ArrowRight size={18} />
+                  {t("BUILD YOUR DUO", "组合你的 DUO")} <ArrowRight size={18} />
                 </Button>
               </Link>
             </div>
             <p className="mt-4 text-xs text-paper/40">
-              Bundle savings will be finalized after launch-cost validation.
+              {t(
+                "Bundle savings will be finalized after launch-cost validation.",
+                "组合优惠将在发布成本验证后确定。"
+              )}
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -229,7 +255,7 @@ export default function HomePage() {
                   className="aspect-[4/5] w-full"
                 />
                 <div className="absolute left-3 top-3 rounded-full bg-ink/80 px-3 py-1 text-xs font-black tracking-wider text-paper">
-                  PAIR {n}
+                  {t("PAIR", "双")} {n}
                 </div>
               </div>
             ))}
@@ -251,13 +277,17 @@ export default function HomePage() {
           </div>
           <div>
             <div className="mb-3 flex items-center gap-2 text-xs font-bold tracking-[0.3em] text-ink/40">
-              <ShieldCheck size={14} /> FUTURE EXTENSION
+              <ShieldCheck size={14} /> {t("FUTURE EXTENSION", "未来延伸")}
             </div>
             <h2 className="text-4xl font-black leading-tight md:text-5xl">{ECOSYSTEM.care}</h2>
-            <p className="mt-4 text-2xl font-bold tracking-wide text-ink/70">STRYDE CARE 01</p>
+            <p className="mt-4 text-2xl font-bold tracking-wide text-ink/70">
+              {t("STRYDE CARE 01", "STRYDE CARE 01")}
+            </p>
             <p className="mt-3 max-w-md text-ink/60">
-              A future care extension designed around the STRYDE footwear system, currently under
-              supplier and sourcing validation.
+              {t(
+                "A future care extension designed around the STRYDE footwear system. In development — details will be shared at launch.",
+                "围绕 STRYDE 鞋履系统设计的未来护理延伸，正在开发中，详情将于发布时公布。"
+              )}
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
               <span className="rounded-full bg-ink/90 px-3 py-1 text-[11px] font-black tracking-wider text-paper">
@@ -270,7 +300,7 @@ export default function HomePage() {
             <div className="mt-8">
               <Link href="/care">
                 <Button size="lg" variant="outline">
-                  EXPLORE THE CONCEPT <ArrowRight size={17} />
+                  {t("EXPLORE THE CONCEPT", "探索概念")} <ArrowRight size={17} />
                 </Button>
               </Link>
             </div>
@@ -282,24 +312,24 @@ export default function HomePage() {
       <section className="mx-auto max-w-5xl px-6 pb-20">
         <div className="rounded-3xl bg-ink p-10 text-center text-paper md:p-14">
           <h2 className="text-3xl font-black leading-tight md:text-4xl">
-            STAND UP. STAND OUT.
+            {t("STAND UP. STAND OUT.", "站起来。出众。")}
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-paper/60">
-            The 14534-H — a clean black boot for the way your day moves.
+            {t("The 14534-H — a clean black boot for the way your day moves.", "14534-H——为你一天的每个时刻而生的黑色靴。")}
           </p>
           <p className="mx-auto mt-2 max-w-md text-sm text-paper/40">
-            Drop your email for 15% off your first pair.
+            {t("Drop your email for 15% off your first pair.", "输入邮箱，首双立享 15% 折扣。")}
           </p>
           <NewsletterSignup />
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link href={`/products/${hero.slug}`}>
               <Button size="lg">
-                <ShoppingBag size={18} /> SHOP THE BOOT
+                <ShoppingBag size={18} /> {t("SHOP THE BOOT", "立即购买")}
               </Button>
             </Link>
             <Link href="/size-guide">
               <Button size="lg" variant="outline" className="border-paper/30 text-paper hover:bg-paper/10">
-                FIND YOUR SIZE
+                {t("FIND YOUR SIZE", "寻找你的尺码")}
               </Button>
             </Link>
           </div>

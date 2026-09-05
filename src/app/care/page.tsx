@@ -30,8 +30,8 @@ export default function CarePage() {
         </h1>
         <p className="mt-4 text-2xl font-bold tracking-wide text-ink/70">STRYDE CARE 01</p>
         <p className="mt-5 max-w-xl text-lg text-ink/60">
-          A future care extension designed around the STRYDE footwear system, currently under
-          supplier and sourcing validation.
+          A future care extension designed around the STRYDE footwear system. In development —
+          final materials and availability will be confirmed before launch.
         </p>
       </div>
 

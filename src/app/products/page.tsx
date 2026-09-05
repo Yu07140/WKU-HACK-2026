@@ -207,8 +207,8 @@ export default function ProductsPage() {
             </div>
             <h2 className="mt-2 text-3xl font-black md:text-4xl">{ECOSYSTEM.care}</h2>
             <p className="mt-3 text-ink/60">
-              A future care extension designed around the STRYDE footwear system. Currently under
-              supplier and sourcing validation.
+              A future care extension designed around the STRYDE footwear system. In development —
+              details will be shared at launch.
             </p>
             <span className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-ink">
               EXPLORE THE CONCEPT <ArrowRight size={16} className="transition group-hover:translate-x-1" />
