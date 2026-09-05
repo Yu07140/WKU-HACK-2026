@@ -398,17 +398,10 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
           <>
             {/* 服务：SIZE GUIDE / SHIPPING & DUTIES / RETURNS / CARE */}
             <div className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-ink/10 bg-ink/10 sm:grid-cols-4">
-<<<<<<< HEAD
               <ServiceLink href="/size-guide" icon={Ruler} label={t("Size Guide", "尺码指南")} />
               <ServiceLink href="/shipping" icon={Truck} label={t("Shipping & Duties", "配送与关税")} />
               <ServiceLink href="/returns" icon={RotateCcw} label={t("Returns", "退换货")} />
-              <ServiceLink href="/faq" icon={Shield} label={t("Care", "护理")} />
-=======
-              <ServiceLink href="/size-guide" icon={Ruler} label="Size Guide" />
-              <ServiceLink href="/shipping" icon={Truck} label="Shipping &amp; Duties" />
-              <ServiceLink href="/returns" icon={RotateCcw} label="Returns" />
-              <ServiceLink href="/care" icon={Shield} label="Care" />
->>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
+              <ServiceLink href="/care" icon={Shield} label={t("Care", "护理")} />
             </div>
 
             {/* 赛题第 8 节要求：详情页必须出现 交期拆分 / 尺码测量 / 试穿退货 / 关税口径 */}
@@ -418,26 +411,16 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
               </div>
               <dl className="space-y-2 text-ink/70">
                 <div className="flex gap-2">
-<<<<<<< HEAD
                   <dt className="w-36 shrink-0 text-ink/50">{t("Lead time", "生产周期")}</dt>
                   <dd>{t("Production 3–5 business days + international transit 8–15 days (estimate, pending supplier confirmation)", "生产 3–5 个工作日 + 国际运输 8–15 天（预估，以供应商确认为准）")}</dd>
-=======
-                  <dt className="w-36 shrink-0 text-ink/50">Lead time</dt>
-                  <dd>Production 3–5 business days + international transit 8–15 days (estimate)</dd>
->>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
                 </div>
                 <div className="flex gap-2">
                   <dt className="w-36 shrink-0 text-ink/50">{t("Duties", "关税")}</dt>
                   <dd>{t("DDU — import duties / taxes not included, paid by customer on delivery", "DDU——进口关税/税费不含在售价内，由客户签收时支付")}</dd>
                 </div>
                 <div className="flex gap-2">
-<<<<<<< HEAD
                   <dt className="w-36 shrink-0 text-ink/50">{t("Returns", "退货")}</dt>
                   <dd>{t("30-day try-on guarantee — indoor try-on accepted, outdoor-worn not returnable", "30 天试穿保障——室内试穿可退，户外穿着后不可退")}</dd>
-=======
-                  <dt className="w-36 shrink-0 text-ink/50">Returns</dt>
-                  <dd>30-Day Guarantee — your first pair is covered. Email returns@stryde.com within 30 days of delivery.</dd>
->>>>>>> c57d013b0f03efbbbda5d72cac2e663280c049b3
                 </div>
                 <div className="flex gap-2">
                   <dt className="w-36 shrink-0 text-ink/50">{t("Sizing", "尺码")}</dt>
