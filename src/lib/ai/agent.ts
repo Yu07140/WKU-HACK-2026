@@ -8,15 +8,21 @@ import { ph, formatUSD } from "@/lib/utils";
  * 双语回复：跟随用户输入语言（detectLang），不是根据这里的语言常量。
  * ------------------------------------------------------------------ */
 
+/** 欢迎语（单语版供语言切换复用；首条消息统一用双语版 welcomeBilingual） */
+const WELCOME_EN =
+  "Hey! I'm Mia 👋 From commute-ready boots to weekend pairs that won't break the bank — tell me what you're after and I'll do the rest.";
+const WELCOME_ZH =
+  "嘿！我是 Mia 👢 从通勤能穿的靴子到高性价比周末款——告诉我你想找什么，剩下的交给我。";
+
 export const AGENT_PERSONA = {
   name: "Mia",
   headerTitle: "Mia · STRYDE AI Buddy",
   headerStatus: "Online · replies in seconds",
   headerStatusZh: "在线 · 秒级响应",
-  welcome:
-    "Hey! I'm Mia 👋 From commute-ready boots to weekend pairs that won't break the bank — tell me what you're after and I'll do the rest.",
-  welcomeZh:
-    "嘿！我是 Mia 👢 从通勤能穿的靴子到高性价比周末款——告诉我你想找什么，剩下的交给我。",
+  welcome: WELCOME_EN,
+  welcomeZh: WELCOME_ZH,
+  /** 首条消息固定双语介绍（EN + ZH 一条），打开面板第一眼即可认识 Mia */
+  welcomeBilingual: `${WELCOME_EN}\n\n${WELCOME_ZH}`,
   inputPlaceholder: "Ask me anything… e.g. boots for commuting",
   inputPlaceholderZh: "想问点什么…比如：通勤穿的靴子",
   /** 4 个快捷气泡（选款 / 尺码 / 物流 / 优惠；货盘 D 为男靴，选款气泡对齐通勤场景） */

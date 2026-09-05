@@ -25,30 +25,60 @@ const AVATAR_URL = aiImageUrl(
 
 /** 聊天记录 localStorage 持久化 key */
 const STORAGE_KEY = "stryde-agent-msgs";
+/** 主动搭话只触发一次的持久化标记 key */
+const PROACTIVE_KEY = "stryde-agent-proactive-sent";
+
+/** 判断一条 AI 消息是否为主动搭话（前缀匹配，兼容历史版本文案变体） */
+function isProactiveMsg(t: string): boolean {
+  return t.startsWith(AGENT_PERSONA.proactive) || t.startsWith(AGENT_PERSONA.proactiveZh);
+}
+
+/** 判断一条 AI 消息是否为欢迎语（前缀匹配，兼容历史版本文案变体） */
+function isWelcomeMsg(t: string): boolean {
+  return t.startsWith("Hey! I'm Mia") || t.startsWith("嘿！我是 Mia");
+}
 
 export function AgentWidget() {
-  // 首渲染固定英文，避免 SSR/客户端 hydration mismatch；挂载后再按浏览器语言切换
+  // 首渲染固定双语欢迎语（中英各一段，无 SSR/hydration 不一致问题）；挂载后再按浏览器语言切换
   const [lang, setLang] = useState<Lang>("en");
   const [open, setOpen] = useState(false);
-  const [msgs, setMsgs] = useState<Msg[]>([{ role: "ai", text: AGENT_PERSONA.welcome }]);
+  const [msgs, setMsgs] = useState<Msg[]>([
+    { role: "ai", text: AGENT_PERSONA.welcomeBilingual },
+  ]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const bodyRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const interactedRef = useRef(false);
   const proactiveSentRef = useRef(false);
+  /** msgs 的实时镜像（供定时器闭包读取最新值，避免 setState 函数里做副作用） */
+  const msgsRef = useRef<Msg[]>(msgs);
 
-  /* 挂载后：按浏览器语言切换 + 恢复本地聊天记录（仅客户端执行，避免 hydration 不一致） */
+  /* 挂载后：按浏览器语言切换 + 恢复本地聊天记录 + 恢复主动搭话标记（仅客户端执行） */
   useEffect(() => {
     const browserLang: Lang =
       typeof navigator !== "undefined" && /^zh/i.test(navigator.language) ? "zh" : "en";
     setLang(browserLang);
     try {
+      if (localStorage.getItem(PROACTIVE_KEY) === "1") proactiveSentRef.current = true;
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved) as Msg[];
         if (Array.isArray(parsed) && parsed.length) {
-          setMsgs(parsed);
+          // 旧数据自愈：主动搭话只保留第一条；首条欢迎语（含历史版本文案）升级为双语版
+          let seenProactive = false;
+          const healed = parsed.filter((m) => {
+            if (m.role !== "ai") return true;
+            if (isProactiveMsg(m.text)) {
+              if (seenProactive) return false;
+              seenProactive = true;
+            }
+            return true;
+          });
+          if (healed[0]?.role === "ai" && isWelcomeMsg(healed[0].text)) {
+            healed[0] = { role: "ai", text: AGENT_PERSONA.welcomeBilingual };
+          }
+          setMsgs(healed);
           return;
         }
       }
@@ -61,8 +91,9 @@ export function AgentWidget() {
     ]);
   }, []);
 
-  /* 聊天记录持久化 */
+  /* 聊天记录持久化 + 同步镜像 */
   useEffect(() => {
+    msgsRef.current = msgs;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs));
     } catch {
@@ -74,13 +105,29 @@ export function AgentWidget() {
     bodyRef.current?.scrollTo({ top: bodyRef.current.scrollHeight, behavior: "smooth" });
   }, [msgs, typing, open]);
 
-  /* 打开面板后 30 秒无交互 → 主动搭话（只触发一次） */
+  /* 打开面板后 30 秒无交互 → 主动搭话（持久化标记 + 历史去重，最多只出现一条） */
   useEffect(() => {
     if (!open) return;
     if (interactedRef.current || proactiveSentRef.current) return;
     timerRef.current = setTimeout(() => {
       if (interactedRef.current || proactiveSentRef.current) return;
+      // 历史记录里已经有主动搭话（旧数据自愈）→ 不再追加，只补标记
+      const already = msgsRef.current.some((x) => x.role === "ai" && isProactiveMsg(x.text));
+      if (already) {
+        proactiveSentRef.current = true;
+        try {
+          localStorage.setItem(PROACTIVE_KEY, "1");
+        } catch {
+          /* 忽略 */
+        }
+        return;
+      }
       proactiveSentRef.current = true;
+      try {
+        localStorage.setItem(PROACTIVE_KEY, "1");
+      } catch {
+        /* 忽略 */
+      }
       setMsgs((m) => [
         ...m,
         {
