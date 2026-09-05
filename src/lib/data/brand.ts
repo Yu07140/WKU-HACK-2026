@@ -62,6 +62,8 @@ export const CLIP_COLLECTIONS = [
     images: {
       ">": "/clips/collections/mono/greater.png",
       "≡": "/clips/collections/mono/equal.png",
+      "◯": "/clips/collections/mono/circle.jpg",
+      "▭": "/clips/collections/mono/square.jpg",
     },
   },
   {
