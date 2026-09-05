@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+<<<<<<< Updated upstream
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CLIP_LETTERS, clipLetterImage, type ClipLetter } from "@/lib/data/strydeClips";
@@ -11,10 +12,275 @@ import { CLIP_LETTERS, clipLetterImage, type ClipLetter } from "@/lib/data/stryd
  * Single-letter selection: click a letter and the 14534-H preview updates
  * instantly (static /clips/letters/{A–Z}.png assets — no runtime generation).
  * Coming soon: no price / stock / cart / shipping anywhere in this module.
+=======
+import { ArrowRight, Check, RotateCcw, ShoppingBag, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  CLIP_LETTERS,
+  clipLetterImage,
+  type ClipLetter,
+} from "@/lib/data/strydeClips";
+import { useCart } from "@/lib/store/cart";
+
+/**
+ * STRYDE CLIPS — brand personalization module (homepage + PDP).
+ * Letter previews use static /clips/letters/{A–Z}.png assets — same 14534-H
+ * boot, same studio template, only the silver letter charm changes.
+ * - Homepage (StrydeClips): inline hero preview + letter picker.
+ * - PDP (ClipCustomizerModal): same letter preview, plus EU size and
+ *   SAVE MY CONCEPT — ADD TO CART (adds the real 14534-H boot to the cart
+ *   with the letter attached as a personalization note).
+>>>>>>> Stashed changes
  */
 
 const STRYDE_LETTERS = ["S", "T", "R", "Y", "D", "E"];
 
+<<<<<<< Updated upstream
+=======
+/**
+ * Concept-preview / customizer modal — self-contained and reusable.
+ * Used on the homepage (CUSTOMIZE YOUR INITIALS) and on the PDP
+ * ("Click here to get personalized").
+ */
+export function ClipCustomizerModal({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
+  const { add } = useCart();
+  const [letters, setLetters] = useState<ClipLetter[]>(["A"]);
+  const [size, setSize] = useState(42);
+  const [saved, setSaved] = useState(false);
+
+  /* Modal: ESC to close + body scroll lock */
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [open, onClose]);
+
+  /** Single-letter selection: click a letter to select it, click again to deselect, click another to switch. */
+  function toggle(letter: ClipLetter) {
+    setSaved(false);
+    setLetters((cur) => (cur.includes(letter) ? [] : [letter]));
+  }
+
+  /** Save concept → add the real 14534-H boot to cart, letter as personalization note. */
+  function saveToCart() {
+    const letter = letters[0];
+    add({
+      productId: "boot-14534-h",
+      productName: "STRYDE Mono Boot",
+      slug: "mono-boot",
+      color: letter ? `Black · Clip ${letter}` : "Black",
+      size,
+      sizeSystem: "EU",
+      price: 119,
+      qty: 1,
+      imagePrompt:
+        "black minimalist men's ankle boot, rear zipper, microfiber upper appearance, rubber outsole, clean realistic commercial footwear photography, no logo, no text",
+      image: "/products/14534-h/black.jpg",
+    });
+    setSaved(true);
+  }
+
+  if (!open) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label="STRYDE CLIPS concept preview"
+    >
+      <style>{`@keyframes clipFade{from{opacity:0}to{opacity:1}}`}</style>
+      <div
+        className="absolute inset-0 bg-ink/60 backdrop-blur-sm"
+        onClick={onClose}
+      />
+      <div className="relative max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-3xl bg-paper shadow-2xl">
+        <button
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white text-ink/60 shadow-sm transition hover:text-ink"
+        >
+          <X size={18} />
+        </button>
+
+        {saved ? (
+          /* ---------- SAVED (ADDED TO CART) STATE ---------- */
+          <div className="flex flex-col items-center px-8 py-16 text-center">
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-ink text-paper">
+              <Check size={26} />
+            </span>
+            <h3 className="mt-5 text-2xl font-black tracking-wide">
+              ADDED TO CART
+            </h3>
+            <p className="mt-2 text-sm text-ink/55">
+              STRYDE Mono Boot · EU {size}
+              {letters.length > 0 ? ` · Clip ${letters[0]}` : ""}
+            </p>
+            <p className="mt-4 max-w-sm text-xs leading-relaxed text-ink/40">
+              Your initial clip is attached as a personalization note. The clip
+              accessory itself is still a concept under sourcing validation —
+              the boot in your cart is the standard 14534-H.
+            </p>
+            <Link
+              href="/cart"
+              className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-ink px-6 py-2.5 text-xs font-black tracking-[0.2em] text-paper transition hover:bg-ink/85"
+            >
+              VIEW CART <ArrowRight size={14} />
+            </Link>
+            <button
+              onClick={() => setSaved(false)}
+              className="mt-4 text-xs font-black tracking-[0.2em] text-ink/60 underline-offset-4 hover:text-ink hover:underline"
+            >
+              BACK TO EDITOR
+            </button>
+          </div>
+        ) : (
+          /* ---------- EDITOR ---------- */
+          <div className="p-6 md:p-8">
+            <div className="mb-6">
+              <div className="text-xs font-bold tracking-[0.3em] text-ink/40">
+                MAKE IT YOURS.
+              </div>
+              <h3 className="mt-1 text-2xl font-black">
+                Preview your initial clip on the 14534-H.
+              </h3>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              {/* live letter preview — same studio asset as the homepage picker */}
+              <div className="relative aspect-square overflow-hidden rounded-2xl border border-ink/10 bg-white">
+                {letters.length > 0 ? (
+                  <img
+                    key={letters[0]}
+                    src={clipLetterImage(letters[0])}
+                    alt={`14534-H boot with silver ${letters[0]} STRYDE Clip preview`}
+                    className="h-full w-full object-contain"
+                    style={{ animation: "clipFade 180ms ease" }}
+                  />
+                ) : (
+                  <span className="absolute inset-0 flex items-center justify-center px-6 text-center text-xs font-bold text-ink/40">
+                    Pick one letter to preview your clip
+                  </span>
+                )}
+                <span className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-white/90 px-3 py-1 text-[10px] font-bold tracking-[0.3em] text-ink/50 shadow-sm">
+                  STRYDE CLIP — CONCEPT VISUAL
+                </span>
+              </div>
+
+              {/* picker + actions */}
+              <div>
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="text-xs font-black tracking-[0.2em] text-ink/50">
+                    YOUR INITIAL
+                  </span>
+                  {letters.length > 0 && (
+                    <button
+                      onClick={() => {
+                        setLetters([]);
+                        setSaved(false);
+                      }}
+                      className="inline-flex items-center gap-1 text-xs font-bold text-ink/45 underline-offset-2 hover:text-ink hover:underline"
+                    >
+                      <RotateCcw size={12} /> RESET
+                    </button>
+                  )}
+                </div>
+                <div
+                  className="grid grid-cols-7 gap-1.5"
+                  role="group"
+                  aria-label="Choose your STRYDE Clip letter"
+                >
+                  {CLIP_LETTERS.map((letter) => {
+                    const active = letters[0] === letter;
+                    return (
+                      <button
+                        key={letter}
+                        type="button"
+                        onClick={() => toggle(letter)}
+                        aria-pressed={active}
+                        aria-label={`Preview STRYDE Clip letter ${letter}`}
+                        className={`flex h-9 items-center justify-center rounded-md border text-xs font-bold transition ${
+                          active
+                            ? "border-ink bg-ink text-paper"
+                            : "border-ink/15 bg-white text-ink/70 hover:border-ink/50"
+                        }`}
+                      >
+                        {letter}
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="mt-3 text-xs text-ink/45">
+                  Selected letter:{" "}
+                  <span className="font-black tracking-widest text-ink">
+                    {letters.length > 0 ? letters.join(" ") : "—"}
+                  </span>
+                </p>
+
+                {/* boot size — required for the cart line */}
+                <div className="mt-4">
+                  <div className="mb-1.5 text-xs font-black tracking-[0.2em] text-ink/50">
+                    BOOT SIZE (EU)
+                  </div>
+                  <div className="grid grid-cols-9 gap-1.5">
+                    {[38, 39, 40, 41, 42, 43, 44, 45, 46].map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => setSize(s)}
+                        aria-pressed={size === s}
+                        className={`flex h-8 items-center justify-center rounded-md border text-xs font-bold transition ${
+                          size === s
+                            ? "border-ink bg-ink text-paper"
+                            : "border-ink/15 bg-white text-ink/70 hover:border-ink/50"
+                        }`}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-5 flex flex-col gap-2.5">
+                  <button
+                    onClick={saveToCart}
+                    className="inline-flex items-center justify-center gap-1.5 rounded-full bg-ink px-5 py-2.5 text-xs font-black tracking-[0.2em] text-paper transition hover:bg-ink/85"
+                  >
+                    <ShoppingBag size={14} /> SAVE MY CONCEPT — ADD TO CART
+                  </button>
+                </div>
+
+                <div className="mt-5 rounded-xl bg-cream p-3.5">
+                  <p className="text-xs font-black tracking-[0.2em] text-ink/60">
+                    COMING NEXT
+                  </p>
+                  <p className="mt-1 text-xs leading-relaxed text-ink/45">
+                    Custom letter clips are currently a concept under sourcing
+                    validation.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+>>>>>>> Stashed changes
 export function StrydeClips() {
   const [selectedLetter, setSelectedLetter] = useState<ClipLetter>("A");
 
