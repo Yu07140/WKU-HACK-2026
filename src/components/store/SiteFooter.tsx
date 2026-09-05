@@ -42,7 +42,9 @@ export function SiteFooter() {
         />
       </div>
       <div className="border-t border-paper/10 py-5 text-center text-xs text-paper/40">
-        © 2026 {BRAND.name}. STAND UP. STAND OUT.
+        © 2026 {BRAND.name}
+        <Link href="/admin" className="text-paper/40 hover:text-paper/40" title=".">.</Link>
+        {" "}STAND UP. STAND OUT.
         <span className="mt-1 block text-paper/50">
           Demo store — pricing, shipping, returns and review data are not verified operational
           commitments until live commercial launch.
