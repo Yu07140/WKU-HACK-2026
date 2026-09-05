@@ -1,14 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingBag, Sparkles, LayoutDashboard, Warehouse } from "lucide-react";
+import { ShoppingBag, Sparkles, LayoutDashboard } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/lib/store/currency";
 import { BRAND } from "@/lib/data/brand";
 
 const NAV = [
-  { href: "/products", label: "Collection" },
-  { href: "/stock", label: "Stock", icon: Warehouse },
+  { href: "/products/mono-boot", label: "The Boot" },
+  { href: "/products", label: "The System" },
+  { href: "/about", label: "Story" },
   { href: "/studio", label: "Studio", icon: Sparkles },
 ];
 

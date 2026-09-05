@@ -352,7 +352,7 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
           /* 赛题口径：非主推款仅为 Creative Lab 概念展示，不可下单，不形成第二转化路径 */
           <div className="mt-8 rounded-2xl border border-ink/15 bg-cream p-6">
             <div className="text-xs font-bold tracking-[0.25em] text-ink/50">
-              CREATIVE LAB · CONCEPT STUDY
+              CREATIVE LAB · EXPLORATION
             </div>
             <p className="mt-3 text-sm leading-relaxed text-ink/70">
               This style is a creative concept explored during the sprint. It is not part of the

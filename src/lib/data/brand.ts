@@ -24,6 +24,59 @@ export const BRAND_STORY = [
   "Pricing, shipping and policies shown on this site are demo data, not verified operational commitments.",
 ];
 
+/**
+ * STRYDE Ecosystem — copy hierarchy (spec §21).
+ * One real SKU (14534-H) extended into a complete brand system.
+ * DUO / CLIPS / CARE are not transaction-ready until supplier validation.
+ */
+export const ECOSYSTEM = {
+  brand: "STAND UP.\nSTAND OUT.",
+  system: "ONE BOOT.\nONE SYSTEM.",
+  use: "ONE PAIR.\nMORE PLANS.",
+  routines: "ONE BOOT.\nTHREE ROUTINES.",
+  duo: "TWO PAIRS.\nONE ROTATION.",
+  clips: "MAKE IT YOURS.",
+  clipsCampaign: "SAME BOOT.\nYOUR DETAIL.",
+  care: "KEEP THE ROUTE GOING.",
+} as const;
+
+/** STRYDE CLIPS — 4 concept collections (spec §5). Removable decorative clips on the 14534-H front loop. */
+export const CLIP_COLLECTIONS = [
+  {
+    no: "01",
+    name: "SIGNATURE",
+    desc: "STRYDE-branded marks designed around the brand wordmark.",
+    samples: ["S", "STRYDE", "STAND OUT"],
+  },
+  {
+    no: "02",
+    name: "MONO",
+    desc: "Minimal graphic symbols in black, graphite and silver-tone.",
+    samples: [">", "≡", "◯", "▭"],
+  },
+  {
+    no: "03",
+    name: "PERSONAL",
+    desc: "Choose your initial — a quiet, personal signature.",
+    samples: ["A", "F", "M", "S"],
+  },
+  {
+    no: "04",
+    name: "CITY",
+    desc: "City-inspired text identity. No official logos or trademarks.",
+    samples: ["NYC", "LDN", "TYO"],
+  },
+] as const;
+
+/** Customer-facing status labels for concept-stage extensions (spec §1). */
+export const STATUS = {
+  available: "AVAILABLE",
+  comingSoon: "COMING SOON",
+  inDevelopment: "IN DEVELOPMENT",
+  designPreview: "DESIGN PREVIEW",
+  validationPending: "SUPPLIER VALIDATION PENDING",
+} as const;
+
 /** 供货工厂（货盘来源：Lanhe Product Collection 2026） */
 export const MANUFACTURER = {
   name: "Lanhe International",

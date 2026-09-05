@@ -119,6 +119,26 @@ export default function AdminOverview() {
         />
       </div>
 
+      {/* Ecosystem KPIs — planned/simulated only */}
+      {!isActual && (
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <div className="mb-3 flex items-center gap-2 text-xs font-bold tracking-wider text-slate-400">
+            STRYDE ECOSYSTEM · <span className="text-amber-400">PLANNED / SIMULATED</span>
+          </div>
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            <Stat label="Core Product CVR" value="3.2%" sub="PLANNED · 14534-H launch target" />
+            <Stat label="Duo Attach Rate" value="18%" sub="PLANNED · % of orders adding a 2nd pair" />
+            <Stat label="Projected AOV" value="$142" sub="PLANNED · with Duo attach" />
+            <Stat label="Clip Interest" value="24%" sub="SIMULATED · landing-page CTR to /clips" />
+            <Stat label="Care Interest" value="9%" sub="SIMULATED · landing-page CTR to /care" />
+          </div>
+          <p className="mt-3 text-[11px] text-slate-500">
+            All ecosystem figures above are PLANNED or SIMULATED — not actual results.
+            ACTUAL mode records only real recorded behavior.
+          </p>
+        </div>
+      )}
+
       {isActual && (
         <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center">
           <div className="text-lg font-bold text-slate-300">No live campaign data yet.</div>

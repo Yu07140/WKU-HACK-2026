@@ -40,7 +40,7 @@ export function ProductCard({ product, concept = false }: { product: Product; co
         )}
         {concept ? (
           <div className="absolute right-3 top-3 rounded-full bg-ink/70 px-2.5 py-1 text-xs font-bold text-white">
-            CONCEPT STUDY
+            CREATIVE LAB
           </div>
         ) : product.demoPricing ? (
           <div className="absolute right-3 top-3 rounded-full bg-ink/80 px-2.5 py-1 text-xs font-bold text-white">
