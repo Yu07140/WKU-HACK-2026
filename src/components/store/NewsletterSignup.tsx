@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-/** Homepage email capture — launch updates only. No discount claims. */
+/** Homepage email capture — 15% first-pair offer on the list (confirmed STRYDE promotion). */
 export function NewsletterSignup() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");

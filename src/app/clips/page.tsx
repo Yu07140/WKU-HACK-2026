@@ -105,7 +105,7 @@ export default function ClipsPage() {
           {CLIP_COLLECTIONS.map((c) => (
             <div
               key={c.no}
-              className="group flex flex-col rounded-3xl border border-ink/10 bg-white p-6 transition hover:border-ink/30"
+              className="flex flex-col rounded-3xl border border-ink/10 bg-white p-6"
             >
               <div className="text-xs font-black tracking-[0.25em] text-ink/40">{c.no}</div>
               <h3 className="mt-2 text-xl font-black tracking-wide">{c.name}</h3>

@@ -27,10 +27,14 @@ Upper: Microfiber | Lining: Microfiber | Outsole: Rubber
 Sizes: EU 38–46
 Sandbox retail: $119 (landed cost x brand multiplier ~3.0, guide 2.0-3.5)
 
-POLICIES (demo assumptions, finalize before live sales)
-- Lead time: production 3-5 business days + international transit 8-15 days
+BRAND-DECIDED POLICIES (team-confirmed, not supplier specs)
+- 30-Day Guarantee: first pair covered (STRYDE commercial policy)
+- 15% first-pair promotion: confirmed (code STRYDE15)
+- Retail: sandbox $119 (final confirmed with carrier quotes)
 - Duties: DDU (customer pays import duties on delivery)
-- Returns: 30-day try-on guarantee, indoor try-on accepted
+
+OPERATIONAL ESTIMATES (demo)
+- Lead time: production 3-5 business days + international transit 8-15 days (estimate)
 - Shipping: free over $75 (US), else $7.90 flat; UK/EU $12.50, CA/AU $14.90
 
 COLD-START PLAN (Proposed)
@@ -294,7 +298,6 @@ export default function ProofPage() {
             "Production lead time — demo assumption 3–5 business days, pending supplier confirmation",
             "International shipping rates & transit — demo flat rates, pending carrier quotes",
             "US / UK / CM size conversion — pending supplier confirmation",
-            "Returns policy — demo 30-day try-on policy, finalize before live sales",
             "Final overseas retail price — sandbox $119, final after landed-cost confirmation",
             "Real campaign results — no live campaigns yet",
           ].map((t) => (

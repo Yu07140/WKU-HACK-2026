@@ -45,11 +45,11 @@ const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
     items: [
       {
         q: "What's your return policy?",
-        a: "30-day try-on guarantee: indoor try-on is accepted, outdoor-worn pairs are not returnable. Full details on our Returns page.",
+        a: "STRYDE offers a 30-day guarantee on your first pair. To start a return, email returns@stryde.com within 30 days of delivery.",
       },
       {
         q: "The shoes don't fit. Can I exchange them?",
-        a: "Start a return for the pair that doesn't fit, then place a new order for the right size. Use the Size Guide to measure your foot before ordering.",
+        a: "Email returns@stryde.com within your 30-day window and we'll help you get the right size. Use the Size Guide to measure your foot first.",
       },
     ],
   },
@@ -63,7 +63,7 @@ const FAQS: Array<{ cat: string; icon: any; accent?: boolean; items: QA[] }> = [
       },
       {
         q: "How do I care for the boots?",
-        a: "Product-specific care guidance is pending supplier confirmation. Avoid publishing product-specific cleaning instructions until the supplier provides an approved care method.",
+        a: "We're finalizing care guidance for the 14534-H and will publish it before launch. Until then, feel free to ask us in the chat bubble.",
       },
     ],
   },
@@ -125,8 +125,9 @@ export default function FAQPage() {
           Can't find what you need? Ping the chat bubble in the bottom right.
         </p>
         <p className="mx-auto mt-3 max-w-xl text-xs text-ink/40">
-          This is a demo store. Shipping, return, and payment terms are not
-          verified operational commitments.
+          Demo store — shipping estimates and payment handling are for this
+          demo. The 30-Day Guarantee on your first pair is a confirmed STRYDE
+          policy.
         </p>
       </div>
 

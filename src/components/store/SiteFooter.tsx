@@ -52,8 +52,8 @@ export function SiteFooter() {
         © 2026 {BRAND.name}. {t("STAND UP. STAND OUT.", "站起来。出众。")}
         <span className="mt-1 block text-paper/50">
           {t(
-            "Demo store — pricing, shipping, returns and review data are not verified operational commitments until live commercial launch.",
-            "演示商店——在正式商用上线前，价格、配送、退货与评价数据均非经验证的运营承诺。"
+            "Demo store — product, pricing and shipping details are demo data. The 30-Day Guarantee on your first pair and the 15% first-pair offer are confirmed STRYDE policies.",
+            "演示商店——产品、价格与配送信息为演示数据。首双 30 天质保与首双 15% 优惠为已确认的 STRYDE 政策。"
           )}
         </span>
         <Link

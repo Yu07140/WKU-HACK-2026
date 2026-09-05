@@ -104,14 +104,14 @@ export default function HomePage() {
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             {ROUTINES.map((r) => (
-              <div key={r.no} className="group overflow-hidden rounded-3xl bg-white">
+              <div key={r.no} className="overflow-hidden rounded-3xl bg-white">
                 <div className="relative aspect-[4/5] overflow-hidden">
                   <ProductImage
                     src={r.img}
                     prompt="black minimalist ankle boot, clean editorial photography"
                     alt={r.title}
                     size="portrait_4_3"
-                    className="h-full w-full transition duration-500 group-hover:scale-105"
+                    className="h-full w-full"
                   />
                   <div className="absolute left-4 top-4 rounded-full bg-ink/80 px-3 py-1 text-xs font-black tracking-wider text-paper">
                     {r.no} · {r.title}
@@ -159,25 +159,25 @@ export default function HomePage() {
             </div>
             <p className="mt-4 text-xs text-paper/40">
               {t(
-                "Bundle savings will be finalized after launch-cost validation.",
-                "组合优惠将在发布成本验证后确定。"
+                "Two pairs, one order — build your rotation at checkout.",
+                "两双一次下单，组合你的日常轮换。"
               )}
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4">
             {[1, 2].map((n) => (
-              <div key={n} className="relative overflow-hidden rounded-3xl bg-cream">
+              <Link key={n} href="/duo" className="group relative block overflow-hidden rounded-3xl bg-cream">
                 <ProductImage
                   src={hero.heroImage ?? hero.image}
                   prompt={hero.imagePrompt}
                   alt={`STRYDE 14534-H — Pair ${n}`}
                   size="portrait_4_3"
-                  className="aspect-[4/5] w-full"
+                  className="aspect-[4/5] w-full transition duration-500 group-hover:scale-[1.02]"
                 />
                 <div className="absolute left-3 top-3 rounded-full bg-ink/80 px-3 py-1 text-xs font-black tracking-wider text-paper">
                   {t("PAIR", "双")} {n}
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -218,11 +218,11 @@ export default function HomePage() {
               </span>
             </div>
             <div className="mt-8">
-              <Link href="/care">
-                <Button size="lg" variant="outline">
-                  {t("EXPLORE THE CONCEPT", "探索概念")} <ArrowRight size={17} />
-                </Button>
-              </Link>
+                <Link href="/care">
+                  <Button size="lg" variant="outline">
+                    {t("EXPLORE CARE 01", "探索 CARE 01")} <ArrowRight size={17} />
+                  </Button>
+                </Link>
             </div>
           </div>
         </div>
@@ -241,13 +241,21 @@ export default function HomePage() {
             <div className="text-xs font-black tracking-[0.25em] text-paper/50">
               {t("JOIN THE STRYDE LIST", "加入 STRYDE 名单")}
             </div>
-            <p className="mx-auto mt-2 max-w-md text-sm text-paper/40">
+            <p className="mx-auto mt-2 max-w-md text-sm text-paper/50">
               {t(
-                "Get launch updates, product drops and early access.",
-                "获取发售动态、新品信息与早鸟权益。"
+                "Get 15% off your first pair, plus launch updates and early access.",
+                "首双享 15% 优惠，外加发售动态与早鸟权益。"
               )}
             </p>
             <NewsletterSignup />
+          </div>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[11px] font-black tracking-[0.2em] text-paper/45">
+            <span className="inline-flex items-center gap-1.5">
+              <ShieldCheck size={14} />
+              {t("30-DAY GUARANTEE", "30 天质保")}
+            </span>
+            <span className="h-1 w-1 rounded-full bg-paper/30" />
+            <span>{t("YOUR FIRST PAIR IS COVERED", "你的第一双有保障")}</span>
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link href={`/products/${hero.slug}`}>

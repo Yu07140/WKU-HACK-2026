@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { Product } from "@/lib/types";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { TrendBadge } from "@/components/ui/badge";
-import { ph, PLACEHOLDER_MODE, cn } from "@/lib/utils";
+import { ph, PLACEHOLDER_MODE } from "@/lib/utils";
 import { useCurrency } from "@/lib/store/currency";
 import { useLang } from "@/lib/store/lang";
 import { displayName, displayTagline } from "@/lib/store/display";
@@ -16,9 +16,8 @@ export function ProductCard({ product, concept = false }: { product: Product; co
   const { t } = useLang();
   return (
     <Link
-      href={concept ? "#" : `/products/${product.slug}`}
-      className={cn("group block animate-fade-up", concept && "pointer-events-none")}
-      aria-disabled={concept}
+      href={`/products/${product.slug}`}
+      className="group block animate-fade-up"
     >
       <div className="relative overflow-hidden rounded-2xl bg-cream">
         <ProductImage

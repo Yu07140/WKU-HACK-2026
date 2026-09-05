@@ -397,7 +397,7 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
               <ServiceLink href="/size-guide" icon={Ruler} label="Size Guide" />
               <ServiceLink href="/shipping" icon={Truck} label="Shipping &amp; Duties" />
               <ServiceLink href="/returns" icon={RotateCcw} label="Returns" />
-              <ServiceLink href="/faq" icon={Shield} label="Care" />
+              <ServiceLink href="/care" icon={Shield} label="Care" />
             </div>
 
             {/* 赛题第 8 节要求：详情页必须出现 交期拆分 / 尺码测量 / 试穿退货 / 关税口径 */}
@@ -408,7 +408,7 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
               <dl className="space-y-2 text-ink/70">
                 <div className="flex gap-2">
                   <dt className="w-36 shrink-0 text-ink/50">Lead time</dt>
-                  <dd>Production 3–5 business days + international transit 8–15 days (estimate, pending supplier confirmation)</dd>
+                  <dd>Production 3–5 business days + international transit 8–15 days (estimate)</dd>
                 </div>
                 <div className="flex gap-2">
                   <dt className="w-36 shrink-0 text-ink/50">Duties</dt>
@@ -416,7 +416,7 @@ export function PDPView({ product, initialColorIdx = 0 }: { product: Product; in
                 </div>
                 <div className="flex gap-2">
                   <dt className="w-36 shrink-0 text-ink/50">Returns</dt>
-                  <dd>30-day try-on guarantee — indoor try-on accepted, outdoor-worn not returnable</dd>
+                  <dd>30-Day Guarantee — your first pair is covered. Email returns@stryde.com within 30 days of delivery.</dd>
                 </div>
                 <div className="flex gap-2">
                   <dt className="w-36 shrink-0 text-ink/50">Sizing</dt>

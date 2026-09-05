@@ -223,7 +223,7 @@ export default function CheckoutPage() {
               </div>
               <div className="flex flex-col items-center gap-1">
                 <RotateCcw size={16} className="text-sage" />
-                <span>{t("Returns TBC", "退货政策待定")}</span>
+                <span>{t("30-Day Guarantee", "30 天质保")}</span>
               </div>
               <div className="flex flex-col items-center gap-1">
                 <Truck size={16} className="text-sage" />
