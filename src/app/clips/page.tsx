@@ -4,6 +4,7 @@ import { getProductById } from "@/lib/data/catalog";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { Button } from "@/components/ui/button";
 import { CLIP_COLLECTIONS, STATUS } from "@/lib/data/brand";
+import { LetterSelector } from "@/components/clips/LetterSelector";
 
 export default function ClipsPage() {
   const hero = getProductById("boot-14534-h");
@@ -84,11 +85,13 @@ export default function ClipsPage() {
             </li>
           </ul>
           <div className="mt-6 rounded-2xl bg-cream p-4 text-xs leading-relaxed text-ink/55">
-            {STATUS.designPreview} — these are concept directions. Final materials, manufacturing
-            specifications and availability are still being validated.
+            {STATUS.comingSoon} — Personalized STRYDE Clips are currently in development.
           </div>
         </div>
       </section>
+
+      {/* ---------- A–Z LETTER SELECTOR ---------- */}
+      <LetterSelector />
 
       {/* ---------- FOUR COLLECTIONS ---------- */}
       <section className="mb-20">
@@ -134,7 +137,7 @@ export default function ClipsPage() {
           KEEP THE ROUTE GOING.
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-paper/60">
-          Start with the 14534-H. STRYDE CLIPS arrive once sourcing and manufacturing are validated.
+          Start with the 14534-H. Personalized STRYDE Clips are currently in development.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link href="/products/mono-boot">
@@ -152,8 +155,7 @@ export default function ClipsPage() {
 
       {/* ---------- DISCLOSURE ---------- */}
       <p className="mt-10 text-center text-xs leading-relaxed text-ink/40">
-        STRYDE CLIPS are currently in development. Final materials, manufacturing specifications
-        and availability are still being validated.
+        {STATUS.comingSoon} — STRYDE CLIPS are currently in development.
       </p>
     </div>
   );
