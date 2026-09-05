@@ -52,7 +52,7 @@ export function SiteHeader() {
           </select>
           <Link
             href="/admin"
-            title="增长看板（内部）"
+            title="Dashboard (internal)"
             className="rounded-full p-2 text-ink/60 transition hover:bg-ink/5 hover:text-ink"
           >
             <LayoutDashboard size={19} />

@@ -47,7 +47,7 @@ export default function CartPage() {
       <div className="mx-auto flex max-w-xl flex-col items-center px-6 py-28 text-center">
         <ShoppingBag size={48} className="text-ink/25" />
         <h1 className="mt-5 text-2xl font-black">Your bag is empty</h1>
-        <p className="mt-2 text-ink/55">爆款正在仓库等你，AI 导购也可以帮你挑。</p>
+        <p className="mt-2 text-ink/55">The 14534-H is ready when you are — or ask the STRYDE Assistant for help.</p>
         <Link href="/products" className="mt-7">
           <Button size="lg">
             Start shopping <ArrowRight size={17} />
@@ -204,7 +204,7 @@ export default function CartPage() {
             </Button>
           </Link>
           <p className="mt-3 text-center text-xs text-ink/45">
-            🔒 Demo checkout · no real payment · 订单将实时进入增长看板
+            🔒 Demo checkout · no real payment · orders appear live in the internal dashboard
           </p>
         </div>
       </div>

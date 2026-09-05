@@ -26,9 +26,8 @@ export function SiteFooter() {
           title="Support"
           links={[
             ["Size Guide", "/size-guide"],
-            ["Shipping & Delivery", "/faq#shipping-delivery"],
-            ["Returns & Exchanges", "/faq#returns-exchanges"],
-            ["Track Order", "#"],
+            ["Shipping & Delivery", "/shipping"],
+            ["Returns & Exchanges", "/returns"],
             ["FAQ", "/faq"],
           ]}
         />

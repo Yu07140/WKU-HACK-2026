@@ -55,7 +55,7 @@ export default function ReturnsPage() {
           ))}
         </div>
         <div className="mt-5 rounded-xl bg-accent/5 p-4 text-xs leading-relaxed text-accent-dark">
-          <strong>Why the strict outdoor-wear rule?</strong> We're a small factory-direct brand, not a chain store.
+          <strong>Why the strict outdoor-wear rule?</strong> We're a small, focused footwear brand, not a chain store.
           Every returned pair that can't be resold gets recycled — it hurts us and the planet. We appreciate
           your honesty.
         </div>

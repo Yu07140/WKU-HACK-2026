@@ -64,7 +64,7 @@ export function displayTagline(p: Product): string {
   if (lower.includes("简约") || lower.includes("极简")) return "Strip down to the shape.";
   if (lower.includes("经典") || lower.includes("出货量")) return "The factory's most-loved pair.";
 
-  return "Bold silhouettes, factory-direct.";
+  return "A shape that makes the outfit.";
 }
 
 /** 展示用 description：中文 → 英文 fallback */
@@ -81,7 +81,7 @@ export function displayDescription(p: Product): string {
   const colorCount = p.colors.length;
   const colorWord = colorCount === 1 ? "one signature colorway" : `${colorCount} colorways`;
 
-  return `A ${material.toLowerCase()} high-top boot with side zipper, jumbo laces, and ${sole}. Built on the same last as our best sellers — available in ${colorWord}. Factory-direct pricing with no middleman markup.`;
+  return `A ${material.toLowerCase()} high-top boot with side zipper, jumbo laces, and ${sole}. Built on the same last as our best sellers — available in ${colorWord}.`;
 }
 
 /** 展示用 features：中文 → 英文 fallback 列表 */
