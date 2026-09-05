@@ -178,11 +178,19 @@ export function PDPView({ product }: { product: Product }) {
       {/* 信息 */}
       <div>
         <div className="flex items-center gap-3 flex-wrap">
-          <TrendBadge trend={product.trend} />
-          <span className="flex items-center gap-1 text-sm text-ink/60">
-            <Star size={14} className="text-amber-500" fill="currentColor" />
-            {product.rating} · {product.reviews} reviews
-          </span>
+          {isHero ? (
+            <TrendBadge trend={product.trend} />
+          ) : (
+            <span className="rounded-full bg-ink/70 px-2.5 py-1 text-xs font-bold text-white">
+              CONCEPT STUDY · NOT FOR ORDER
+            </span>
+          )}
+          {isHero && product.reviews > 0 && (
+            <span className="flex items-center gap-1 text-sm text-ink/60">
+              <Star size={14} className="text-amber-500" fill="currentColor" />
+              {product.rating} · {product.reviews} reviews
+            </span>
+          )}
           {product.stock === 0 && (
             <span className="rounded-full bg-accent/15 px-2.5 py-0.5 text-xs font-black uppercase tracking-wider text-accent-dark">
               Sold Out
@@ -193,145 +201,172 @@ export function PDPView({ product }: { product: Product }) {
         <h1 className="mt-3 text-4xl font-black">{ph(name)}</h1>
         <p className="mt-1 text-lg text-ink/55">{tagline}</p>
 
-        <div className="mt-4 flex items-baseline gap-3">
-          <span className="text-3xl font-black">{formatPrice(product.price)}</span>
-          {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
-            <span className="text-lg text-ink/40 line-through">{formatPrice(product.compareAt)}</span>
-          )}
-          {product.demoPricing && (
-            <span className="rounded-full bg-ink/10 px-2.5 py-0.5 text-xs font-bold text-ink/55">
-              Demo pricing
-            </span>
-          )}
-        </div>
-
-        {/* 配色 */}
-        <div className="mt-7">
-          <div className="mb-2 text-sm font-bold">
-            Color: <span className="font-normal text-ink/60">{color.name}</span>
-          </div>
-          <div className="flex gap-2.5">
-            {product.colors.map((c, i) => (
-              <button
-                key={c.name}
-                onClick={() => setColorIdx(i)}
-                className={cn(
-                  "h-9 w-9 rounded-full border-2 transition",
-                  i === colorIdx ? "border-ink scale-110" : "border-ink/15"
-                )}
-                style={{ background: c.hex }}
-                title={c.name}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* 尺码 */}
-        <div className="mt-6">
-          <div className="mb-2 flex justify-between text-sm font-bold">
-            <span>
-              Size: {sizeLabel} {size ?? "—"}
-            </span>
-            <Link
-              href="/size-guide"
-              className="font-normal text-ink/50 hover:text-accent hover:underline"
-            >
-              Not sure? See size guide →
-            </Link>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {product.sizes.map((s) => (
-              <button
-                key={s}
-                onClick={() => setSize(s)}
-                className={cn(
-                  "h-11 w-14 rounded-xl border text-sm font-bold transition",
-                  size === s
-                    ? "border-ink bg-ink text-paper"
-                    : "border-ink/20 bg-white hover:border-ink/60"
-                )}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* 数量 + 加购 */}
-        <div className="mt-8 flex gap-3">
-          <div className="flex h-[52px] items-center rounded-full border border-ink/20 bg-white">
-            <button
-              className="h-full w-11 text-xl font-bold"
-              onClick={() => setQty((q) => Math.max(1, q - 1))}
-            >
-              −
-            </button>
-            <span className="w-8 text-center font-bold">{qty}</span>
-            <button
-              className="h-full w-11 text-xl font-bold"
-              onClick={() => setQty((q) => q + 1)}
-            >
-              +
-            </button>
-          </div>
-          <Button size="lg" className="flex-1" onClick={handleAdd} disabled={!size}>
-            {added ? (
-              <>
-                <Check size={18} /> Added to bag
-              </>
-            ) : (
-              <>
-                <ShoppingBag size={18} /> {size ? "Add to bag" : "Select a size"}
-              </>
+        {isHero && (
+          <div className="mt-4 flex items-baseline gap-3">
+            <span className="text-3xl font-black">{formatPrice(product.price)}</span>
+            {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
+              <span className="text-lg text-ink/40 line-through">{formatPrice(product.compareAt)}</span>
             )}
-          </Button>
-        </div>
-        {added && (
-          <Link
-            href="/cart"
-            className="mt-3 inline-block text-sm font-bold text-ink underline underline-offset-2"
-          >
-            View bag &amp; checkout →
-          </Link>
+            {product.demoPricing && (
+              <span className="rounded-full bg-ink/10 px-2.5 py-0.5 text-xs font-bold text-ink/55">
+                Demo pricing
+              </span>
+            )}
+          </div>
         )}
 
-        {/* 服务：SIZE GUIDE / SHIPPING & DUTIES / RETURNS / CARE */}
-        <div className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-ink/10 bg-ink/10 sm:grid-cols-4">
-          <ServiceLink href="/size-guide" icon={Ruler} label="Size Guide" />
-          <ServiceLink href="/shipping" icon={Truck} label="Shipping &amp; Duties" />
-          <ServiceLink href="/returns" icon={RotateCcw} label="Returns" />
-          <ServiceLink href="/faq" icon={Shield} label="Care" />
-        </div>
+        {isHero ? (
+          <>
+            {/* 配色 */}
+            <div className="mt-7">
+              <div className="mb-2 text-sm font-bold">
+                Color: <span className="font-normal text-ink/60">{color.name}</span>
+              </div>
+              <div className="flex gap-2.5">
+                {product.colors.map((c, i) => (
+                  <button
+                    key={c.name}
+                    onClick={() => setColorIdx(i)}
+                    className={cn(
+                      "h-9 w-9 rounded-full border-2 transition",
+                      i === colorIdx ? "border-ink scale-110" : "border-ink/15"
+                    )}
+                    style={{ background: c.hex }}
+                    title={c.name}
+                  />
+                ))}
+              </div>
+            </div>
 
-        {/* 赛题第 8 节要求：详情页必须出现 交期拆分 / 尺码测量 / 试穿退货 / 关税口径 */}
-        <div className="mt-4 rounded-2xl border border-ink/10 bg-white p-5 text-sm">
-          <div className="mb-3 text-xs font-bold tracking-[0.2em] text-ink/40">
-            SHIPPING &amp; RETURNS
-          </div>
-          <dl className="space-y-2 text-ink/70">
-            <div className="flex gap-2">
-              <dt className="w-36 shrink-0 text-ink/50">Lead time</dt>
-              <dd>Production 3–5 business days + international transit 8–15 days (estimate, pending supplier confirmation)</dd>
-            </div>
-            <div className="flex gap-2">
-              <dt className="w-36 shrink-0 text-ink/50">Duties</dt>
-              <dd>DDU — import duties / taxes not included, paid by customer on delivery</dd>
-            </div>
-            <div className="flex gap-2">
-              <dt className="w-36 shrink-0 text-ink/50">Returns</dt>
-              <dd>30-day try-on guarantee — indoor try-on accepted, outdoor-worn not returnable</dd>
-            </div>
-            <div className="flex gap-2">
-              <dt className="w-36 shrink-0 text-ink/50">Sizing</dt>
-              <dd>
-                EU {product.sizes[0]}–{product.sizes[product.sizes.length - 1]}. Measure your foot before ordering —{" "}
-                <Link href="/size-guide" className="font-bold text-accent-dark underline underline-offset-2">
-                  size guide &amp; measuring method
+            {/* 尺码 */}
+            <div className="mt-6">
+              <div className="mb-2 flex justify-between text-sm font-bold">
+                <span>
+                  Size: {sizeLabel} {size ?? "—"}
+                </span>
+                <Link
+                  href="/size-guide"
+                  className="font-normal text-ink/50 hover:text-accent hover:underline"
+                >
+                  Not sure? See size guide →
                 </Link>
-              </dd>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {product.sizes.map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => setSize(s)}
+                    className={cn(
+                      "h-11 w-14 rounded-xl border text-sm font-bold transition",
+                      size === s
+                        ? "border-ink bg-ink text-paper"
+                        : "border-ink/20 bg-white hover:border-ink/60"
+                    )}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
             </div>
-          </dl>
-        </div>
+
+            {/* 数量 + 加购 */}
+            <div className="mt-8 flex gap-3">
+              <div className="flex h-[52px] items-center rounded-full border border-ink/20 bg-white">
+                <button
+                  className="h-full w-11 text-xl font-bold"
+                  onClick={() => setQty((q) => Math.max(1, q - 1))}
+                >
+                  −
+                </button>
+                <span className="w-8 text-center font-bold">{qty}</span>
+                <button
+                  className="h-full w-11 text-xl font-bold"
+                  onClick={() => setQty((q) => q + 1)}
+                >
+                  +
+                </button>
+              </div>
+              <Button size="lg" className="flex-1" onClick={handleAdd} disabled={!size}>
+                {added ? (
+                  <>
+                    <Check size={18} /> Added to bag
+                  </>
+                ) : (
+                  <>
+                    <ShoppingBag size={18} /> {size ? "Add to bag" : "Select a size"}
+                  </>
+                )}
+              </Button>
+            </div>
+            {added && (
+              <Link
+                href="/cart"
+                className="mt-3 inline-block text-sm font-bold text-ink underline underline-offset-2"
+              >
+                View bag &amp; checkout →
+              </Link>
+            )}
+          </>
+        ) : (
+          /* 赛题口径：非主推款仅为 Creative Lab 概念展示，不可下单，不形成第二转化路径 */
+          <div className="mt-8 rounded-2xl border border-ink/15 bg-cream p-6">
+            <div className="text-xs font-bold tracking-[0.25em] text-ink/50">
+              CREATIVE LAB · CONCEPT STUDY
+            </div>
+            <p className="mt-3 text-sm leading-relaxed text-ink/70">
+              This style is a creative concept explored during the sprint. It is not part of the
+              official 14534-H supply chain and is not available for order in this market test.
+            </p>
+            <Link
+              href="/products/mono-boot"
+              className="mt-4 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-bold text-paper transition hover:bg-ink/85"
+            >
+              <ShoppingBag size={16} /> SHOP THE 14534-H
+            </Link>
+          </div>
+        )}
+
+        {isHero && (
+          <>
+            {/* 服务：SIZE GUIDE / SHIPPING & DUTIES / RETURNS / CARE */}
+            <div className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-ink/10 bg-ink/10 sm:grid-cols-4">
+              <ServiceLink href="/size-guide" icon={Ruler} label="Size Guide" />
+              <ServiceLink href="/shipping" icon={Truck} label="Shipping &amp; Duties" />
+              <ServiceLink href="/returns" icon={RotateCcw} label="Returns" />
+              <ServiceLink href="/faq" icon={Shield} label="Care" />
+            </div>
+
+            {/* 赛题第 8 节要求：详情页必须出现 交期拆分 / 尺码测量 / 试穿退货 / 关税口径 */}
+            <div className="mt-4 rounded-2xl border border-ink/10 bg-white p-5 text-sm">
+              <div className="mb-3 text-xs font-bold tracking-[0.2em] text-ink/40">
+                SHIPPING &amp; RETURNS
+              </div>
+              <dl className="space-y-2 text-ink/70">
+                <div className="flex gap-2">
+                  <dt className="w-36 shrink-0 text-ink/50">Lead time</dt>
+                  <dd>Production 3–5 business days + international transit 8–15 days (estimate, pending supplier confirmation)</dd>
+                </div>
+                <div className="flex gap-2">
+                  <dt className="w-36 shrink-0 text-ink/50">Duties</dt>
+                  <dd>DDU — import duties / taxes not included, paid by customer on delivery</dd>
+                </div>
+                <div className="flex gap-2">
+                  <dt className="w-36 shrink-0 text-ink/50">Returns</dt>
+                  <dd>30-day try-on guarantee — indoor try-on accepted, outdoor-worn not returnable</dd>
+                </div>
+                <div className="flex gap-2">
+                  <dt className="w-36 shrink-0 text-ink/50">Sizing</dt>
+                  <dd>
+                    EU {product.sizes[0]}–{product.sizes[product.sizes.length - 1]}. Measure your foot before ordering —{" "}
+                    <Link href="/size-guide" className="font-bold text-accent-dark underline underline-offset-2">
+                      size guide &amp; measuring method
+                    </Link>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </>
+        )}
 
         {/* 卖点列表 */}
         {features.length > 0 && (

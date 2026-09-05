@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { getProduct, PRODUCTS } from "@/lib/data/catalog";
 import { PDPView } from "@/components/store/PDPView";
-import { ProductCard } from "@/components/store/ProductCard";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { ReviewsSection } from "@/components/store/ReviewsSection";
 import { ph } from "@/lib/utils";
@@ -93,19 +92,7 @@ export default async function ProductPage({
         </section>
       )}
 
-      {/* RELATED — same-category styles */}
-      {related.length > 0 && (
-        <section className="mt-20">
-          <h2 className="mb-8 text-2xl font-black">You May Also Like</h2>
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-            {related.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      <ReviewsSection product={product} />
+      {product.sku === "14534-H" && <ReviewsSection product={product} />}
     </div>
   );
 }

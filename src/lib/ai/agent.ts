@@ -86,6 +86,14 @@ export interface AgentReply {
  *   getSizingAdvice / getShippingInfo / getReturnInfo
  * ================================================================= */
 
+/**
+ * 赛题口径（第 3 / 3.4 / 3.5 节）：单主货盘（货盘 D · 14534-H）、单品牌、
+ * 一套主转化路径。其余鞋款仅作为 Creative Lab 创意概念展示，不进入导购/购买链路。
+ */
+const HERO = PRODUCTS.find((p) => p.sku === "14534-H" || p.slug === "mono-boot");
+const isHero = (p: Product) => HERO != null && p.slug === HERO.slug;
+const onlyHero = (list: Product[]): Product[] => list.filter(isHero);
+
 export function searchProducts(query: string): Product[] {
   const q = query.toLowerCase();
   // 货盘为全靴子（蓝禾高帮靴 + STRYDE 靴），意图关键词只用于"是否算鞋类需求"的判定
@@ -112,27 +120,28 @@ export function searchProducts(query: string): Product[] {
   }
   // 鞋类意图但文本没命中具体款 → 热度兜底，绝不冷场
   if (hits.length === 0 && footwearIntent) hits = [...PRODUCTS];
+  // 单主货盘：导购链路只推荐主推 14534-H，概念款不进入购买路径
+  if (HERO && (hits.length > 0 || footwearIntent)) return [HERO];
   return hits.sort((a, b) => b.heatScore - a.heatScore).slice(0, 3);
 }
 
 /**
- * 浏览位（用户要"多看几双"时用）：有真实评价的靴子优先，再按热度；
- * 货盘 D 主货号 14534-H（mono-boot，赛事指定现货男靴）保底占 1 个位置。
+ * 通用推荐位：赛题要求单品牌、单套转化路径 —— 导购推荐位始终为主推款
+ * 14534-H（货盘 D · 传统男靴）。保留原签名，兼容旧调用。
  */
 function topRatedBoots(n = 3): Product[] {
+  if (HERO) return [HERO].slice(0, n);
   const scored = [...PRODUCTS].sort((a, b) => {
     const score = (p: Product) =>
       p.reviews > 0 ? p.rating * Math.log10(p.reviews + 1) + p.heatScore / 50 : p.heatScore / 50;
     return score(b) - score(a);
   });
-  const hero = PRODUCTS.find((p) => p.sku === "14534-H" || p.slug === "mono-boot");
-  if (!hero || n < 2) return scored.slice(0, n);
-  const picks = scored.filter((p) => p.slug !== hero.slug).slice(0, n - 1);
-  picks.push(hero);
-  return picks.slice(0, n);
+  return scored.slice(0, n);
 }
 
 function pickByMaxPrice(maxPrice: number): Product[] {
+  // 只有主推款可售：预算覆盖就推荐，否则诚实返回空（由文案兜底）
+  if (HERO) return HERO.price <= maxPrice ? [HERO] : [];
   return [...PRODUCTS]
     .filter((p) => p.price <= maxPrice)
     .sort((a, b) => b.heatScore - a.heatScore)
@@ -141,23 +150,26 @@ function pickByMaxPrice(maxPrice: number): Product[] {
 
 function pickByAttr(keywords: string[], max = 3): Product[] {
   const kw = keywords.map((k) => k.toLowerCase());
-  return [...PRODUCTS]
+  const matched = [...PRODUCTS]
     .filter((p) => {
       const hay = `${p.features.join(" ")} ${p.description} ${p.material}`.toLowerCase();
       return kw.some((k) => hay.includes(k));
     })
     .sort((a, b) => b.heatScore - a.heatScore)
     .slice(0, max);
+  // 概念款属性命中也不作为可购推荐 —— 只保留主推款；命中空时由各场景文案兜底
+  return onlyHero(matched);
 }
 
 function pickFromPool(pool: Product[], keywords: string[]): Product[] {
   const kw = keywords.map((k) => k.toLowerCase());
-  return pool
+  const matched = pool
     .filter((p) => {
       const hay = `${p.features.join(" ")} ${p.description} ${p.material}`.toLowerCase();
       return kw.some((k) => hay.includes(k));
     })
     .sort((a, b) => b.heatScore - a.heatScore);
+  return onlyHero(matched);
 }
 
 /* =================================================================
@@ -502,16 +514,14 @@ function sceneCasual(lang: Lang, many = false): AgentReply {
 }
 
 function sceneOutdoor(lang: Lang): AgentReply {
-  // 无专业登山靴：厚底/齿花橡胶大底应付轻度户外；有明显备选最多给 2
-  const attr = pickByAttr(["厚底", "橡胶", "lug", "platform", "发泡", "大底", "防滑"], 3).filter(
-    (p) => p.category === "boots"
-  );
-  const picks = pickFocused(attr.length ? attr : topRatedBoots(3));
+  // 无专业登山靴：主推 14534-H 橡胶大底应付湿冷城市路面和轻度户外
+  const picks = HERO ? [HERO] : topRatedBoots(3);
+  const list = productList(picks, lang);
   return {
     text: L(
       lang,
-      `We don't make technical hiking boots, but thick lug-sole and platform pairs grip wet city streets and handle light trails with ease 🥾 Here ${picks.length > 1 ? "are the two standouts" : "is my pick"}:\n${productList(picks, lang)}\n\nFor serious mountain hikes I'd point you to proper gear.`,
-      `我们没有专业登山靴，但大齿花橡胶底/厚底的靴款应付湿冷城市路面和轻度户外完全没问题 🥾 最合适${picks.length > 1 ? "的两双" : "的一双"}：\n${productList(picks, lang)}\n\n真要进山重装徒步的话建议选专业装备～`
+      `We don't make technical hiking boots, but the 14534-H's rubber outsole grips wet city streets and handles light trails with ease 🥾\n${list}\n\nFor serious mountain hikes I'd point you to proper gear — this pair is a city-to-trail hybrid.`,
+      `我们没有专业登山靴，但 14534-H 的橡胶大底应付湿冷城市路面和轻度户外完全没问题 🥾\n${list}\n\n真要进山重装徒步建议选专业装备，这双属于"城市到轻户外"的款～`
     ),
     products: picks,
   };
@@ -545,74 +555,28 @@ function sceneNarrowFeet(lang: Lang): AgentReply {
   };
 }
 
-function sceneWaterproof(lang: Lang, withIntent: boolean): AgentReply {
-  // 合规：不承诺压胶防水；纯咨询不附卡，明确购买意图才推（最多 2）
-  const attr = pickByAttr(["贴膜", "漆皮", "亮面", "patent", "glossy", "金属感", "金色", "抛光"], 3);
-  const picks = withIntent
-    ? attr.length
-      ? pickFocused(attr)
-      : heroPick(topRatedBoots(3), false)
-    : [];
+function sceneWaterproof(lang: Lang, withCard = true): AgentReply {
+  // 合规：不承诺压胶防水；主推 14534-H 为黑色超纤极简靴，护理方式待供应商确认
   return {
     text: L(
       lang,
-      withIntent
-        ? `Quick honesty — our boots aren't seam-sealed rain boots. Glossy PU and patent-finish uppers may handle light drizzle, but care guidance is pending supplier confirmation. Glossiest picks for wet days:\n${productList(picks, lang)}`
-        : `Quick honesty — our boots aren't seam-sealed rain boots. Glossy PU and patent-finish uppers may handle light drizzle, but care guidance is pending supplier confirmation. Want to see the glossiest pairs? Just say the word!`,
-      withIntent
-        ? `说实话哈 — 咱们的靴子不是压胶雨靴。亮面 PU / 漆皮质感的鞋面可能应付小雨，但具体护理方式待供应商确认。最适合雨天的款：\n${productList(picks, lang)}`
-        : `说实话哈 — 咱们的靴子不是压胶雨靴。亮面 PU / 漆皮质感的鞋面可能应付小雨，但具体护理方式待供应商确认。想看最防泼水的亮面款，随时说一声～`
+      `Quick honesty — the 14534-H isn't a seam-sealed rain boot. The microfiber upper may handle light drizzle, but heavy downpours aren't its stage, and care guidance is pending supplier confirmation. For wet commutes, keep a protective spray (once we publish an approved care method) and a spare pair handy:\n${withCard && HERO ? productList([HERO], lang) : ""}`,
+      `说实话哈 — 14534-H 不是压胶雨靴，超纤鞋面可能应付小雨，但大雨天不是它的主场，具体护理方式待供应商确认。雨季通勤建议后续按官方护理说明做防护、备一双换穿：\n${withCard && HERO ? productList([HERO], lang) : ""}`
     ),
-    products: picks.length ? picks : undefined,
+    products: withCard && HERO ? [HERO] : undefined,
   };
 }
 
 function sceneWashable(lang: Lang): AgentReply {
-  const picks = pickByAttr(["可机洗", "机洗", "快干", "洗"], 3);
-  if (picks.length === 0) {
-    return {
-      text: L(
-        lang,
-        "Great question! 💡 Our boots aren't machine-washable, but care is super easy: wipe the smooth PU or microfiber upper with a damp cloth and mild soap, then let them air dry away from heat. A synthetic-safe conditioner every now and then keeps the finish looking fresh.",
-        "好问题！💡 咱们的靴子不能机洗，但护理超简单：湿布沾点温和肥皂擦 PU/超纤鞋面，放在远离热源的地方阴干就行。偶尔用合成材质专用护理剂擦一擦，质感能保持更久～"
-      ),
-    };
-  }
-  const haystackOf = (p: Product) => `${p.features.join(" ")} ${p.description} ${p.material}`;
-  const machineWashables = picks.filter((p) => /机洗/.test(haystackOf(p)));
-  const quickDrys = picks.filter((p) => !/机洗/.test(haystackOf(p)) && /快干/.test(haystackOf(p)));
-  const joinNames = (arr: Product[]) =>
-    arr.map((p) => ph(p.name)).join(arr.length === 2 ? " & " : arr.length > 2 ? ", and " : "");
-  const parts: string[] = [];
-  if (machineWashables.length) {
-    const n = joinNames(machineWashables);
-    parts.push(
-      L(
-        lang,
-        `${n} ${machineWashables.length > 1 ? "are" : "is"} machine-washable 🧼 — cold cycle only, skip the tumble dryer, and let ${machineWashables.length > 1 ? "them" : "it"} air dry flat.`,
-        `${n}${machineWashables.length > 1 ? "都" : ""}可以直接机洗 🧼，记得用冷水档、别烘干，平铺阴干就好。`
-      )
-    );
-  }
-  if (quickDrys.length) {
-    const n = joinNames(quickDrys);
-    parts.push(
-      L(
-        lang,
-        `${n} ${quickDrys.length > 1 ? "have" : "has"} quick-dry material — just give ${quickDrys.length > 1 ? "them" : "it"} a rinse and leave ${quickDrys.length > 1 ? "them" : "it"} in the shade.`,
-        `${n}${quickDrys.length > 1 ? "都是" : "是"}快干材质的，冲一冲放在阴凉处很快就干啦～`
-      )
-    );
-  }
-  parts.push(
-    L(
+  // 主推 14534-H 不可机洗；护理方式待供应商确认（不发布未经证实的清洁说明）
+  return {
+    text: L(
       lang,
-      "For any pair, just spot clean with a damp cloth and mild soap — avoid soaking them.",
-      "所有靴款都用湿布加温和肥皂擦局部就行，别整双泡水。"
-    )
-  );
-  // 护理咨询 → 默认不附商品卡
-  return { text: parts.join(" ") };
+      "Great question! 💡 The 14534-H isn't machine-washable. Product-specific care guidance is pending supplier confirmation — we'll publish an approved care method before live sales rather than guess at one.",
+      "好问题！💡 14534-H 不能机洗。具体护理方式待供应商确认——在官方护理说明发布前，我们不擅自给出清洁建议。"
+    ),
+    products: HERO ? [HERO] : undefined,
+  };
 }
 
 function sceneMaterial(lang: Lang): AgentReply {
@@ -630,13 +594,13 @@ function sceneMaterial(lang: Lang): AgentReply {
 }
 
 function sceneGift(lang: Lang): AgentReply {
-  // 货盘 D 为传统男靴：礼物场景一双定音，主推 14534-H
-  const picks = heroPick(topRatedBoots(3), false);
+  // 货盘 D 为传统男靴：礼物场景默认"送他"，主推 14534-H 单款为主
+  const picks = topRatedBoots(1);
   return {
     text: L(
       lang,
-      `Gift shopping for him? I got you 🎁 This is my safest pick — our signature style, basically a guaranteed win:\n${productList(picks, lang)}\n\nWant a couple of backups to compare? Just ask! Gift receipts available, 30-day returns.`,
-      `挑礼物对不对？🎁 最稳的就是这双主推款，几乎不会踩雷：\n${productList(picks, lang)}\n\n想再对比一两双备选，随时说～可以开礼物收据，30 天还能退，完全没风险。`
+      `Gift shopping for him? I got you 🎁 The 14534-H is our safest pick — a clean black ankle boot that works for commuting, business casual and weekends:\n${productList(picks, lang)}\n\n30-day try-on guarantee, so it's genuinely low risk.`,
+      `挑礼物对不对？🎁 14534-H 是最稳的选择——一双黑色极简短靴，通勤、商务休闲、周末都能穿：\n${productList(picks, lang)}\n\n30 天试穿可退，放心送～`
     ),
     products: picks,
   };
@@ -645,98 +609,100 @@ function sceneGift(lang: Lang): AgentReply {
 function sceneUnder100(q: string, lang: Lang, many = false): AgentReply {
   const m = q.match(/\$?\s*(\d{2,3})\b/);
   const budget = m ? parseInt(m[1], 10) : 100;
-  const inBudget = pickByMaxPrice(budget);
-  const hero = heroBoot();
-  const one = hero && hero.price <= budget ? [hero] : inBudget.slice(0, 1);
-  const picks = many ? inBudget.slice(0, 3) : one;
+  const picks = pickByMaxPrice(budget);
+  if (!picks.length) {
+    return {
+      text: L(
+        lang,
+        `Honest answer: our signature 14534-H boots are $119, so nothing in the range is under ${formatUSD(budget)}. They're built to be the one pair that covers workdays, evenings and weekends — would you like to see them?`,
+        `实话说：我们主推的 14534-H 是 $119，目前没有 ${formatUSD(budget)} 以内的款式。它一双顶三双——通勤、晚间、周末都能穿，要不要看看？`
+      ),
+      products: HERO ? [HERO] : undefined,
+    };
+  }
   return {
     text: L(
       lang,
-      many
-        ? `All of these are under ${formatUSD(budget)} — no compromise on quality 💰\n${productList(picks, lang)}\n\nWant me to narrow by style — commuting or going out?`
-        : `My pick under ${formatUSD(budget)} — no compromise on quality 💰\n${productList(picks, lang)}\n\nWant to see a few more options in this range? Just ask!`,
-      many
-        ? `这几双都在 ${formatUSD(budget)} 以内，品质完全不打折 💰\n${productList(picks, lang)}\n\n要不要再按风格限定一下？通勤款还是约会款？`
-        : `${formatUSD(budget)} 以内我最推荐这一双，品质完全不打折 💰\n${productList(picks, lang)}\n\n想多看几双这个价位的，随时说～`
+      `Here's the 14534-H — it comes in at $119, within your ${formatUSD(budget)} budget 💰\n${productList(picks, lang)}\n\nWant sizing or shipping info to go with it?`,
+      `14534-H 到手价 $119，在你 ${formatUSD(budget)} 的预算内 💰\n${productList(picks, lang)}\n\n需要我介绍尺码或配送吗？`
     ),
-    products: picks.length ? picks : undefined,
+    products: picks,
   };
 }
 
 function sceneJeans(lang: Lang): AgentReply {
-  // 靴子 + 牛仔裤是本货盘核心穿搭：主推 1 双
-  const picks = heroPick(topRatedBoots(3), false);
+  // 赛题货盘 D 官方场景之一：极简黑靴 + 牛仔
+  const picks = HERO ? [HERO] : topRatedBoots(1);
   return {
     text: L(
       lang,
-      `Boots and jeans are kind of our whole thing 👖 Baggy, straight or skinny — this chunky high-top with a cream rubber sole nails it every time:\n${productList(picks, lang)}`,
-      `靴子配牛仔裤本来就是我们家的主场 👖 阔腿、直筒、紧身都能搭——这双厚底米白橡胶大底的高帮靴最出片：\n${productList(picks, lang)}`
+      `Boots and jeans are kind of our whole thing 👖 The 14534-H — a clean black ankle boot — works with straight cuts, relaxed fits and dark denim alike. This is the pair:\n${productList(picks, lang)}`,
+      `靴子配牛仔裤本来就是 14534-H 的主场 👖 黑色极简短靴配直筒、宽松、深色牛仔都成立。就是这双：\n${productList(picks, lang)}`
     ),
     products: picks,
   };
 }
 
 function sceneDressUp(lang: Lang): AgentReply {
-  // 赛题货盘 D 官方场景之一：约会/稍正式——极简黑 mono-boot 配西裤，主推 1 双
-  const picks = heroPick(topRatedBoots(3), false);
+  // 赛题货盘 D 官方场景之一：约会/稍正式场合——极简黑配西裤
+  const picks = HERO ? [HERO] : topRatedBoots(1);
   return {
     text: L(
       lang,
-      `Dressing up? A clean black pair with tailored trousers is a sharp move for date night and smarter occasions ✨ This is the one:\n${productList(picks, lang)}`,
-      `要穿正式一点？一双极简黑靴配西裤，约会、稍正式的场合都很撑场面 ✨ 就是这一双：\n${productList(picks, lang)}`
+      `Dressing up? The 14534-H in matte black with tailored trousers is a sharp move for date night and smarter occasions ✨\n${productList(picks, lang)}`,
+      `要穿正式一点？黑色 14534-H 配西裤，约会、稍正式的场合都很撑场面 ✨\n${productList(picks, lang)}`
     ),
     products: picks,
   };
 }
 
 function sceneTravel(lang: Lang): AgentReply {
-  // 赛题货盘 D 官方场景之一：短途旅行/出差——主推 1 双
-  const picks = heroPick(topRatedBoots(3), false);
+  // 赛题货盘 D 官方场景之一：短途旅行/出差——百搭、久走舒服
+  const picks = HERO ? [HERO] : topRatedBoots(1);
   return {
     text: L(
       lang,
-      `Weekend trip or work travel? You want a pair that slips on easy, matches everything and feels fine after a full day of walking ✈️ This is my travel-ready pick:\n${productList(picks, lang)}`,
-      `短途旅行或出差？穿脱方便、百搭、走一整天也不累最省心 ✈️ 我主推这一双：\n${productList(picks, lang)}`
+      `Weekend trip or work travel? The 14534-H is minimal, matches everything and has a rear zip for airport-speed on/off ✈️\n${productList(picks, lang)}`,
+      `短途旅行或出差？14534-H 极简百搭，后拉链穿脱快、赶飞机很省心 ✈️\n${productList(picks, lang)}`
     ),
     products: picks,
   };
 }
 
 function sceneShorts(lang: Lang): AgentReply {
-  // 短裤/夏天：亮色/厚底街头感款（"金属"会误命中金属拉链，改用金属感/亮面）；最多 2
-  const attr = pickByAttr(["黄", "全息", "statement", "platform", "街头", "撞色", "厚底", "亮橙", "亮面", "金属感"], 3);
-  const picks = pickFocused(attr.length ? attr : topRatedBoots(3));
+  // 主推为黑色极简踝靴：短裤场景诚实说明单品风格，不强推亮色
+  const picks = HERO ? [HERO] : topRatedBoots(1);
   return {
     text: L(
       lang,
-      `Shorts + chunky boots is the summer street-style move ☀️ Go bold — ${picks.length > 1 ? "these two make the outfit" : "this one makes the outfit"}:\n${productList(picks, lang)}`,
-      `短裤配厚底靴正是夏天的街头穿法 ☀️ 建议大胆一点——${picks.length > 1 ? "这两双" : "这一双"}最出片：\n${productList(picks, lang)}`
+      `Shorts and boots can work as a street-style move ☀️ The all-black 14534-H keeps it clean with denim or utility shorts and a simple tee — it's a minimalist look, not a loud one:\n${productList(picks, lang)}`,
+      `短裤配靴是一种街头穿法 ☀️ 全黑 14534-H 配牛仔或工装短裤加素色 T 就很干净——它走的是极简路线，不是亮色夸张挂：\n${productList(picks, lang)}`
     ),
     products: picks,
   };
 }
 
 function sceneStudentDiscount(lang: Lang): AgentReply {
-  const hero = heroBoot();
+  const hot = HERO ? [HERO] : topRatedBoots(1);
   return {
     text: L(
       lang,
-      `Student perks 🎓 Use code STUDENT10 for 10% off your first order — just verify with your .edu email at checkout. Free shipping kicks in at $75, too!`,
-      `学生党专属福利 🎓 结账时用 STUDENT10 立减 10%，用 .edu 邮箱验证一下就行～满 $75 还免运费！`
+      `Student perks 🎓 Use code STRYDE15 at checkout for 15% off your first order. Free shipping kicks in at $75, too!`,
+      `学生党专属福利 🎓 结账时用 STRYDE15 立减 15%，满 $75 还免运费！`
     ),
-    products: hero ? [hero] : undefined,
+    products: hot,
   };
 }
 
 function sceneGenericDiscount(lang: Lang): AgentReply {
-  const hero = heroBoot();
+  const hot = HERO ? [HERO] : topRatedBoots(1);
   return {
     text: L(
       lang,
-      `Welcome deal just for you 🎁 Use code STRYDE15 at checkout for 15% OFF your first order. Spend $75+ and shipping is on the house. Here's our signature pair to use it on:`,
-      `新客首单优惠来啦 🎁 结账输码 STRYDE15，立减 15%！满 $75 免运费。可以直接用在这双主推款上：`
+      `Welcome deal just for you 🎁 Use code STRYDE15 at checkout for 15% OFF your first order. Spend $75+ and shipping is on the house. Start with the 14534-H:`,
+      `新客首单优惠来啦 � 结账输码 STRYDE15，立减 15%！满 $75 免运费。就从 14534-H 开始：`
     ),
-    products: hero ? [hero] : undefined,
+    products: hot,
   };
 }
 
