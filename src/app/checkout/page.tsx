@@ -9,10 +9,12 @@ import { Input, Label } from "@/components/ui/input";
 import { ph } from "@/lib/utils";
 import { displayNameString } from "@/lib/store/display";
 import { useCurrency } from "@/lib/store/currency";
+import { useLang } from "@/lib/store/lang";
 
 export default function CheckoutPage() {
   const { items, subtotal, discount, promoCode, clear } = useCart();
   const { formatPrice } = useCurrency();
+  const { t } = useLang();
   const [loading, setLoading] = useState(false);
   const [orderId, setOrderId] = useState<string | null>(null);
   const [form, setForm] = useState({
@@ -48,16 +50,13 @@ export default function CheckoutPage() {
           color: i.color,
           size: i.size,
           qty: i.qty,
-          amount: i.price * i.qty,
+          price: i.price * i.qty,
         })),
       }),
     }).then((r) => r.json());
-
-    setTimeout(() => {
-      setLoading(false);
-      setOrderId(order.id ?? "ST-DEMO");
-      clear();
-    }, 900);
+    setLoading(false);
+    setOrderId(order.id ?? "ST-DEMO");
+    clear();
   }
 
   if (orderId) {
@@ -65,16 +64,20 @@ export default function CheckoutPage() {
       <div className="mx-auto flex max-w-lg flex-col items-center px-6 py-28 text-center">
         <CheckCircle2 size={64} className="text-sage" />
         <div className="mt-4 inline-flex rounded-full bg-amber-500/15 px-3 py-1 text-xs font-bold text-amber-700">
-          TEST ORDER · SANDBOX
+          {t("TEST ORDER · SANDBOX", "测试订单 · 沙盒环境")}
         </div>
-        <h1 className="mt-5 text-3xl font-black">Order placed! 🎉</h1>
+        <h1 className="mt-5 text-3xl font-black">{t("Order placed! 🎉", "下单成功！🎉")}</h1>
         <p className="mt-3 text-ink/60">
-          Order number <span className="font-bold text-ink">{orderId}</span> is a sandbox test order.
-          Thanks for shopping with STRYDE.
+          {t("Order number", "订单号")}{" "}
+          <span className="font-bold text-ink">{orderId}</span>{" "}
+          {t(
+            "is a sandbox test order. Thanks for shopping with STRYDE.",
+            "是沙盒测试订单。感谢你在 STRYDE 购物。"
+          )}
         </p>
         <div className="mt-8 flex gap-3">
           <Link href="/products">
-            <Button variant="outline">Keep shopping</Button>
+            <Button variant="outline">{t("Keep shopping", "继续购物")}</Button>
           </Link>
         </div>
       </div>
@@ -85,19 +88,22 @@ export default function CheckoutPage() {
     <div className="mx-auto max-w-5xl px-6 py-12">
       <div className="mb-6 flex items-center gap-2 rounded-xl border border-ink/10 bg-white px-3 py-2 text-xs text-ink/50">
         <Shield size={14} className="shrink-0" />
-        <span><span className="font-bold">SANDBOX CHECKOUT</span> — orders placed here are test orders, not real purchases.</span>
+        <span>
+          <span className="font-bold">{t("SANDBOX CHECKOUT", "沙盒结账")}</span>{" "}
+          {t("— orders placed here are test orders, not real purchases.", "——此处提交的均为测试订单，非真实购买。")}
+        </span>
       </div>
-      <h1 className="text-3xl font-black">Checkout</h1>
+      <h1 className="text-3xl font-black">{t("Checkout", "结账")}</h1>
       <form onSubmit={submit} className="mt-8 grid gap-10 lg:grid-cols-[1fr_360px]">
         {/* 左：表单 */}
         <div className="space-y-8 rounded-2xl border border-ink/10 bg-white p-6">
           <section>
             <h2 className="mb-4 text-sm font-bold uppercase tracking-wider text-ink/50">
-              1 · Shipping
+              {t("1 · Shipping", "1 · 收货信息")}
             </h2>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <Label>Full name</Label>
+                <Label>{t("Full name", "姓名")}</Label>
                 <Input
                   required
                   value={form.customer}
@@ -106,7 +112,7 @@ export default function CheckoutPage() {
                 />
               </div>
               <div>
-                <Label>Email</Label>
+                <Label>{t("Email", "邮箱")}</Label>
                 <Input
                   required
                   type="email"
@@ -116,7 +122,7 @@ export default function CheckoutPage() {
                 />
               </div>
               <div>
-                <Label>Country</Label>
+                <Label>{t("Country", "国家/地区")}</Label>
                 <Input
                   required
                   value={form.country}
@@ -124,7 +130,7 @@ export default function CheckoutPage() {
                 />
               </div>
               <div>
-                <Label>Address</Label>
+                <Label>{t("Address", "收货地址")}</Label>
                 <Input
                   required
                   value={form.address}
@@ -137,23 +143,23 @@ export default function CheckoutPage() {
 
           <section>
             <h2 className="mb-4 text-sm font-bold uppercase tracking-wider text-ink/50">
-              2 · Payment
+              {t("2 · Payment", "2 · 支付方式")}
             </h2>
-            <Label>Card number (demo)</Label>
+            <Label>{t("Card number (demo)", "卡号（演示）")}</Label>
             <Input
               required
               value={form.card}
               onChange={(e) => setForm({ ...form, card: e.target.value })}
             />
             <p className="mt-2 text-xs text-ink/45">
-              Demo mode — no real charge. Any card number works.
+              {t("Demo mode — no real charge. Any card number works.", "演示模式——不会真实扣款，任意卡号均可。")}
             </p>
           </section>
         </div>
 
         {/* 右：订单摘要 */}
         <div className="h-fit rounded-2xl border border-ink/10 bg-white p-6">
-          <h2 className="text-lg font-black">Your order</h2>
+          <h2 className="text-lg font-black">{t("Your order", "你的订单")}</h2>
           <div className="mt-4 space-y-3">
             {items.map((i) => (
               <div key={`${i.productId}-${i.size}`} className="flex justify-between text-sm">
@@ -169,27 +175,31 @@ export default function CheckoutPage() {
           </div>
           <div className="mt-5 space-y-2 border-t border-ink/10 pt-4 text-sm">
             <div className="flex justify-between text-ink/65">
-              <span>Subtotal</span>
+              <span>{t("Subtotal", "小计")}</span>
               <span>{formatPrice(subtotal)}</span>
             </div>
             {discount > 0 && promoCode && (
               <div className="flex justify-between text-accent font-bold">
-                <span>Discount ({promoCode})</span>
+                <span>
+                  {t("Discount", "折扣")} ({promoCode})
+                </span>
                 <span>-{formatPrice(discount)}</span>
               </div>
             )}
             <div className="flex justify-between text-ink/65">
-              <span>Shipping</span>
-              <span>{shipping === 0 ? "FREE" : formatPrice(shipping)}</span>
+              <span>{t("Shipping", "运费")}</span>
+              <span>{shipping === 0 ? t("FREE", "免费") : formatPrice(shipping)}</span>
             </div>
             <div className="flex justify-between pt-1 text-base font-black">
-              <span>Total</span>
+              <span>{t("Total", "合计")}</span>
               <span>{formatPrice(total)}</span>
             </div>
           </div>
           <Button size="lg" className="mt-6 w-full" disabled={loading}>
             {loading ? <Loader2 className="animate-spin" size={18} /> : <Lock size={16} />}
-            {loading ? "Processing..." : `Securely pay ${formatPrice(total)}`}
+            {loading
+              ? t("Processing...", "处理中…")
+              : `${t("Securely pay", "安全支付")} ${formatPrice(total)}`}
           </Button>
 
           {/* 信任元素 */}
@@ -209,15 +219,15 @@ export default function CheckoutPage() {
             <div className="grid grid-cols-3 gap-2 text-center text-[11px] text-ink/55">
               <div className="flex flex-col items-center gap-1">
                 <Shield size={16} className="text-sage" />
-                <span>Secure checkout</span>
+                <span>{t("Secure checkout", "安全结账")}</span>
               </div>
               <div className="flex flex-col items-center gap-1">
                 <RotateCcw size={16} className="text-sage" />
-                <span>Returns TBC</span>
+                <span>{t("Returns TBC", "退货政策待定")}</span>
               </div>
               <div className="flex flex-col items-center gap-1">
                 <Truck size={16} className="text-sage" />
-                <span>Demo shipping</span>
+                <span>{t("Demo shipping", "演示运费")}</span>
               </div>
             </div>
           </div>

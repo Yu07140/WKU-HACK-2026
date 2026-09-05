@@ -1,5 +1,8 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
+import { useLang } from "@/lib/store/lang";
 
 export function Badge({
   children,
@@ -20,14 +23,15 @@ export function Badge({
   );
 }
 
-const TREND_STYLE: Record<string, { label: string; cls: string }> = {
-  hot: { label: "Hot", cls: "bg-accent/10 text-accent-dark" },
-  rising: { label: "Rising", cls: "bg-amber-100 text-amber-700" },
-  new: { label: "New", cls: "bg-sage/15 text-sage" },
-  steady: { label: "Steady", cls: "bg-stone-200 text-stone-600" },
+const TREND_STYLE: Record<string, { en: string; cn: string; cls: string }> = {
+  hot: { en: "Hot", cn: "热卖", cls: "bg-accent/10 text-accent-dark" },
+  rising: { en: "Rising", cn: "人气飙升", cls: "bg-amber-100 text-amber-700" },
+  new: { en: "New", cn: "新品", cls: "bg-sage/15 text-sage" },
+  steady: { en: "Steady", cn: "经典常驻", cls: "bg-stone-200 text-stone-600" },
 };
 
 export function TrendBadge({ trend }: { trend: string }) {
-  const t = TREND_STYLE[trend] ?? TREND_STYLE.steady;
-  return <Badge className={t.cls}>{t.label}</Badge>;
+  const { t } = useLang();
+  const s = TREND_STYLE[trend] ?? TREND_STYLE.steady;
+  return <Badge className={s.cls}>{t(s.en, s.cn)}</Badge>;
 }

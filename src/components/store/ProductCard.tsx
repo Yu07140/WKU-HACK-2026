@@ -6,12 +6,14 @@ import { ProductImage } from "@/components/ui/ProductImage";
 import { TrendBadge } from "@/components/ui/badge";
 import { ph, PLACEHOLDER_MODE, cn } from "@/lib/utils";
 import { useCurrency } from "@/lib/store/currency";
+import { useLang } from "@/lib/store/lang";
 import { displayName, displayTagline } from "@/lib/store/display";
 
 export function ProductCard({ product, concept = false }: { product: Product; concept?: boolean }) {
   const name = displayName(product);
   const tagline = displayTagline(product);
   const { formatPrice } = useCurrency();
+  const { t } = useLang();
   return (
     <Link
       href={concept ? "#" : `/products/${product.slug}`}
@@ -40,17 +42,17 @@ export function ProductCard({ product, concept = false }: { product: Product; co
         )}
         {concept ? (
           <div className="absolute right-3 top-3 rounded-full bg-ink/70 px-2.5 py-1 text-xs font-bold text-white">
-            CREATIVE LAB
+            {t("CREATIVE LAB", "创意实验室")}
           </div>
         ) : product.demoPricing ? (
           <div className="absolute right-3 top-3 rounded-full bg-ink/80 px-2.5 py-1 text-xs font-bold text-white">
-            Demo pricing
+            {t("Demo pricing", "演示价格")}
           </div>
         ) : (
           !PLACEHOLDER_MODE &&
           product.compareAt && (
             <div className="absolute right-3 top-3 rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-white">
-              SAVE {formatPrice(product.compareAt - product.price)}
+              {t("SAVE", "立省")} {formatPrice(product.compareAt - product.price)}
             </div>
           )
         )}
@@ -77,7 +79,7 @@ export function ProductCard({ product, concept = false }: { product: Product; co
           <div className="text-right">
             <div className="font-bold">{formatPrice(product.price)}</div>
             {product.demoPricing && (
-              <div className="text-[11px] text-ink/40">TBC</div>
+              <div className="text-[11px] text-ink/40">{t("TBC", "待定")}</div>
             )}
             {!product.demoPricing && !PLACEHOLDER_MODE && product.compareAt && (
               <div className="text-xs text-ink/40 line-through">{formatPrice(product.compareAt)}</div>
