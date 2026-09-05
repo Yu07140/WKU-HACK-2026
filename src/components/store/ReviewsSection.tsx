@@ -1,9 +1,6 @@
-<<<<<<< Updated upstream
 "use client";
 
-=======
 import { Star } from "lucide-react";
->>>>>>> Stashed changes
 import type { Product } from "@/lib/types";
 import { useLang } from "@/lib/store/lang";
 
@@ -64,23 +61,10 @@ export function ReviewsSection({ product }: { product: Product }) {
   return (
     <section id="reviews" className="mt-24">
 <<<<<<< Updated upstream
-      <h2 className="text-3xl font-black">{t("Customer Reviews", "顾客评价")}</h2>
-      <div className="mt-6 rounded-3xl border border-dashed border-ink/20 bg-white p-10 text-center">
-        <p className="text-lg font-bold text-ink/70">
-          {t("No verified customer reviews yet.", "暂无经验证的顾客评价。")}
-        </p>
-        <p className="mt-2 text-sm text-ink/45">
-          {t(
-            "Be the first to review",
-            "成为第一个评价"
-          )}{" "}
-          {product.name}.{" "}
-          {t(
-            "Reviews will appear here once verified purchases are confirmed.",
-            "经确认的真实购买评价将显示在这里。"
-          )}
-=======
       <h2 className="text-3xl font-black">Customer Reviews</h2>
+=======
+      <h2 className="text-3xl font-black">{t("Customer Reviews", "顾客评价")}</h2>
+>>>>>>> Stashed changes
 
       {/* ---------- PRE-LAUNCH REVIEW PREVIEW (demo content) ---------- */}
       <div className="mt-6 rounded-3xl border border-ink/10 bg-cream/60 p-6 md:p-8">
@@ -126,7 +110,6 @@ export function ReviewsSection({ product }: { product: Product }) {
         </p>
         <p className="mt-1 text-xs text-ink/45">
           Verified purchase reviews will appear here after launch.
->>>>>>> Stashed changes
         </p>
       </div>
     </section>

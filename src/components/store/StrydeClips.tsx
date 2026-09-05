@@ -14,36 +14,28 @@ import { CLIP_LETTERS, clipLetterImage, type ClipLetter } from "@/lib/data/stryd
  * Coming soon: no price / stock / cart / shipping anywhere in this module.
 =======
 import { ArrowRight, Check, RotateCcw, ShoppingBag, X } from "lucide-react";
-import { ProductImage } from "@/components/ui/ProductImage";
+import { Button } from "@/components/ui/button";
+import {
+  CLIP_LETTERS,
+  clipLetterImage,
+  type ClipLetter,
+} from "@/lib/data/strydeClips";
 import { useCart } from "@/lib/store/cart";
 
 /**
- * STRYDE CLIPS — brand personalization concept module (homepage).
- * Clip-on letter accessories designed around the front loop of the 14534-H.
- * "SAVE MY CONCEPT" adds the real 14534-H boot (EU size) to the cart,
- * with the selected letter attached as a personalization note.
- * The clip accessory itself remains a concept (no price / SKU).
+ * STRYDE CLIPS — brand personalization module (homepage + PDP).
+ * Letter previews use static /clips/letters/{A–Z}.png assets — same 14534-H
+ * boot, same studio template, only the silver letter charm changes.
+ * - Homepage (StrydeClips): inline hero preview + letter picker.
+ * - PDP (ClipCustomizerModal): same letter preview, plus EU size and
+ *   SAVE MY CONCEPT — ADD TO CART (adds the real 14534-H boot to the cart
+ *   with the letter attached as a personalization note).
 >>>>>>> Stashed changes
  */
 
 const STRYDE_LETTERS = ["S", "T", "R", "Y", "D", "E"];
 
 <<<<<<< Updated upstream
-export function StrydeClips() {
-  const [selectedLetter, setSelectedLetter] = useState<ClipLetter>("A");
-
-  /* Preload previous + next letter so switching feels instant. */
-  useEffect(() => {
-    const i = CLIP_LETTERS.indexOf(selectedLetter);
-    const neighbours = [
-      CLIP_LETTERS[(i + CLIP_LETTERS.length - 1) % CLIP_LETTERS.length],
-      CLIP_LETTERS[(i + 1) % CLIP_LETTERS.length],
-    ];
-    for (const letter of neighbours) {
-      const img = new Image();
-      img.src = clipLetterImage(letter);
-    }
-  }, [selectedLetter]);
 =======
 /**
  * Concept-preview / customizer modal — self-contained and reusable.
@@ -58,7 +50,7 @@ export function ClipCustomizerModal({
   onClose: () => void;
 }) {
   const { add } = useCart();
-  const [letters, setLetters] = useState<string[]>(["A"]);
+  const [letters, setLetters] = useState<ClipLetter[]>(["A"]);
   const [size, setSize] = useState(42);
   const [saved, setSaved] = useState(false);
 
@@ -77,7 +69,7 @@ export function ClipCustomizerModal({
   }, [open, onClose]);
 
   /** Single-letter selection: click a letter to select it, click again to deselect, click another to switch. */
-  function toggle(letter: string) {
+  function toggle(letter: ClipLetter) {
     setSaved(false);
     setLetters((cur) => (cur.includes(letter) ? [] : [letter]));
   }
@@ -110,6 +102,7 @@ export function ClipCustomizerModal({
       aria-modal="true"
       aria-label="STRYDE CLIPS concept preview"
     >
+      <style>{`@keyframes clipFade{from{opacity:0}to{opacity:1}}`}</style>
       <div
         className="absolute inset-0 bg-ink/60 backdrop-blur-sm"
         onClick={onClose}
@@ -167,35 +160,22 @@ export function ClipCustomizerModal({
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
-              {/* single-letter clip visual — concept accessory, updates live */}
-              <div className="relative aspect-square overflow-hidden rounded-2xl border border-ink/10">
-                {/* dark studio backdrop */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#2b2b30] via-[#17171a] to-[#0b0b0d]" />
-                <div className="absolute -top-1/4 left-1/2 h-[70%] w-[70%] -translate-x-1/2 rounded-full bg-white/10 blur-3xl" />
-
-                {/* white elastic loop band */}
-                <div className="absolute left-1/2 top-1/2 w-[86%] -translate-x-1/2 -translate-y-[62%]">
-                  <div className="h-14 rounded-full bg-gradient-to-b from-white via-[#f2f0ea] to-[#d8d5ce] shadow-[0_12px_28px_rgba(0,0,0,0.55)]" />
-                </div>
-
-                {/* clip: silver clamp bars + chrome letter */}
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                  {letters.length > 0 ? (
-                    <div className="relative flex items-center justify-center px-10">
-                      <span className="absolute left-0 h-16 w-6 rounded-lg bg-gradient-to-b from-[#f6f7f9] via-[#babdc3] to-[#7b7e85] shadow-[0_6px_14px_rgba(0,0,0,0.5)]" />
-                      <span className="absolute right-0 h-16 w-6 rounded-lg bg-gradient-to-b from-[#f6f7f9] via-[#babdc3] to-[#7b7e85] shadow-[0_6px_14px_rgba(0,0,0,0.5)]" />
-                      <span className="bg-gradient-to-b from-white via-[#e0e3e9] to-[#8d9199] bg-clip-text text-[120px] font-black leading-none text-transparent drop-shadow-[0_8px_12px_rgba(0,0,0,0.6)]">
-                        {letters[0]}
-                      </span>
-                    </div>
-                  ) : (
-                    <span className="rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold text-white/70 backdrop-blur">
-                      Pick one letter
-                    </span>
-                  )}
-                </div>
-
-                <span className="absolute bottom-3 left-1/2 -translate-x-1/2 text-[10px] font-bold tracking-[0.3em] text-white/40">
+              {/* live letter preview — same studio asset as the homepage picker */}
+              <div className="relative aspect-square overflow-hidden rounded-2xl border border-ink/10 bg-white">
+                {letters.length > 0 ? (
+                  <img
+                    key={letters[0]}
+                    src={clipLetterImage(letters[0])}
+                    alt={`14534-H boot with silver ${letters[0]} STRYDE Clip preview`}
+                    className="h-full w-full object-contain"
+                    style={{ animation: "clipFade 180ms ease" }}
+                  />
+                ) : (
+                  <span className="absolute inset-0 flex items-center justify-center px-6 text-center text-xs font-bold text-ink/40">
+                    Pick one letter to preview your clip
+                  </span>
+                )}
+                <span className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-white/90 px-3 py-1 text-[10px] font-bold tracking-[0.3em] text-ink/50 shadow-sm">
                   STRYDE CLIP — CONCEPT VISUAL
                 </span>
               </div>
@@ -218,21 +198,27 @@ export function ClipCustomizerModal({
                     </button>
                   )}
                 </div>
-                <div className="grid grid-cols-7 gap-1.5">
-                  {ALPHA.map((ch) => {
-                    const active = letters.includes(ch);
+                <div
+                  className="grid grid-cols-7 gap-1.5"
+                  role="group"
+                  aria-label="Choose your STRYDE Clip letter"
+                >
+                  {CLIP_LETTERS.map((letter) => {
+                    const active = letters[0] === letter;
                     return (
                       <button
-                        key={ch}
-                        onClick={() => toggle(ch)}
+                        key={letter}
+                        type="button"
+                        onClick={() => toggle(letter)}
                         aria-pressed={active}
+                        aria-label={`Preview STRYDE Clip letter ${letter}`}
                         className={`flex h-9 items-center justify-center rounded-md border text-xs font-bold transition ${
                           active
                             ? "border-ink bg-ink text-paper"
                             : "border-ink/15 bg-white text-ink/70 hover:border-ink/50"
                         }`}
                       >
-                        {ch}
+                        {letter}
                       </button>
                     );
                   })}
@@ -294,15 +280,22 @@ export function ClipCustomizerModal({
   );
 }
 
-export function StrydeClips() {
-  const [open, setOpen] = useState(false);
-  const [letters, setLetters] = useState<string[]>(["A"]);
-
-  /** Single-letter selection for the inline quick picker (card 2). */
-  function toggle(letter: string) {
-    setLetters((cur) => (cur.includes(letter) ? [] : [letter]));
-  }
 >>>>>>> Stashed changes
+export function StrydeClips() {
+  const [selectedLetter, setSelectedLetter] = useState<ClipLetter>("A");
+
+  /* Preload previous + next letter so switching feels instant. */
+  useEffect(() => {
+    const i = CLIP_LETTERS.indexOf(selectedLetter);
+    const neighbours = [
+      CLIP_LETTERS[(i + CLIP_LETTERS.length - 1) % CLIP_LETTERS.length],
+      CLIP_LETTERS[(i + 1) % CLIP_LETTERS.length],
+    ];
+    for (const letter of neighbours) {
+      const img = new Image();
+      img.src = clipLetterImage(letter);
+    }
+  }, [selectedLetter]);
 
   return (
     <section id="stryde-clips" className="mx-auto max-w-7xl px-6 py-16 md:py-24">
@@ -420,102 +413,7 @@ export function StrydeClips() {
           </div>
         </article>
 
-<<<<<<< Updated upstream
         {/* MONO DETAILS */}
-=======
-        {/* ---------- CARD 2 — MAKE IT PERSONAL (opens concept preview modal) ---------- */}
-        <article className="overflow-hidden rounded-3xl border border-accent/40 bg-white">
-          <div className="relative aspect-[4/5] overflow-hidden bg-cream">
-            <ProductImage
-              src="/products/14534-h/black.jpg"
-              prompt="black minimalist ankle boot, clean editorial photography"
-              alt="14534-H boot with custom initials clips concept"
-              size="portrait_4_3"
-              className="h-full w-full object-cover"
-            />
-            <div className="absolute left-4 top-4 rounded-full bg-accent px-3 py-1 text-xs font-black tracking-wider text-paper">
-              COMING NEXT
-            </div>
-            {/* live preview chips over the boot */}
-            <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-1.5">
-              {letters.length > 0 ? (
-                letters.map((ch) => (
-                  <span
-                    key={ch}
-                    className="flex h-8 w-8 items-center justify-center rounded-md bg-ink text-sm font-black text-paper shadow-md"
-                  >
-                    {ch}
-                  </span>
-                ))
-              ) : (
-                <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-ink/50">
-                  Your letter will appear here
-                </span>
-              )}
-            </div>
-          </div>
-          <div className="p-6">
-            <h3 className="text-lg font-black tracking-wide">MAKE IT PERSONAL</h3>
-            <p className="mt-2 text-sm leading-relaxed text-ink/55">
-              Swap in your own initials and turn the same silhouette into something
-              that feels more like yours.
-            </p>
-
-            {/* quick inline picker — try a letter, then open the full customizer */}
-            <div className="mt-5">
-              <div className="mb-2 flex items-center justify-between">
-                <span className="text-xs font-black tracking-[0.2em] text-ink/50">
-                  YOUR LETTERS · PICK ONE
-                </span>
-                {letters.length > 0 && (
-                  <button
-                    onClick={() => setLetters([])}
-                    className="inline-flex items-center gap-1 text-xs font-bold text-ink/45 underline-offset-2 hover:text-ink hover:underline"
-                  >
-                    <RotateCcw size={12} /> RESET
-                  </button>
-                )}
-              </div>
-              <div className="grid grid-cols-7 gap-1.5">
-                {ALPHA.map((ch) => {
-                  const active = letters.includes(ch);
-                  return (
-                    <button
-                      key={ch}
-                      onClick={() => toggle(ch)}
-                      aria-pressed={active}
-                      className={`flex h-9 items-center justify-center rounded-md border text-xs font-bold transition ${
-                        active
-                          ? "border-ink bg-ink text-paper"
-                          : "border-ink/15 bg-white text-ink/70 hover:border-ink/50"
-                      }`}
-                    >
-                      {ch}
-                    </button>
-                  );
-                })}
-              </div>
-              <p className="mt-3 text-xs text-ink/45">
-                Selected letter:{" "}
-                <span className="font-black tracking-widest text-ink">
-                  {letters.length > 0 ? letters.join(" ") : "—"}
-                </span>
-              </p>
-              <button
-                onClick={() => setOpen(true)}
-                className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-ink px-5 py-2.5 text-xs font-black tracking-[0.2em] text-paper transition hover:bg-ink/85"
-              >
-                CUSTOMIZE YOUR INITIALS <ArrowRight size={14} />
-              </button>
-              <p className="mt-3 text-xs leading-relaxed text-ink/40">
-                Custom letter clips are currently a concept under sourcing validation.
-              </p>
-            </div>
-          </div>
-        </article>
-
-        {/* ---------- CARD 3 — MONO DETAILS ---------- */}
->>>>>>> Stashed changes
         <article className="group overflow-hidden rounded-3xl border border-ink/10 bg-white">
           <div className="relative aspect-[16/10] overflow-hidden">
             <img
@@ -545,7 +443,6 @@ export function StrydeClips() {
         </article>
       </div>
 
-<<<<<<< Updated upstream
       {/* ---------- FULL EXPERIENCE ---------- */}
       <div className="mt-10 text-center">
         <Link href="/clips">
@@ -554,10 +451,6 @@ export function StrydeClips() {
           </Button>
         </Link>
       </div>
-=======
-      {/* ---------- CONCEPT PREVIEW MODAL (shared component) ---------- */}
-      <ClipCustomizerModal open={open} onClose={() => setOpen(false)} />
->>>>>>> Stashed changes
     </section>
   );
 }
